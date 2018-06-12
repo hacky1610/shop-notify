@@ -4,105 +4,112 @@ Plugin Name: Woocommerce Notice
 */
 
 class Datastore {
-            static $consumerKeyName = "wcn_consumerKey";
-            static $consumerSecret = "wcn_consumerSecret";
+    static $consumerKeyName = "wcn_consumerKey";
+    static $consumerSecret = "wcn_consumerSecret";
 
-            public function GetConsumerKey() {
-                return get_option($this->$consumerKeyName);
-            }
+    public function GetConsumerKey() {
+        return get_option(self::$consumerKeyName);
+    }
 
-            public function SetConsumerKey($value) {
-                return update_option($this->$consumerKeyName,$value);
-            }
+    public function SetConsumerKey($value) {
+       update_option(self::$consumerKeyName,$value);
+    }
 
-            public function GetConsumerSecret() {
-                return get_option($this->$consumerSecret);
-            }
+    public function GetConsumerSecret() {
+        return get_option(self::$consumerSecret);
+    }
 
-            public function SetConsumerSecret($value) {
-                return update_option($this->$consumerSecret,$value);
-            }
+    public function SetConsumerSecret($value) {
+        update_option(self::$consumerSecret,$value);
+    }
 }
 
 class Woocommerce_Notice{
-            static $version = '0.9.92';
-            static $version_file = '0.9.92';
-            private $datastore;       
+    static $version = '0.9.93';
+    static $version_file = '0.9.93';
+    private $datastore;       
 
-            function __construct(){
-                $datestore = new Datastore();
-                add_action('wp_enqueue_scripts', array($this, 'loadJs'));
-                add_action('admin_menu', array($this, 'createMenu'));
-            }
+    function __construct(){
+        $this->datastore  = new Datastore();
+        add_action('wp_enqueue_scripts', array($this, 'loadJs'));
+        add_action('admin_menu', array($this, 'createMenu'));
+    }
 
-            public function loadJs($hook){
-                        /*if($hook === 'settings_page_yourchannel'){
-                                   wp_register_script('yrc_script', plugins_url('/js/yrc.js?'.self::$version_file, __FILE__), array('jquery', 'underscore'), null, 1);
-                                   wp_enqueue_script('yrc_script');
-                                   wp_register_script('yrc_color_picker', plugins_url('/css/colorpicker/spectrum.js?'.self::$version_file, __FILE__), array('yrc_script'), null, 1);
-                                   wp_enqueue_script('yrc_color_picker');
-                                   wp_register_script('yrc_admin_settings', plugins_url('/js/admin.js?'.self::$version_file, __FILE__), array('yrc_color_picker'), null, 1);
-                                   wp_enqueue_script('yrc_admin_settings');
-                                   wp_register_style('yrc_color_picker_style', plugins_url('/css/colorpicker/spectrum.css?'.self::$version_file, __FILE__));
-                                   wp_enqueue_style('yrc_color_picker_style');
-                                   wp_register_style('yrc_admin_style', plugins_url('/css/admin.css?'.self::$version_file, __FILE__));
-                                   wp_enqueue_style('yrc_admin_style');
-                                   wp_register_style('yrc_style', plugins_url('/css/style.css?'.self::$version_file, __FILE__));
-                                   wp_enqueue_style('yrc_style');
+    public function loadJs($hook){
+        /*if($hook === 'settings_page_yourchannel'){
+                   wp_register_script('yrc_script', plugins_url('/js/yrc.js?'.self::$version_file, __FILE__), array('jquery', 'underscore'), null, 1);
+                   wp_enqueue_script('yrc_script');
+                   wp_register_script('yrc_color_picker', plugins_url('/css/colorpicker/spectrum.js?'.self::$version_file, __FILE__), array('yrc_script'), null, 1);
+                   wp_enqueue_script('yrc_color_picker');
+                   wp_register_script('yrc_admin_settings', plugins_url('/js/admin.js?'.self::$version_file, __FILE__), array('yrc_color_picker'), null, 1);
+                   wp_enqueue_script('yrc_admin_settings');
+                   wp_register_style('yrc_color_picker_style', plugins_url('/css/colorpicker/spectrum.css?'.self::$version_file, __FILE__));
+                   wp_enqueue_style('yrc_color_picker_style');
+                   wp_register_style('yrc_admin_style', plugins_url('/css/admin.css?'.self::$version_file, __FILE__));
+                   wp_enqueue_style('yrc_admin_style');
+                   wp_register_style('yrc_style', plugins_url('/css/style.css?'.self::$version_file, __FILE__));
+                   wp_enqueue_style('yrc_style');
 
-                        }*/
-                wp_register_script('wcn_script', plugins_url('/js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
-                wp_enqueue_script('wcn_script');
-            }
+        }*/
+        wp_register_script('wcn_script', plugins_url('/js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_enqueue_script('wcn_script');
+    }
 
-            public function createMenu(){
-                add_submenu_page(
-                   'options-general.php',
-                   'Woocommerce_Notice',
-                   'Woocommerce Notice',
-                   apply_filters('yourchannel_settings_permission', 'manage_options'),
-                   'Woocommerce_Notice',
-                   array($this, 'pageTemplate')
-                );
-            }
+    public function createMenu(){
+        add_submenu_page(
+           'options-general.php',
+           'Woocommerce_Notice',
+           'Woocommerce Notice',
+           apply_filters('yourchannel_settings_permission', 'manage_options'),
+           'Woocommerce_Notice',
+           array($this, 'pageTemplate')
+        );
+    }
 
-            public function pageTemplate(){
-                $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general_settings';
-                ?>
-                <div class="wrap">
-                    <div id="icon-themes" class="icon32"></div>
-                    <h2 class="wpb-inline" id="yrc-icon">Woocommerce<span class="wpb-inline">Notice</span></h2>
-                    <h2 class="nav-tab-wrapper">
-                                <a href="?page=Woocommerce_Notice&amp;tab=general_settings" class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>">General</a>
-                                <a href="?page=Woocommerce_Notice&amp;tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
-                    </h2>
-                           <?php if ($active_tab == 'general_settings') { ?>
-                                       <h2>Settings</h2>
-                           <?php } elseif($_GET['tab'] == 'tools') 
-                                 {
-                                       if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-                                            $datestore->SetConsumerKey("Foo");
-                                        }
-                                        $consKey = get_option('Foo');?>
-                                        <h2>Tools</h2>
-                                        <form method="post">
-                                                    Consumer Key: <input type="text" name="ConsumerKey" value="Mickey"><br>
-                                                    Consumer Secret: <input type="text" name="ConsumerSecret" value="Mouse"><br>
-                                                    <?php
-                                                    echo  $datestore->GetConsumerKey();
-                                                    update_option('Foo', 'Hello2');
-                                                    submit_button(); ?>
-                                        </form>
-                                   <?php }?>
-                        </div>
-                        <?php 
-            }
-            public function templates(){
-                        do_action('wcn_templates');
-                        include 'templates/templates.php';
-            }
+    public function pageTemplate(){
+        $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general_settings';
+        ?>
+        <div class="wrap">
+            <div id="icon-themes" class="icon32"></div>
+            <h2 class="wpb-inline" id="yrc-icon">Woocommerce<span class="wpb-inline">Notice</span></h2>
+            <h2 class="nav-tab-wrapper">
+                        <a href="?page=Woocommerce_Notice&amp;tab=general_settings" class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>">General</a>
+                        <a href="?page=Woocommerce_Notice&amp;tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
+            </h2>
+                   <?php if ($active_tab == 'general_settings') { ?>
+                               <h2>Settings</h2>
+                   <?php } elseif($_GET['tab'] == 'tools') 
+                         {
+
+                            if (isset($_POST['submit']) && !empty($_POST['submit'])) {
+                                $this->datastore->SetConsumerKey($_POST['ConsumerKey']);
+                                $this->datastore->SetConsumerSecret($_POST['ConsumerSecret']);
+                            }
+
+                    ?>
+                        <h2>Woocommerce API</h2>
+                        <form method="post">
+                                    Consumer Key: <input type="text" name="ConsumerKey" id="ConsumerKey" value="<?php echo $this->datastore->GetConsumerKey();?>"><br>
+                                    Consumer Secret: <input type="text" name="ConsumerSecret" id="ConsumerSecret"  value="<?php echo $this->datastore->GetConsumerSecret();?>"><br>
+                                    <?php
+                                    submit_button(); ?>
+                        </form>
+                    <?php }?>
+                </div>
+                <?php 
+    }
+    public function templates(){
+                do_action('wcn_templates');
+                include 'templates/templates.php';
+    }
 }
 new Woocommerce_Notice();
+
+
+class WoocommerceApi
+{
+    
+}
 
 function HttpGet($url)
 {
