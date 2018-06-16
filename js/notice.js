@@ -198,6 +198,13 @@ function ShowReviewPopupSameSite(title, message, icon)
 		return SendAjaxSync(data);
 	}
 	
+        function GetCss() {
+		var data = {
+		'action': 'get_css'
+		};
+		return SendAjaxSync(data);
+	}
+	
 	
 		
 	
