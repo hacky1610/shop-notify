@@ -1,20 +1,26 @@
 <?php
+
 /*
 Plugin Name: Woocommerce Notice
 */
-include './private/DataStore.php';
-include './private/WoocimmerceApi.php';
-include './templates/GeneralSettings.php';
-include './templates/GeneralControls.php';
- 
+include_once dirname( __FILE__ ) . '/private/logger.php';
+include_once dirname( __FILE__ ) . '/private/DataStore.php';
+include_once dirname( __FILE__ ) . '/private/WoocimmerceApi.php';
+include_once dirname( __FILE__ ) . '/templates/GeneralSettings.php';
+include_once dirname( __FILE__ ) . '/templates/GeneralControls.php';
+
+$logger = new Logger();
+
+$logger->Info("Start init");
+
 class Woocommerce_Notice{
     static $version = '0.9.93';
     static $version_file = '0.9.93';
     private $datastore;   
     private $api;
 
-    function __construct(){
-        $this->datastore  = new Datastore();
+    function __construct($datastore){
+        $this->datastore  = $datastore;
         WoocommerceApi::$consumerkey =  $this->datastore->GetConsumerKey();
         WoocommerceApi::$consumerSecret =  $this->datastore->GetConsumerSecret();
         WoocommerceApi::$website = "https://vals-natural-journey.de";
@@ -91,9 +97,7 @@ class Woocommerce_Notice{
                 include 'templates/templates.php';
     }
 }
-new Woocommerce_Notice();
-
-
+new Woocommerce_Notice(new DataStore());
 
 function Load()
 {
