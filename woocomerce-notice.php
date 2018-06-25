@@ -14,8 +14,8 @@ $logger = new Logger();
 $logger->Info("Start init");
 
 class Woocommerce_Notice{
-    static $version = '0.9.93';
-    static $version_file = '0.9.93';
+    static $version = '0.9.94';
+    static $version_file = '0.9.94';
     private $datastore;   
     private $api;
 
@@ -45,6 +45,9 @@ class Woocommerce_Notice{
                    wp_enqueue_style('yrc_style');
 
         }*/
+
+        wp_register_style('wcn_style', plugins_url('/css/default.css?'.self::$version_file, __FILE__));
+        wp_enqueue_style('wcn_style');
         wp_register_script('wcn_script', plugins_url('/js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_enqueue_script('wcn_script');
     }
@@ -68,8 +71,8 @@ class Woocommerce_Notice{
             <h2 class="wpb-inline" id="yrc-icon">Woocommerce<span class="wpb-inline">Notice</span></h2>
             <h2 class="nav-tab-wrapper">
             <?php   
-                 echo GetTab('general_settings', "General");       
-                 echo GetTab('sytle', "Style");
+                 echo GetTab('general_settings', "General",$active_tab );       
+                 echo GetTab('sytle', "Style",$active_tab );
              ?>
             </h2>
             <?php 
@@ -101,8 +104,7 @@ new Woocommerce_Notice(new DataStore());
 
 function Load()
 {
-    include "./custom-css.php";
-    echo html;
+    include_once dirname( __FILE__ ) . '/custom-css.php';
     echo '<script>
       jQuery( document ).ready(function( $ )
             {

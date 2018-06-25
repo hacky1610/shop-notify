@@ -1,0 +1,53 @@
+.wcn-notify{
+    opacity: 0;
+    background-color: #ba9033b8;
+   transition: visibility 0s, opacity 3.5s linear , bottom 1.5s linear !important;
+   display: flex !important;
+   bottom: -80px !important;
+   box-shadow: 3px -3px 10px #1111118f;
+   width: 480px !important;
+}
+
+.wcn-notify-cookie {
+	margin-bottom:35px !important;
+}
+
+.wcn-notify-icon{
+	width: 20%;
+}
+
+.wcn-notify-message{
+	width: 75%;
+}
+
+.wcn-notify-close{
+	width: 5%;
+}
+
+.wcn-notify .message{
+	font-weight: 600;
+	font-size: 17px;
+}
+
+.wcn-notify .title{
+	font-weight: 600;
+	font-size: 18px;
+	margin-bottom: 7px;
+	display: block;
+}
+
+.wcn-notify .link{
+	cursor: pointer;
+	color:#2c3ac4; 
+}
+
+
+.wcn-notify img{
+	max-width:55px
+}
+
+.wcn-notify-visible{
+	visibility: visible;
+	opacity: 1;
+	bottom:20px !important;
+}

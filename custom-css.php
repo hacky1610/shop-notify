@@ -1,8 +1,9 @@
 <?php
 $html = "";
 $html .= '<style type="text/css">';
-$html .= '.foo {color:#00000}';
+$html .= '.wcn-notify {background-color:#ba9033b8}';
 $html .= '</style>';
+echo $html;
 
 /* 
  * To change this license header, choose License Headers in Project Properties.

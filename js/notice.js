@@ -70,7 +70,7 @@ function SwitchTabToReviews()
 	$(".woocommerce-tabs").tabs("option", "active", 1);
 	$(".reviews_tab").addClass("active");
 	$(".description_tab").removeClass("active");
-	$(".vnj-notify-review").removeClass("vnj-notify-visible");
+	$(".wcn-notify-review").removeClass("wcn-notify-visible");
 	
 	var all = $(".woocommerce-review__author").map(function() {
     return this;
@@ -106,17 +106,18 @@ function ShowOrderPopup(title, message, icon, link)
 {
 	var additionalClass = "";
 	if($(".cookie-notice-container").length == 1)
-	   additionalClass = "vnj-notify-cookie";
+	   additionalClass = "wcn-notify-cookie";
 	
-	var template = 	'<div data-notify="container" class="col-xs-11 col-sm-3 alert vnj-notify vnj-notify-orders ' + additionalClass +'" role="alert">' +
-					'<div class="vnj-notify-icon">' + 
+
+	var template = 	'<div data-notify="container" class="col-xs-11 col-sm-3 alert wcn-notify wcn-notify-orders ' + additionalClass +'" role="alert">' +
+					'<div class="wcn-notify-icon">' + 
 						'<span data-notify="icon"></span> ' +
 					'</div>' + 
-					'<div class="vnj-notify-message">' + 
+					'<div class="wcn-notify-message">' + 
 						'<a href="' + link + '" class="title link" >' + title + '</a>' +
 						'<span class="message" data-notify="message">{2}</span>' +
 					'</div>' + 
-						'<div class="vnj-notify-close">' + 
+						'<div class="wcn-notify-close">' + 
 						'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">x</button>' +
 					'</div>' + 
 					'</div>' 
@@ -126,22 +127,22 @@ function ShowOrderPopup(title, message, icon, link)
 	
 	setTimeout(() => 
 	{
-		$(".vnj-notify-orders").addClass("vnj-notify-visible");
+		$(".wcn-notify-orders").addClass("wcn-notify-visible");
 	}, 5000);
 }
 
 function GetReviewTemplate(title, linkSnippet)
 {
-		return	'<div data-notify="container" class="col-xs-11 col-sm-3 alert vnj-notify vnj-notify-review" role="alert">' +
-					'<div class="vnj-notify-icon">' + 
+		return	'<div data-notify="container" class="col-xs-11 col-sm-3 alert wcn-notify wcn-notify-review" role="alert">' +
+					'<div class="wcn-notify-icon">' + 
 						'<span data-notify="icon"></span> ' +
 					'</div>' + 
-					'<div class="vnj-notify-message">' + 
+					'<div class="wcn-notify-message">' + 
 						'<span class="title" >' + title + '</span>' +	
 						'<span class="message" data-notify="message">{2}</span>' +
 						linkSnippet +
 					'</div>' + 
-						'<div class="vnj-notify-close">' + 
+						'<div class="wcn-notify-close">' + 
 						'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">x</button>' +
 					'</div>' + 
 					'</div>' ;
@@ -155,7 +156,7 @@ function ShowReviewPopup(title, message, icon, link)
 	
 	setTimeout(() => 
 	{
-		$(".vnj-notify-review").addClass("vnj-notify-visible");
+		$(".wcn-notify-review").addClass("wcn-notify-visible");
 	}, 20000);
 }
 
@@ -168,7 +169,7 @@ function ShowReviewPopupSameSite(title, message, icon)
 	
 	setTimeout(() => 
 	{
-		$(".vnj-notify-review").addClass("vnj-notify-visible");
+		$(".wcn-notify-review").addClass("wcn-notify-visible");
 	}, 20000);
 }
 
