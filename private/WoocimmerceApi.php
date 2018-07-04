@@ -11,16 +11,19 @@ class WoocommerceApi
     public static $website;
     public static $consumerkey; //ck_e3b74a274632a79a51f2e92809c392a30b7e8266
     public static  $consumerSecret; //cs_fa92ad1ba2a3742e8ee3fa72161e650e871ee069
+    public static $logger;
          
     function __construct(){
     }
     
     static function HttpGet($url)
     {
+        self::$logger->Info("Send Get to Url " . $url);
         $curl = curl_init( $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec( $curl );
         curl_close( $curl );
+        self::$logger->Info($response);
         return $response;
     }
     
@@ -58,6 +61,11 @@ class WoocommerceApi
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( "WoocommerceApi", $funcName ) );
         add_action( 'wp_ajax_' . $code, array( "WoocommerceApi", $funcName ) );
+    }
+
+    static function DisableAuthentification()
+    {
+        add_filter( 'woocommerce_api_check_authentication', function() { return new WP_User( 1 ); } );
     }
     
     static public function InitAjax()

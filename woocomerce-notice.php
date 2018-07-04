@@ -7,23 +7,32 @@ include_once dirname( __FILE__ ) . '/private/logger.php';
 include_once dirname( __FILE__ ) . '/private/DataStore.php';
 include_once dirname( __FILE__ ) . '/private/WoocimmerceApi.php';
 include_once dirname( __FILE__ ) . '/templates/GeneralSettings.php';
+include_once dirname( __FILE__ ) . '/templates/Styles.php';
 include_once dirname( __FILE__ ) . '/templates/GeneralControls.php';
 
-$logger = new Logger();
 
-$logger->Info("Start init");
+
 
 class Woocommerce_Notice{
     static $version = '0.9.94';
     static $version_file = '0.9.94';
     private $datastore;   
     private $api;
+    private $logger;
 
-    function __construct($datastore){
+    function __construct($datastore, $logger){
+
+      
+
+
         $this->datastore  = $datastore;
+        $this->logger = $logger;
+        $this->logger->Call("Woocommerce_Notice Constructor");
+        WoocommerceApi::$logger = $logger;
+        WoocommerceApi::DisableAuthentification(); //TODO: To be removed
         WoocommerceApi::$consumerkey =  $this->datastore->GetConsumerKey();
         WoocommerceApi::$consumerSecret =  $this->datastore->GetConsumerSecret();
-        WoocommerceApi::$website = "https://vals-natural-journey.de";
+        WoocommerceApi::$website = "http://sharonne-design.com";
         WoocommerceApi::InitAjax();
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_menu', array($this, 'createMenu'));
@@ -65,6 +74,7 @@ class Woocommerce_Notice{
 
     public function pageTemplate(){
         $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general_settings';
+        $this->logger->Info("Active Tab: $active_tab"); 
         ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
@@ -72,17 +82,20 @@ class Woocommerce_Notice{
             <h2 class="nav-tab-wrapper">
             <?php   
                  echo GetTab('general_settings', "General",$active_tab );       
-                 echo GetTab('sytle', "Style",$active_tab );
+                 echo GetTab('style', "Style",$active_tab );
              ?>
             </h2>
             <?php 
-            if ($active_tab == 'general_settings') { 
+            if ($active_tab === 'general_settings') { 
+                 $this->logger->Info("Show General Settings Tab");   
                  $genSets = new GeneralSettings($this->datastore);
                  $genSets->Show();
             } 
-            elseif($active_tab == 'style') 
+            elseif($active_tab === 'style') 
             {
-
+                $this->logger->Info("Show Styles Tab");
+                $styles = new Styles($this->datastore);
+                $styles->Show();
             }?>
         </div>
         <?php 
@@ -100,7 +113,8 @@ class Woocommerce_Notice{
                 include 'templates/templates.php';
     }
 }
-new Woocommerce_Notice(new DataStore());
+
+new Woocommerce_Notice(new DataStore(),new Logger());
 
 function Load()
 {
