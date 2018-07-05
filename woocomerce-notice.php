@@ -10,8 +10,8 @@ include_once dirname( __FILE__ ) . '/templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/templates/Styles.php';
 include_once dirname( __FILE__ ) . '/templates/GeneralControls.php';
 
-
-
+require __DIR__ . '/vendor/autoload.php';
+use Automattic\WooCommerce\Client;
 
 class Woocommerce_Notice{
     static $version = '0.9.94';
@@ -21,13 +21,25 @@ class Woocommerce_Notice{
     private $logger;
 
     function __construct($datastore, $logger){
+        $this->logger->Call("Woocommerce_Notice Constructor");
+     
 
-      
+        $woocommerce = new Client(
+            'https://example.com',
+            'consumer_key',
+            'consumer_secret',
+            [
+                'wp_api' => true,
+                'version' => 'wc/v2'
+            ]
+        );
+        $this->logger->Call("Foo");
 
+        print_r($woocommerce->get('products'));
 
         $this->datastore  = $datastore;
         $this->logger = $logger;
-        $this->logger->Call("Woocommerce_Notice Constructor");
+      
         WoocommerceApi::$logger = $logger;
         WoocommerceApi::DisableAuthentification(); //TODO: To be removed
         WoocommerceApi::$consumerkey =  $this->datastore->GetConsumerKey();

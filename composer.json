@@ -1,5 +1,8 @@
 {
     "require-dev": {
         "phpunit/phpunit": "^7.2"
+    },
+    "require": {
+        "automattic/woocommerce": "^2.0"
     }
 }
