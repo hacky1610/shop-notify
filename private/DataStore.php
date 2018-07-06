@@ -9,21 +9,26 @@
 class Datastore {
     static $consumerKeyName = "wcn_consumerKey";
     static $consumerSecret = "wcn_consumerSecret";
+    private $wpDataStore;
+
+    function __construct($wpDataStore){
+        $this->wpDataStore = $wpDataStore;
+    }
 
     public function GetConsumerKey() {
-        return get_option(self::$consumerKeyName);
+        return $this->wpDataStore->Get(self::$consumerKeyName);
     }
 
     public function SetConsumerKey($value) {
-       update_option(self::$consumerKeyName,$value);
+        $this->wpDataStore->Set(self::$consumerKeyName,$value);
     }
 
     public function GetConsumerSecret() {
-        return get_option(self::$consumerSecret);
+        return $this->wpDataStore->Get(self::$consumerSecret);
     }
 
     public function SetConsumerSecret($value) {
-        update_option(self::$consumerSecret,$value);
+        $this->wpDataStore->Set(self::$consumerSecret,$value);
     }
 }
 

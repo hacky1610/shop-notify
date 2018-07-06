@@ -8,19 +8,23 @@
 use PHPUnit\Framework\TestCase;
 
 include(__DIR__. '/../private/DataStore.php' );
+include(__DIR__. '/../private/WpDataStore.php' );
 
 class DataStoreTest extends TestCase
 {
-    public function testInit()
+    public function testGetConsumerKey()
     {
-        $stub = $this->createMock(DataStore::class);
+        $valueToSave = "HelloWorld";
 
-        // Configure the stub.
-        $stub->method('GetConsumerKey')
-             ->willReturn('foo');
+        $wpDataStore = $this->getMockBuilder(WpDataStore::class)
+        ->setMethods(['Get'])
+        ->getMock();
 
+        $wpDataStore->method('Get')->with($this->stringContains('wcn_consumerKey'))->willReturn($valueToSave);
+        $dataStore = new Datastore($wpDataStore);
 
-        echo $stub->GetConsumerKey();
+        $this->assertContains($dataStore->GetConsumerKey(),   $valueToSave);
     }
+
 }
 

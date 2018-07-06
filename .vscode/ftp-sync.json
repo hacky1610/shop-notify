@@ -18,7 +18,8 @@
         "\\composer.json",
         "\\composer.lock",
         "\\README.md",
-        "\\.DS_Store"
+        "\\.DS_Store",
+        "\\vendor"
     ],
     "generatedFiles": {
         "uploadOnSave": false,
