@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-
+include_once dirname( __FILE__ ) . '/Review.php';
 
 class WoocommerceApi
 {
@@ -16,6 +16,11 @@ class WoocommerceApi
     function __construct(){
     }
        
+    static function GetAllProducts()
+    {    
+        return self::$woocommerceClient->get("products");
+    }
+
     static function GetProduct($id)
     {              
         return json_encode(self::$woocommerceClient->get("products/$id"));
@@ -23,14 +28,24 @@ class WoocommerceApi
 
     static function GetAllOrders()
     {          
-       return json_encode(self::$woocommerceClient->get('orders'));
+         return json_encode(self::$woocommerceClient->get('orders'));
     }
 
-    static function GetAllReviews($id)
+    static function GetAllReviews()
     {      
-
-        $request = self::$website .  "/wp-json/wc/v2/products/$id/reviews?" . self::GetUrlSecurityString();
-        return  self::HttpGet($request);
+        self::$logger->Call("GetAllReviews");   
+        $products = self::GetAllProducts();
+        $reviews = array();
+        foreach ($products as &$product) {
+            $id = $product->id;
+            $reviewsOfProducts = self::$woocommerceClient->get("products/$id/reviews");
+            foreach ($reviewsOfProducts as &$review)
+            {
+                $r= new Review($review->id,$review->name, $review->rating, $review->date_created,$product->name, $product->images[0]->src,$product->permalink) ;
+            }
+            array_push($reviews,$r);
+        }
+        return json_encode($reviews);
     }
 
     static function GetLanguage($code)
@@ -79,7 +94,7 @@ class WoocommerceApi
 
    public static function GetAllReviewsAjax()
     {
-        echo self::GetAllReviews($_POST['id']);
+        echo self::GetAllReviews();
         wp_die();
     }
     

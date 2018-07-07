@@ -15,6 +15,7 @@ function Load()
 {
     include_once dirname( __FILE__ ) . '/custom-css.php';
     echo '<script>
+     var $ = jQuery;
       jQuery( document ).ready(function( $ )
             {
             ShowOrder();

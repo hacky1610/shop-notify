@@ -1,9 +1,3 @@
-var $ = jQuery;
-$( document ).ready(function() {
-	$("#vnj-jewellery-image").on("click", ShowJewellery);
-	$("#vnj-shirt-image").on("click", ShowShirts);
-    $("#vnj-ebook-image").on("click", ShowEbooks);
-});
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -31,59 +25,31 @@ function setCookie(cname, cvalue, exdays) {
 
 function ScrollToProducts(className)
 {
-	$('html, body').animate({
-    scrollTop: $("." + className).offset().top - 100
+	jQuery('html, body').animate({
+    scrollTop: jQuery("." + className).offset().top - 100
     }, 'slow');
 }
 
-function ShowJewellery()
-{
-	$(".vnj-jewellery").addClass("visible");
-	$(".vnj-shirt").removeClass("visible");
-	$(".vnj-ebook").removeClass("visible");
-	
-	ScrollToProducts("vnj-jewellery");
-}
-
-function ShowShirts()
-{
-	$(".vnj-jewellery").removeClass("visible");
-	$(".vnj-shirt").addClass("visible");
-	$(".vnj-ebook").removeClass("visible");
-	
-	ScrollToProducts("vnj-shirt");
-}
-
-function ShowEbooks()
-{
-	$(".vnj-jewellery").removeClass("visible");
-	$(".vnj-shirt").removeClass("visible");
-	$(".vnj-ebook").addClass("visible");
-	
-	ScrollToProducts("vnj-ebook");
-}
-
-
 function SwitchTabToReviews()
 {
-	$(".woocommerce-tabs").tabs();
-	$(".woocommerce-tabs").tabs("option", "active", 1);
-	$(".reviews_tab").addClass("active");
-	$(".description_tab").removeClass("active");
-	$(".wcn-notify-review").removeClass("wcn-notify-visible");
+	jQuery(".woocommerce-tabs").tabs();
+	jQuery(".woocommerce-tabs").tabs("option", "active", 1);
+	jQuery(".reviews_tab").addClass("active");
+	jQuery(".description_tab").removeClass("active");
+	jQuery(".wcn-notify-review").removeClass("wcn-notify-visible");
 	
-	var all = $(".woocommerce-review__author").map(function() {
+	var all = jQuery(".woocommerce-review__author").map(function() {
     return this;
 	}).get();
 	
-	$('html, body').animate({
-    scrollTop: $(all[2]).offset().top - 100
+	jQuery('html, body').animate({
+    scrollTop: jQuery(all[2]).offset().top - 100
     }, 'slow');
 }
 
 function ShowPopup(message, icon,delay, template)
 {
-	$.notify(
+	jQuery.notify(
 		{
 			message: message,
 			icon: icon
@@ -156,22 +122,22 @@ function ShowReviewPopup(title, message, icon, link)
 	
 	setTimeout(() => 
 	{
-		$(".wcn-notify-review").addClass("wcn-notify-visible");
+		jQuery(".wcn-notify-review").addClass("wcn-notify-visible");
 	}, 20000);
 }
 
 
-function ShowReviewPopupSameSite(title, message, icon)
-{
-	var template = 	GetReviewTemplate(title, '<span class="message link" onclick="SwitchTabToReviews()">clique pour voir son commentaire</span>');
-	
-	ShowPopup(message,icon, 35000,template)
-	
-	setTimeout(() => 
+	function ShowReviewPopupSameSite(title, message, icon)
 	{
-		$(".wcn-notify-review").addClass("wcn-notify-visible");
-	}, 20000);
-}
+		var template = 	GetReviewTemplate(title, '<span class="message link" onclick="SwitchTabToReviews()">clique pour voir son commentaire</span>');
+		
+		ShowPopup(message,icon, 35000,template)
+		
+		setTimeout(() => 
+		{
+			jQuery(".wcn-notify-review").addClass("wcn-notify-visible");
+		}, 20000);
+	}
 
 	function SendAjaxSync(data, parser) {
 	  return new Promise(function(resolve, reject) {
@@ -187,9 +153,6 @@ function ShowReviewPopupSameSite(title, message, icon)
 		});
 	  });
 	}
-	
-	
-
 		
 	function GetLanguage(code) {
 		var data = {
@@ -199,15 +162,12 @@ function ShowReviewPopupSameSite(title, message, icon)
 		return SendAjaxSync(data);
 	}
 	
-        function GetCss() {
+    function GetCss() {
 		var data = {
 		'action': 'get_css'
 		};
 		return SendAjaxSync(data);
 	}
-	
-	
-		
 	
 	function GetProduct(id) {
 		var data = {
@@ -225,14 +185,10 @@ function ShowReviewPopupSameSite(title, message, icon)
 		return SendAjaxSync(data, JSON.parse);
 	}
 	
-	function getAllReviews(id)
-	{
-		//var url = phpFunctions + "?func=GetAllReviews&id=" + id;
-		//return SendGetSync(url, JSON.parse);	
-		
+	function getAllReviews()
+	{		
 		var data = {
-		'action': 'get_all_reviews',
-		'id' : id
+		'action': 'get_all_reviews'
 		};
 		return SendAjaxSync(data, JSON.parse);
 	}
@@ -291,8 +247,6 @@ function ShowReviewPopupSameSite(title, message, icon)
 		
 	}
 	
-
-	
 	function getLastOrder()
 	{
 		 return new Promise(function(resolve, reject) {
@@ -302,17 +256,15 @@ function ShowReviewPopupSameSite(title, message, icon)
 		 });
 	}
 	
-	function getLastReview(id)
+	function getLastReview()
 	{
 		return new Promise(function(resolve,reject) {
-			getAllReviews(id).then((body) => {
+			getAllReviews().then((body) => {
 				resolve(body[body.length - 1]);
 				
 			});
 		});
 	}
-
-	
 
 	function ShowOrder()
 	{
@@ -321,8 +273,8 @@ function ShowReviewPopupSameSite(title, message, icon)
 			var orderId = lastorder.id;
 			
 			var shownOrders = getCookie("ShownOrder").split(",");
-			if(shownOrders.includes(orderId.toString()))
-				return;
+			//if(shownOrders.includes(orderId.toString()))
+			//	return;
 			
 			setCookie("ShownOrder",shownOrders + "," + orderId,2);
 
@@ -345,31 +297,29 @@ function ShowReviewPopupSameSite(title, message, icon)
 	
 	function ShowReview()
 	{		
-		GetProduct(1224).then((prod) => {
-			getLastReview(prod.id).then((review) => 
+		getLastReview().then((review) => 
+		{
+			if(review != null)
 			{
-				if(review != null)
+				var shownReviews = getCookie("ShownReview").split(",");
+				//if(shownReviews.includes(review.id.toString()))
+				//	return;
+				setCookie("ShownReview",shownReviews + "," + review.id,2);
+				
+				var name =  review.name;  
+				var rating = review.rating;
+				name =  name[0].toUpperCase() + name.substring(1);
+				var message = "Note de " + rating + " étoiles par " + name + ", ";
+				
+				if(window.location.href == review.productPermalink)
 				{
-					var shownReviews = getCookie("ShownReview").split(",");
-					if(shownReviews.includes(review.id.toString()))
-						return;
-					setCookie("ShownReview",shownReviews + "," + review.id,2);
-					
-					var name =  review.name;  
-					var rating = review.rating;
-					name =  name[0].toUpperCase() + name.substring(1);
-					var message = "Note de " + rating + " étoiles par " + name + ", ";
-					
-					if(window.location.href == prod.permalink)
-					{
-						ShowReviewPopupSameSite(prod.name, message,prod.images[0].src);
-					}
-					else
-					{
-						ShowReviewPopup(prod.name, message,prod.images[0].src,prod.permalink);
-					}
+					ShowReviewPopupSameSite(review.productName.name, message,review.productImage);
 				}
-			});
+				else
+				{ 
+					ShowReviewPopup(review.productName, message,review.productImage,review.productPermalink);
+				}
+			}
 		});
 		
 		
