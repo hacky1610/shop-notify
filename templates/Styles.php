@@ -21,7 +21,8 @@ class Styles {
 
         <h2>Style</h2>
 
-        <input type="text" name="cpa_settings_options[background]" value="Color" class="cpa-color-picker" >
+        <input type="text" name="cpa_settings_options[background]" value="Color" class="wcn-color-picker" >
+        
      
         <?php
      }
