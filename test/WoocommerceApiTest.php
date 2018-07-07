@@ -7,31 +7,69 @@
  */
 
 
+use PHPUnit\Framework\TestCase;
+
+include(__DIR__. '/../private/WoocommerceApi.php' );
+include(__DIR__. '/../private/WoocommerceApiLogic.php' );
+include(__DIR__. '/../private/logger.php' );
+
 $autoloader = dirname( __FILE__ ) . '/../vendor/autoload.php';
 
 if ( is_readable( $autoloader ) ) {
 	require_once $autoloader;
 }
-use PHPUnit\Framework\TestCase;
+
 use Automattic\WooCommerce\Client;
 
 
 class WoocommerceApiTest extends TestCase
 {
-    public function testGetProduct()
+    public function testInitWoocommerceApiLogic()
     {
-        $woocommerce = new Client(
-            'http://www.sharonne-design.com',
-            'ck_024588a23aa20cb17892b52e5f49d1252459d260',
-            'cs_9c3de1344656eee809043b4e9d5555838095bfbd',
+        $wcClient = new Client(
+            'http://sharonne-design.com',
+            "",
+            "",
             [
                 'wp_api' => true,
                 'version' => 'wc/v2'
-               
             ]
-        );
+        ); 
+        $logger = $this->createMock(Logger::class);
+        $wcLogic = new WoocommerceApiLogic($wcClient,$logger);
+        $this->assertNotNull($wcLogic);
+    }
 
-        print_r($woocommerce->get('orders'));
+    public function testGetAllProducts()
+    {
+        $wcClient = new Client(
+            'http://sharonne-design.com',
+            "ck_024588a23aa20cb17892b52e5f49d1252459d260",
+            "cs_9c3de1344656eee809043b4e9d5555838095bfbd",
+            [
+                'wp_api' => true,
+                'version' => 'wc/v2'
+            ]
+        ); 
+        $logger = $this->createMock(Logger::class);
+        $wcLogic = new WoocommerceApiLogic($wcClient,$logger);
+        $this->assertNotNull($wcLogic->GetAllProducts());
+    }
+
+    public function testGetAllReviews()
+    {
+        $wcClient = new Client(
+            'http://sharonne-design.com',
+            "ck_024588a23aa20cb17892b52e5f49d1252459d260",
+            "cs_9c3de1344656eee809043b4e9d5555838095bfbd",
+            [
+                'wp_api' => true,
+                'version' => 'wc/v2'
+            ]
+        ); 
+        $logger = $this->createMock(Logger::class);
+        $wcLogic = new WoocommerceApiLogic($wcClient,$logger);
+        $this->assertNotNull($wcLogic->GetAllReviews());
     }
 
 }

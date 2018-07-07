@@ -7,7 +7,8 @@
  */
 
 
-include_once dirname( __FILE__ ) . '/WoocimmerceApi.php';
+include_once dirname( __FILE__ ) . '/WoocommerceApi.php';
+include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
@@ -33,9 +34,7 @@ class WoocommerceNotice{
 
         $this->logger->Call("Woocommerce_Notice Constructor");
       
-        WoocommerceApi::$logger = $logger;
-        WoocommerceApi::DisableAuthentification(); //TODO: To be removed
-        WoocommerceApi::$woocommerceClient = new Client(
+        $wcClient = new Client(
             'http://sharonne-design.com',
             $this->datastore->GetConsumerKey(),
             $this->datastore->GetConsumerSecret(),
@@ -44,8 +43,12 @@ class WoocommerceNotice{
                 'version' => 'wc/v2'
             ]
         ); 
-
+        $apiLogic = new WoocommerceApiLogic($wcClient,$logger);
+        
+        WoocommerceApi::$woocommerceApiLogic =  $apiLogic;
+        WoocommerceApi::DisableAuthentification(); //TODO: To be removed
         WoocommerceApi::InitAjax();
+
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_menu', array($this, 'createMenu'));
 
