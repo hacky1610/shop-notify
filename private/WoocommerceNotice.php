@@ -35,22 +35,21 @@ class WoocommerceNotice{
       
         WoocommerceApi::$logger = $logger;
         WoocommerceApi::DisableAuthentification(); //TODO: To be removed
-        WoocommerceApi::$consumerkey =  $this->datastore->GetConsumerKey();
-        WoocommerceApi::$consumerSecret =  $this->datastore->GetConsumerSecret();
-        WoocommerceApi::$website = "http://sharonne-design.com";
+        WoocommerceApi::$woocommerceClient = new Client(
+            'http://sharonne-design.com',
+            $this->datastore->GetConsumerKey(),
+            $this->datastore->GetConsumerSecret(),
+            [
+                'wp_api' => true,
+                'version' => 'wc/v2'
+            ]
+        ); 
+
         WoocommerceApi::InitAjax();
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_menu', array($this, 'createMenu'));
 
-        try
-        {
-            // echo "Foo";
-            //echo WoocommerceApi::GetAllOrders();
-        }
-        catch(Exception $e)
-        {
-            //printr($e);
-        }
+        $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
     public function loadJs($hook){
@@ -69,11 +68,13 @@ class WoocommerceNotice{
                    wp_enqueue_style('yrc_style');
 
         }*/
-
-        wp_register_style('wcn_style', plugins_url('/css/default.css?'.self::$version_file, __FILE__));
+        $this->logger->Call("loadJs");
+        wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
         wp_enqueue_style('wcn_style');
-        wp_register_script('wcn_script', plugins_url('/js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_register_script('wcn_script', plugins_url('/../js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_enqueue_script('wcn_script');
+        wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_enqueue_script('wcn_bootstrap_notify');
     }
 
     public function createMenu(){

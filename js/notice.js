@@ -1,4 +1,4 @@
-
+var $ = jQuery;
 $( document ).ready(function() {
 	$("#vnj-jewellery-image").on("click", ShowJewellery);
 	$("#vnj-shirt-image").on("click", ShowShirts);
@@ -105,7 +105,7 @@ function ShowPopup(message, icon,delay, template)
 function ShowOrderPopup(title, message, icon, link)
 {
 	var additionalClass = "";
-	if($(".cookie-notice-container").length == 1)
+	if(jQuery(".cookie-notice-container").length == 1)
 	   additionalClass = "wcn-notify-cookie";
 	
 
@@ -127,7 +127,7 @@ function ShowOrderPopup(title, message, icon, link)
 	
 	setTimeout(() => 
 	{
-		$(".wcn-notify-orders").addClass("wcn-notify-visible");
+		jQuery(".wcn-notify-orders").addClass("wcn-notify-visible");
 	}, 5000);
 }
 

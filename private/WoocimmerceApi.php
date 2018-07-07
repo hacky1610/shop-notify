@@ -6,42 +6,24 @@
  * and open the template in the editor.
  */
 
+
+
 class WoocommerceApi
 {
-    public static $website;
-    public static $consumerkey; //ck_e3b74a274632a79a51f2e92809c392a30b7e8266
-    public static  $consumerSecret; //cs_fa92ad1ba2a3742e8ee3fa72161e650e871ee069
+    public static $woocommerceClient;
     public static $logger;
          
     function __construct(){
     }
-    
-    static function HttpGet($url)
-    {
-        self::$logger->Info("Send Get to Url " . $url);
-        $curl = curl_init( $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec( $curl );
-        curl_close( $curl );
-        self::$logger->Info($response);
-        return $response;
-    }
-    
-    static function GetUrlSecurityString()
-    {
-        return "consumer_key=" . self::$consumerkey . "&consumer_secret=" . self::$consumerSecret;
-    }
-    
+       
     static function GetProduct($id)
     {              
-        $request = self::$website . "/wp-json/wc/v2/products/$id?" . self::GetUrlSecurityString();
-        return  self::HttpGet($request);
+        return json_encode(self::$woocommerceClient->get("products/$id"));
     }
 
     static function GetAllOrders()
     {          
-        $request = self::$website . "/wp-json/wc/v1/orders?" . self::GetUrlSecurityString();
-        return  self::HttpGet($request);
+       return json_encode(self::$woocommerceClient->get('orders'));
     }
 
     static function GetAllReviews($id)
