@@ -10,6 +10,8 @@ class Datastore {
     static $consumerKeyName = "wcn_consumerKey";
     static $consumerSecret = "wcn_consumerSecret";
     static $showOrderList = "wcn_showOrderList";
+    static $globalStyle = "wcn_globalStyle";
+
     private $wpDataStore;
 
     function __construct($wpDataStore){
@@ -39,5 +41,15 @@ class Datastore {
     public function SetShowOrderList($value) {
         $this->wpDataStore->Set(self::$showOrderList,$value);
     }
+
+    public function GetGlobalStyle() {
+        return $this->wpDataStore->Get(self::$globalStyle);
+    }
+
+    public function SetGlobalStyle($value) {
+        $this->wpDataStore->Set(self::$globalStyle,$value);
+    }
+
+
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname( __FILE__ ) . '/../private/OrderNotice.php';
+include_once dirname( __FILE__ ) . '/../private/Style.php';
 
 class Styles {
 /* 
@@ -9,27 +9,38 @@ class Styles {
  * and open the template in the editor.
  */
     private $datastore;
-    private $orderList;
+    private $globalStyle;
     
     function __construct($datastore){
         $this->datastore = $datastore;
-        $this->orderList = $this->datastore->GetShowOrderList();
+        $this->globalStyle = $this->datastore->GetGlobalStyle();
+
+        if(!isset($this->globalStyle))
+        {
+            $this->globalStyle = new Style();
+            $this->datastore->SetGlobalStyle($this->globalStyle);
+        }
+        else
+        {
+            $this->globalStyle = (object)$this->globalStyle;
+        }
+       
     }
     
     function Show()
     {
-        $o = (object)$this->orderList[0];
+
         if (isset($_POST['submit']) && !empty($_POST['submit'])) 
         {
-                $o->background = $_POST['background'];
-                $this->datastore->SetShowOrderList($this->orderList);
+                $this->globalStyle->background = $_POST['background'];
+                $this->datastore->SetGlobalStyle($this->globalStyle);
         }
         
         ?>
 
         <h2>Style</h2>
         <form method="post">
-                    <input type="text" name="background" id="background" value="<?php echo $o->background;?>" class="wcn-color-picker" >
+                    <input type="text" name="background" id="background" value="<?php echo $this->globalStyle->background;?>" class="wcn-color-picker" >
         
                     <?php submit_button(); ?>
         </form> <?php

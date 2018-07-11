@@ -6,13 +6,10 @@
  * and open the template in the editor.
  */
 
-class OrderNotice {
-    public $id;
-    public $name;
+class Style {
+    public $background;
 
-    function __construct($id, $name){
-        $this->id = $id;
-        $this->name = $name;
+    function __construct(){
     }
 }
 

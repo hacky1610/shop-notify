@@ -7,16 +7,16 @@
  */
 
 class CssLoader {
-    public $orderNotice;
+    public $globalStyle;
  
 
-    function __construct($orderNotice){
-        $this->orderNotice = $orderNotice;
+    function __construct($globalStyle){
+        $this->globalStyle = $globalStyle;
     }
 
     public function Load()
     {
-        $bg = $this->orderNotice->background;
+        $bg = $this->globalStyle->background;
         $html = "";
         $html .= '<style type="text/css">';
         $html .= ".wcn-notify {background-color:$bg}";

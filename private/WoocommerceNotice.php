@@ -98,10 +98,8 @@ class WoocommerceNotice{
 
     public function Load()
     {
-        $orderlist  = $this->datastore->GetShowOrderList();
-        $o = $orderlist[0];
-
-        $cssloader = new CssLoader($o);
+        $globalStyle  = $this->datastore->GetGlobalStyle();
+        $cssloader = new CssLoader($globalStyle);
         $cssloader->Load();
         echo '<script>
         var $ = jQuery;
