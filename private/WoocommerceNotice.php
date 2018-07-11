@@ -9,6 +9,7 @@
 
 include_once dirname( __FILE__ ) . '/WoocommerceApi.php';
 include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
+include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
@@ -52,6 +53,8 @@ class WoocommerceNotice{
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_enqueue_scripts', array($this, 'loadJsAdmin'));
         add_action('admin_menu', array($this, 'createMenu'));
+        add_action( 'get_footer', array($this, 'Load') );
+
 
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
@@ -91,6 +94,23 @@ class WoocommerceNotice{
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
         //}
+    }
+
+    public function Load()
+    {
+        $orderlist  = $this->datastore->GetShowOrderList();
+        $o = $orderlist[0];
+
+        $cssloader = new CssLoader($o);
+        $cssloader->Load();
+        echo '<script>
+        var $ = jQuery;
+        jQuery( document ).ready(function( $ )
+                {
+                ShowOrder();
+                ShowReview();
+                });
+        </script>"';
     }
 
     public function createMenu(){

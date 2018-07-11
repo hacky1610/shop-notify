@@ -9,6 +9,7 @@
 class Datastore {
     static $consumerKeyName = "wcn_consumerKey";
     static $consumerSecret = "wcn_consumerSecret";
+    static $showOrderList = "wcn_showOrderList";
     private $wpDataStore;
 
     function __construct($wpDataStore){
@@ -29,6 +30,14 @@ class Datastore {
 
     public function SetConsumerSecret($value) {
         $this->wpDataStore->Set(self::$consumerSecret,$value);
+    }
+
+    public function GetShowOrderList() {
+        return $this->wpDataStore->Get(self::$showOrderList);
+    }
+
+    public function SetShowOrderList($value) {
+        $this->wpDataStore->Set(self::$showOrderList,$value);
     }
 }
 

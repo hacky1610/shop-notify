@@ -1,4 +1,7 @@
 <?php
+
+include_once dirname( __FILE__ ) . '/../private/OrderNotice.php';
+
 class Styles {
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -6,25 +9,30 @@ class Styles {
  * and open the template in the editor.
  */
     private $datastore;
+    private $orderList;
     
     function __construct($datastore){
-        echo "Cons";
         $this->datastore = $datastore;
+        $this->orderList = $this->datastore->GetShowOrderList();
     }
     
     function Show()
     {
+        $o = (object)$this->orderList[0];
         if (isset($_POST['submit']) && !empty($_POST['submit'])) 
         {
-              echo "Save";
-        }?>
+                $o->background = $_POST['background'];
+                $this->datastore->SetShowOrderList($this->orderList);
+        }
+        
+        ?>
 
         <h2>Style</h2>
-
-        <input type="text" name="cpa_settings_options[background]" value="Color" class="wcn-color-picker" >
+        <form method="post">
+                    <input type="text" name="background" id="background" value="<?php echo $o->background;?>" class="wcn-color-picker" >
         
-     
-        <?php
+                    <?php submit_button(); ?>
+        </form> <?php
      }
 }
 
