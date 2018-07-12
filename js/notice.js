@@ -88,7 +88,7 @@ function ShowOrderPopup(title, message, icon, link)
 					'</div>' + 
 					'</div>' 
 	
-	ShowPopup(message,icon, 15000,template);
+	ShowPopup(message,icon, 150000,template);
 		
 	
 	setTimeout(() => 

@@ -1,6 +1,8 @@
 <?php
 
 include_once dirname( __FILE__ ) . '/../private/Style.php';
+include_once dirname( __FILE__ ) . '/../private/CssLoader.php';
+
 
 class Styles {
 /* 
@@ -30,11 +32,16 @@ class Styles {
     function Show()
     {
 
+       
+
         if (isset($_POST['submit']) && !empty($_POST['submit'])) 
         {
                 $this->globalStyle->background = $_POST['background'];
                 $this->datastore->SetGlobalStyle($this->globalStyle);
         }
+
+        $cssloader = new CssLoader($this->globalStyle);
+        $cssloader->Load();
         
         ?>
 
@@ -42,6 +49,9 @@ class Styles {
         <form method="post">
                     <input type="text" name="background" id="background" value="<?php echo $this->globalStyle->background;?>" class="wcn-color-picker" >
         
+                    <div id="sampleContainer"></div>
+
+
                     <?php submit_button(); ?>
         </form> <?php
      }

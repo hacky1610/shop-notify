@@ -90,10 +90,24 @@ class WoocommerceNotice{
             $this->logger->Call("Add admin scripts");
             // Add the color picker css file       
             wp_enqueue_style( 'wp-color-picker' ); 
+
+            wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_admin_style');
+
+            wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_admin_bootstrap');
+
+            wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_style');
              
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
+
+            wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script('wcn_bootstrap_notify');
         //}
+
     }
 
     public function Load()
