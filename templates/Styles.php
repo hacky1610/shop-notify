@@ -37,6 +37,7 @@ class Styles {
         if (isset($_POST['submit']) && !empty($_POST['submit'])) 
         {
                 $this->globalStyle->background = $_POST['background'];
+                $this->globalStyle->borderRadius = $_POST['borderRadius'];
                 $this->datastore->SetGlobalStyle($this->globalStyle);
         }
 
@@ -48,6 +49,7 @@ class Styles {
         <h2>Style</h2>
         <form method="post">
                     <input type="text" name="background" id="background" value="<?php echo $this->globalStyle->background;?>" class="wcn-color-picker" >
+                    <input type="text" name="borderRadius" id="borderRadius" value="<?php echo $this->globalStyle->borderRadius;?>"  >
         
                     <div id="sampleContainer"></div>
 

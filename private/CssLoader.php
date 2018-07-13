@@ -17,9 +17,16 @@ class CssLoader {
     public function Load()
     {
         $bg = $this->globalStyle->background;
+        $borderRadius = $this->globalStyle->borderRadius;
         $html = "";
         $html .= '<style type="text/css">';
-        $html .= ".wcn-notify {background-color:$bg}";
+        $html .= ".wcn-notify 
+                  {
+                      
+                    background-color:$bg;
+                    border-radius:{$borderRadius}px  
+                                   
+                   }";
         $html .= '</style>';
         echo $html;
     }

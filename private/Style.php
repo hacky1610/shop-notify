@@ -8,6 +8,7 @@
 
 class Style {
     public $background;
+    public $borderRadius;
 
     function __construct(){
     }
