@@ -10,6 +10,7 @@
 include_once dirname( __FILE__ ) . '/WoocommerceApi.php';
 include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/CssLoader.php';
+include_once dirname( __FILE__ ) . '/Style.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
@@ -44,9 +45,9 @@ class WoocommerceNotice{
                 'version' => 'wc/v2'
             ]
         ); 
-        $apiLogic = new WoocommerceApiLogic($wcClient,$logger);
+        $wcApiLogic = new WoocommerceApiLogic($wcClient,$logger);
         
-        WoocommerceApi::$woocommerceApiLogic =  $apiLogic;
+        WoocommerceApi::$woocommerceApiLogic =  $wcApiLogic;
         WoocommerceApi::DisableAuthentification(); //TODO: To be removed
         WoocommerceApi::InitAjax();
 
@@ -55,29 +56,30 @@ class WoocommerceNotice{
         add_action('admin_menu', array($this, 'createMenu'));
         add_action( 'get_footer', array($this, 'Load') );
 
+        $this->AddAjaxFunction("wcn_save_style","SaveStyle");
 
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
-    public function loadJs($hook){
-        /*if($hook === 'settings_page_yourchannel'){
-                   wp_register_script('yrc_script', plugins_url('/js/yrc.js?'.self::$version_file, __FILE__), array('jquery', 'underscore'), null, 1);
-                   wp_enqueue_script('yrc_script');
-                   wp_register_script('yrc_color_picker', plugins_url('/css/colorpicker/spectrum.js?'.self::$version_file, __FILE__), array('yrc_script'), null, 1);
-                   wp_enqueue_script('yrc_color_picker');
-                   wp_register_script('yrc_admin_settings', plugins_url('/js/admin.js?'.self::$version_file, __FILE__), array('yrc_color_picker'), null, 1);
-                   wp_enqueue_script('yrc_admin_settings');
-                   wp_register_style('yrc_color_picker_style', plugins_url('/css/colorpicker/spectrum.css?'.self::$version_file, __FILE__));
-                   wp_enqueue_style('yrc_color_picker_style');
-                   wp_register_style('yrc_admin_style', plugins_url('/css/admin.css?'.self::$version_file, __FILE__));
-                   wp_enqueue_style('yrc_admin_style');
-                   wp_register_style('yrc_style', plugins_url('/css/style.css?'.self::$version_file, __FILE__));
-                   wp_enqueue_style('yrc_style');
+    private function AddAjaxFunction($code, $funcName)
+    {
+        add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
+        
+        add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
+    }
 
-        }*/
+    public function SaveStyle()
+    {
+        $style = $_POST['style'];
+        $this->datastore->SetGlobalStyle($style);
+        wp_die();
+    }
+
+    public function loadJs($hook){
         $this->logger->Call("loadJs");
         wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
         wp_enqueue_style('wcn_style');
+        wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_register_script('wcn_script', plugins_url('/../js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_enqueue_script('wcn_script');
         wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
@@ -91,21 +93,31 @@ class WoocommerceNotice{
             // Add the color picker css file       
             wp_enqueue_style( 'wp-color-picker' ); 
 
-            wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_admin_style');
+        
 
             wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_bootstrap');
+
+            wp_register_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_admin_fontselect');
+
+            wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_admin_style');
 
             wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_style');
              
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script( 'wcn_ajax_script', plugins_url( '/../js/ajax.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
 
             wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script('wcn_bootstrap_notify');
+
+            wp_enqueue_script( 'wcn_input_mask_script', plugins_url( '/../js/jquery.inputmask.bundle.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.min.js?'.self::$version_file, __FILE__), array(), null, 1);
+
         //}
 
     }

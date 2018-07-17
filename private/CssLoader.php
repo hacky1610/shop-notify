@@ -14,21 +14,36 @@ class CssLoader {
         $this->globalStyle = $globalStyle;
     }
 
+ 
     public function Load()
     {
-        $bg = $this->globalStyle->background;
-        $borderRadius = $this->globalStyle->borderRadius;
         $html = "";
-        $html .= '<style type="text/css">';
-        $html .= ".wcn-notify 
-                  {
-                      
-                    background-color:$bg;
-                    border-radius:{$borderRadius}px  
-                                   
-                   }";
+        $html .= '<style id="wcn_style_sheet" type="text/css">';
+        $html .= $this->globalStyle ;
         $html .= '</style>';
         echo $html;
+    }
+
+    public function GetDefaultStyle()
+    {
+        $html = "";
+        $html .= ".wcn-notify 
+        {
+            
+          border-radius:20px;
+         }";
+
+         $html .= ".wcn-notify .title
+         {
+            color: #ffffff;  
+                         
+          }";
+          $html .= ".wcn-notify .message
+          {
+             color: #ffffff;  
+                          
+          }";
+         return $html;
     }
 }
 

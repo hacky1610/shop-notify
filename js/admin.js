@@ -2,7 +2,30 @@
  
     // Add Color Picker to all inputs that have 'color-field' class
     $(function() {
-        $('.wcn-color-picker').wpColorPicker();
+        $('.wcn-color-picker').wpColorPicker({
+            /**
+             * @param {Event} event - standard jQuery event, produced by whichever
+             * control was changed.
+             * @param {Object} ui - standard jQuery UI object, with a color member
+             * containing a Color.js object.
+             */
+            change: function (event, ui) {
+                ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
+
+            }});
+
+        $('.wcn_mask').inputmask({ regex: '-?[0-9]+.?([0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' });   
+        $('.wcn_font_select').fontselect().change(function(){
+                // replace + signs with spaces for css
+                var font = $(this).val().replace(/\+/g, ' ');
+                // split font into family and weight
+                font = font.split(':');
+                // set family on paragraphs
+                var classToEdit = $(this).attr("wcn_class")
+                ChangeStyle(classToEdit,"font-family",font[0]);
+        });
+            
+
 
         $.notify({
             title: "Welcome:",
@@ -17,3 +40,92 @@
     });
      
 })( jQuery );
+
+var GetCssText = function(styleSheetId)
+{
+    var cssText = "";
+    var cssRules = document.getElementById(styleSheetId).sheet.cssRules;
+    for (var i = 0; i < cssRules.length; i++) {
+        cssText += cssRules[i].cssText;
+    }
+    return cssText;
+}
+
+var GetRule = function(rules, ruleName)
+{
+    for (var i = 0; i < rules.length; i++) {
+        if(rules[i].selectorText.match( ruleName))
+        {
+            return rules[i];
+        }
+    }
+}
+
+var ChangeStyle = function(rulename,style,value)
+{
+    var styleSheet = document.getElementById("wcn_style_sheet").sheet;
+    var rule = GetRule(styleSheet.cssRules,rulename);
+
+    rule.style[style] = value
+}
+
+var hideAllEditControls = function(rulename,style,value)
+{
+    var styleSheet = document.getElementById("wcn_style_sheet").sheet;
+    var rule = GetRule(styleSheet.cssRules,rulename);
+
+    rule.style[style] = value
+}
+
+var clicked = function(event)
+{
+    event.stopPropagation();
+
+
+    //Change selections Frame
+    $(".wcn_selected").removeClass("wcn_selected");
+    $(event.currentTarget).addClass("wcn_selected");
+
+    $('.wcn_edit_section > div').hide();
+
+    var classToChange = event.currentTarget.attributes["wcn_class"].value;
+    var propsToChange = event.currentTarget.attributes["wcn_style_props"].value.split(",");
+
+    for (var i = 0; i < propsToChange.length; i++) {
+        var cssCval = $(event.currentTarget).css(propsToChange[i]);
+        if(propsToChange[i] === "color" || propsToChange[i] === "background-color" )
+        {   
+            var c = new Color(cssCval);
+            cssCval = c.toCSS();
+        }
+
+        $("#wcn_" + propsToChange[i] + "_container input").val(cssCval)
+
+        $("#wcn_" + propsToChange[i] + "_container").show();
+        $("#wcn_" + propsToChange[i] + "_container input").attr("wcn_class",classToChange)        
+    }
+
+
+
+} 
+
+var changed = function(event)
+{
+    
+    ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
+} 
+
+
+$('.wcn-editable').on('click', clicked );
+$('.wcn-edit-control').on('change', changed );
+$(".button").click(function() {
+    var data = {
+        'action': 'wcn_save_style',
+        'style': GetCssText("wcn_style_sheet")
+		};
+		SendAjaxSync(data, JSON.parse);
+  });
+
+
+
+			

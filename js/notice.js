@@ -139,20 +139,7 @@ function ShowReviewPopup(title, message, icon, link)
 		}, 20000);
 	}
 
-	function SendAjaxSync(data, parser) {
-	  return new Promise(function(resolve, reject) {
-		/*stuff using username, password*/
-		
-		// We can also pass the url value separately from ajaxurl for front end AJAX implementations
-		var ajaxurl = document.origin + "/wp-admin/admin-ajax.php"; //TODO
-		jQuery.post(ajaxurl, data, function(response) {
-			if(parser != null)
-					resolve(parser(response));
-				else
-					resolve(response);
-		});
-	  });
-	}
+	
 		
 	function GetLanguage(code) {
 		var data = {

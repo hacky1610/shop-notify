@@ -1,7 +1,7 @@
 .wcn-notify{
-    opacity: 0;
+    opacity: 1;
     background-color: #ba9033b8;
-   transition: visibility 0s, opacity 3.5s linear , bottom 1.5s linear !important;
+   /*transition: visibility 0s, opacity 3.5s linear , bottom 1.5s linear !important;*/
    display: flex !important;
    bottom: -80px !important;
    box-shadow: 3px -3px 10px #1111118f;

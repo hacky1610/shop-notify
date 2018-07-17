@@ -7,10 +7,12 @@
  */
 
 class Style {
-    public $background;
-    public $borderRadius;
+    public $background = "#d1721f";
+    public $borderRadius = 20;
+    public $opacity = 1;
 
     function __construct(){
     }
+    
 }
 
