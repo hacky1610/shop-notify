@@ -164,10 +164,10 @@ function ShowReviewPopup(title, message, icon, link)
 		return SendAjaxSync(data, JSON.parse);
 	}
 	
-	function getAllOrders()
+	function getLastOrders()
 	{
 		var data = {
-		'action': 'get_all_orders'
+		'action': 'get_last_orders'
 		};
 		return SendAjaxSync(data, JSON.parse);
 	}
@@ -237,7 +237,7 @@ function ShowReviewPopup(title, message, icon, link)
 	function getLastOrder()
 	{
 		 return new Promise(function(resolve, reject) {
-			getAllOrders().then((body) => {
+			getLastOrders().then((body) => {
 				resolve(body[Math.floor((Math.random() * 3) + 0)]); //TODO: Random Order
 			})
 		 });
@@ -256,7 +256,9 @@ function ShowReviewPopup(title, message, icon, link)
 	function ShowOrder()
 	{
 		getLastOrder().then((lastorder) => {
-			var productId = lastorder.line_items[0].product_id;
+			var product = lastorder.items[0];
+
+			var productId = product.id;
 			var orderId = lastorder.id;
 			
 			var shownOrders = getCookie("ShownOrder").split(",");
@@ -265,19 +267,14 @@ function ShowReviewPopup(title, message, icon, link)
 			
 			setCookie("ShownOrder",shownOrders + "," + orderId,2);
 
-			GetProduct(productId).then((p) => {
-
-				GetLanguage(lastorder.billing.country).then((country) => {
-					var productName = p.name;
-					var name = lastorder.billing.first_name;
-					name =  name[0].toUpperCase() + name.substring(1);
-					var image = p.images[0].src;
-					var link = p.permalink;
-					var time = GetTimeString(lastorder.date_created);
-					var message = GetOrderMessage(name, country,time);
-					ShowOrderPopup(productName,message,image,link);
-				});	
-			});
+			var productName = product.name;
+			var name = lastorder.name;
+			name =  name[0].toUpperCase() + name.substring(1);
+			var image = product.productImage;
+			var link = product.productPermalink;
+			var time = GetTimeString(lastorder.dateCreated);
+			var message = GetOrderMessage(name, lastorder.country,time);
+			ShowOrderPopup(productName,message,image,link);
 
 		});
 	}

@@ -18,22 +18,6 @@ class Datastore {
         $this->wpDataStore = $wpDataStore;
     }
 
-    public function GetConsumerKey() {
-        return $this->wpDataStore->Get(self::$consumerKeyName);
-    }
-
-    public function SetConsumerKey($value) {
-        $this->wpDataStore->Set(self::$consumerKeyName,$value);
-    }
-
-    public function GetConsumerSecret() {
-        return $this->wpDataStore->Get(self::$consumerSecret);
-    }
-
-    public function SetConsumerSecret($value) {
-        $this->wpDataStore->Set(self::$consumerSecret,$value);
-    }
-
     public function GetShowOrderList() {
         return $this->wpDataStore->Get(self::$showOrderList);
     }

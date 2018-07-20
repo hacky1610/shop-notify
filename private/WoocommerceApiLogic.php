@@ -8,23 +8,18 @@
 
 include_once dirname( __FILE__ ) . '/Review.php';
 include_once dirname( __FILE__ ) . '/model/Product.php';
+include_once dirname( __FILE__ ) . '/model/Order.php';
+
 
 
 class WoocommerceApiLogic
 {
-    private $woocommerceClient;
     private $logger;
          
-    function __construct($woocommerceClient, $logger){
+    function __construct( $logger){
         $this->logger = $logger;
-        $this->woocommerceClient = $woocommerceClient;
     }
        
-    public function GetAllProducts()
-    {    
-        return $this->woocommerceClient->get("products");
-    }
-
     //https://docs.woocommerce.com/wp-content/images/wc-apidocs/class-WC_Product_Simple.html
     public function GetProduct($id)
     {              
@@ -34,17 +29,45 @@ class WoocommerceApiLogic
             'post__in'=> array($product_id)
         );
 
-        $wcProd =  wc_get_products( $args )[0];
-        $image_url = wp_get_attachment_image_src( $wcProd->get_image_id(), 'single-post-thumbnail' );
-
-        
-        return new Product(id, $wcProd->get_name(),$wcProd->get_permalink(),$image_url[0]);
+        return self::CreateProduct($id,wc_get_products( $args )[0]);
     }
 
-    public function GetAllOrders()
+    public function GetLastOrders($count)
     {          
-         return json_encode($this->woocommerceClient->get('orders'));
+        $args = array(
+            'status' => 'completed',
+        );
+        $wcOrders =  wc_get_orders( $args );
+        $orders = array();
 
+        foreach ($wcOrders  as &$wcOrder) {
+            $items = array();
+            foreach ($wcOrder->get_items()  as $item_id => $item_obj) {
+                //https://docs.woocommerce.com/wc-apidocs/class-WC_Order_Item_Product.html
+                array_push($items,self::CreateProduct($item_obj->get_product_id(),$item_obj->get_product()));
+            }
+    
+            $order = self::CreateOrder($wcOrder,$items);
+            array_push($orders,$order);
+        }
+       
+        return $orders;
+
+    
+    }
+
+    private static function CreateProduct($id, $wcProd)
+    {
+        $image_url = wp_get_attachment_image_src( $wcProd->get_image_id(), 'single-post-thumbnail' );
+
+        return new Product($id, $wcProd->get_name(),$wcProd->get_permalink(),$image_url[0]);
+    }
+
+
+    private static function CreateOrder( $wcOrder,$items)
+    {
+        $country = WC()->countries->countries[$wcOrder->get_billing_country()];
+        return new Order($wcOrder->get_id(),$wcOrder->get_billing_first_name(),$country,$wcOrder->get_date_created() ,$items);
     }
 
     public function GetLastReviews($count)

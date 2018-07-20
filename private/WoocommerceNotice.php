@@ -36,16 +36,7 @@ class WoocommerceNotice{
 
         $this->logger->Call("Woocommerce_Notice Constructor");
       
-        $wcClient = new Client(
-            'http://sharonne-design.com',
-            $this->datastore->GetConsumerKey(),
-            $this->datastore->GetConsumerSecret(),
-            [
-                'wp_api' => true,
-                'version' => 'wc/v2'
-            ]
-        ); 
-        $wcApiLogic = new WoocommerceApiLogic($wcClient,$logger);
+        $wcApiLogic = new WoocommerceApiLogic($logger);
         
         WoocommerceApi::$woocommerceApiLogic =  $wcApiLogic;
         WoocommerceApi::DisableAuthentification(); //TODO: To be removed

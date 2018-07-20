@@ -30,7 +30,7 @@ class WoocommerceApi
     {
         self::AddAjaxFunction("get_language","GetLanguageAjax");
         self::AddAjaxFunction("get_product","GetProductAjax");
-        self::AddAjaxFunction("get_all_orders","GetAllOrdersAjax");
+        self::AddAjaxFunction("get_last_orders","GetLastOrdersAjax");
         self::AddAjaxFunction("get_last_reviews","GetLastReviewsAjax");
         self::AddAjaxFunction("get_css","GetCssAjax");
     }
@@ -49,9 +49,13 @@ class WoocommerceApi
         wp_die();
     }
 
-    public static function GetAllOrdersAjax()
+    public static function GetLastOrdersAjax()
     {
-        echo self::$woocommerceApiLogic->GetAllOrders();
+        //echo json_encode(self::$woocommerceApiLogic->GetLastOrders(5));
+        //self::$woocommerceApiLogic->GetLastOrders(5);
+        echo json_encode(self::$woocommerceApiLogic->GetLastOrders(5));
+        
+
         wp_die();
     }
 
