@@ -31,7 +31,7 @@ class WoocommerceApi
         self::AddAjaxFunction("get_language","GetLanguageAjax");
         self::AddAjaxFunction("get_product","GetProductAjax");
         self::AddAjaxFunction("get_all_orders","GetAllOrdersAjax");
-        self::AddAjaxFunction("get_all_reviews","GetAllReviewsAjax");
+        self::AddAjaxFunction("get_last_reviews","GetLastReviewsAjax");
         self::AddAjaxFunction("get_css","GetCssAjax");
     }
 
@@ -41,9 +41,11 @@ class WoocommerceApi
         wp_die();
     }
 
+
     public static function GetProductAjax()
     {
-        echo self::$woocommerceApiLogic->GetProduct(intval($_POST['id']));
+        $prod = self::$woocommerceApiLogic->GetProduct(intval($_POST['id']));
+        echo json_encode($prod);
         wp_die();
     }
 
@@ -53,9 +55,9 @@ class WoocommerceApi
         wp_die();
     }
 
-   public static function GetAllReviewsAjax()
+   public static function GetLastReviewsAjax()
     {
-        echo self::$woocommerceApiLogic->GetAllReviews();
+        echo json_encode(self::$woocommerceApiLogic->GetLastReviews(5));
         wp_die();
     }
     

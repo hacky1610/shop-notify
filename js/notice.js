@@ -172,10 +172,10 @@ function ShowReviewPopup(title, message, icon, link)
 		return SendAjaxSync(data, JSON.parse);
 	}
 	
-	function getAllReviews()
+	function getLastReviews()
 	{		
 		var data = {
-		'action': 'get_all_reviews'
+		'action': 'get_last_reviews'
 		};
 		return SendAjaxSync(data, JSON.parse);
 	}
@@ -246,7 +246,7 @@ function ShowReviewPopup(title, message, icon, link)
 	function getLastReview()
 	{
 		return new Promise(function(resolve,reject) {
-			getAllReviews().then((body) => {
+			getLastReviews().then((body) => {
 				resolve(body[body.length - 1]);
 				
 			});
@@ -289,23 +289,30 @@ function ShowReviewPopup(title, message, icon, link)
 			if(review != null)
 			{
 				var shownReviews = getCookie("ShownReview").split(",");
-				//if(shownReviews.includes(review.id.toString()))
-				//	return;
+					//if(shownReviews.includes(review.id.toString()))
+					//	return;
 				setCookie("ShownReview",shownReviews + "," + review.id,2);
+
 				
-				var name =  review.name;  
-				var rating = review.rating;
-				name =  name[0].toUpperCase() + name.substring(1);
-				var message = "Note de " + rating + " étoiles par " + name + ", ";
-				
-				if(window.location.href == review.productPermalink)
+				GetProduct(review.comment_post_ID).then((prod) =>
 				{
-					ShowReviewPopupSameSite(review.productName.name, message,review.productImage);
+					var name =  review.comment_author;  
+					var rating = review.meta_value;
+					name =  name[0].toUpperCase() + name.substring(1);
+					var message = "Note de " + rating + " étoiles par " + name + ", ";
+					
+					if(window.location.href == prod.productPermalink)
+					{
+						ShowReviewPopupSameSite(prod.name, message,prod.productImage);
+					}
+					else
+					{ 
+						ShowReviewPopup(prod.name, message,prod.productImage,prod.productPermalink);
+					}
 				}
-				else
-				{ 
-					ShowReviewPopup(review.productName, message,review.productImage,review.productPermalink);
-				}
+			
+			);
+			
 			}
 		});
 		

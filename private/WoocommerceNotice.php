@@ -92,12 +92,8 @@ class WoocommerceNotice{
             $this->logger->Call("Add admin scripts");
             // Add the color picker css file       
             wp_enqueue_style( 'wp-color-picker' ); 
-
-        
-
             wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_bootstrap');
-
             wp_register_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_fontselect');
 
@@ -124,6 +120,7 @@ class WoocommerceNotice{
 
     public function Load()
     {
+        $this->my_print_stars();
         $globalStyle  = $this->datastore->GetGlobalStyle();
         $cssloader = new CssLoader($globalStyle);
         $cssloader->Load();
@@ -151,6 +148,7 @@ class WoocommerceNotice{
     public function pageTemplate(){
         $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general_settings';
         $this->logger->Info("Active Tab: $active_tab"); 
+
         ?>
         <div class="wrap">
             <div id="icon-themes" class="icon32"></div>
@@ -177,16 +175,53 @@ class WoocommerceNotice{
         <?php 
     }
     
-     /**
-     * @assert (0, 0) == 0
-     * @assert (0, 1) == 1
-     * @assert (1, 0) == 1
-     * @assert (1, 1) == 2
-     * @assert (1, 2) == 4
-     */
-    public function templates(){
-                do_action('wcn_templates');
-                include 'templates/templates.php';
+    public function ShowOrders(){
+        $query = new WC_Order_Query( array(
+            'limit' => 10,
+            'orderby' => 'date',
+            'order' => 'DESC'
+        ) );
+        $orders = $query->get_orders();
+        print_r($orders);
+        
     }
+
+    public function GetProduct($id)
+    {
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 1,
+            'post__in'=> array($product_id)
+        );
+
+        $products = wc_get_products( $args );
+        return $products;
+    }
+
+    //https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
+    //http://itadminguide.com/difference-between-wpdb-get_row-get_results-get_var-and-get_query/
+    //https://stackoverflow.com/questions/14227121/how-do-you-add-the-star-ratings-for-products-in-woocommerce/20794406
+    function my_print_stars(){
+        global $wpdb;
+        global $post;
+       //comment_date,meta_value,comment_content,comment_author,comment_post_ID
+
+        $comments = $wpdb->get_results("
+        SELECT comment_date,meta_value,comment_content,comment_author,comment_post_ID FROM $wpdb->commentmeta
+        LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+        WHERE meta_key = 'rating'
+        ");
+
+        $id = $comments[0]->comment_post_ID;
+        $product = $this->GetProduct(1024);
+
+    }
+
+    
+
+
+
+ 
+ 
 }
 

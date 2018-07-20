@@ -7,6 +7,8 @@
  */
 
 include_once dirname( __FILE__ ) . '/Review.php';
+include_once dirname( __FILE__ ) . '/model/Product.php';
+
 
 class WoocommerceApiLogic
 {
@@ -23,32 +25,43 @@ class WoocommerceApiLogic
         return $this->woocommerceClient->get("products");
     }
 
+    //https://docs.woocommerce.com/wp-content/images/wc-apidocs/class-WC_Product_Simple.html
     public function GetProduct($id)
     {              
-        return json_encode($this->woocommerceClient->get("products/$id"));
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 1,
+            'post__in'=> array($product_id)
+        );
+
+        $wcProd =  wc_get_products( $args )[0];
+        $image_url = wp_get_attachment_image_src( $wcProd->get_image_id(), 'single-post-thumbnail' );
+
+        
+        return new Product(id, $wcProd->get_name(),$wcProd->get_permalink(),$image_url[0]);
     }
 
     public function GetAllOrders()
     {          
          return json_encode($this->woocommerceClient->get('orders'));
+
     }
 
-    public function GetAllReviews()
+    public function GetLastReviews($count)
     {      
-        $this->logger->Call("GetAllReviews");   
-        $products = $this->GetAllProducts();
-        $reviews = array();
-        foreach ($products as &$product) {
-            $id = $product->id;
-            $reviewsOfProducts = $this->woocommerceClient->get("products/$id/reviews");
-            foreach ($reviewsOfProducts as &$review)
-            {
-                $r= new Review($review->id,$review->name, $review->rating, $review->date_created,$product->name, $product->images[0]->src,$product->permalink) ;
-                array_push($reviews,$r);
-            }
-        }
-        return json_encode($reviews);
+        global $wpdb;
+       //comment_date,meta_value,comment_content,comment_author,comment_post_ID
+
+        $comments = $wpdb->get_results("
+        SELECT comment_date,meta_value,comment_content,comment_author,comment_post_ID FROM $wpdb->commentmeta
+        LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+        WHERE meta_key = 'rating'
+        ");
+
+        return $comments;
+
     }
+
 
     public function GetLanguage($code)
     {
