@@ -4,6 +4,10 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ * 
+ * https://codecanyon.net/item/wordpress-ecommerce-notification/20255155
+ * https://wordpress.org/plugins/woobought-lite/
+ * https://codecanyon.net/item/woocommerce-notification-boost-your-sales/16586926
  */
 
 
@@ -26,6 +30,7 @@ use Automattic\WooCommerce\Client;
 class WoocommerceNotice{
     static $version = '0.9.94';
     static $version_file = '0.9.94';
+    static $namespace = "shop-notify";
     private $datastore;   
     private $api;
     private $logger;
@@ -45,13 +50,100 @@ class WoocommerceNotice{
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_enqueue_scripts', array($this, 'loadJsAdmin'));
         add_action('admin_menu', array($this, 'createMenu'));
-        add_action( 'get_footer', array($this, 'Load') );
+        add_action('get_footer', array($this, 'Load') );
+        add_action('init',array($this, 'codex_custom_init') );
+        add_action('add_meta_boxes', array($this, 'post_grid_post_settings') );
+        add_action('save_post', array($this,'save_notify_settings'), 10, 3 );
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
-
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
+
+    function codex_custom_init() {
+        $labels = array(
+            'name'                => _x( 'Notifications', 'Post Type General Name', self::$namespace),
+            'singular_name'       => _x( 'Movie', 'Post Type Singular Name', self::$namespace ),
+            'menu_name'           => __( 'Shop Notify', self::$namespace ),
+            'parent_item_colon'   => __( 'Parent Movie', self::$namespace ),
+            'all_items'           => __( 'Notifications', self::$namespace ),
+            'view_item'           => __( 'View Movie', self::$namespace ),
+            'add_new_item'        => __( 'Add Notification', self::$namespace),
+            'add_new'             => __( 'Add Notification', self::$namespace ),
+            'edit_item'           => __( 'Edit Notification', self::$namespace ),
+            'update_item'         => __( 'Update Notification', self::$namespace ),
+            'search_items'        => __( 'Search Notification', self::$namespace ),
+            'not_found'           => __( 'Not Found', self::$namespace ),
+            'not_found_in_trash'  => __( 'Not found in Trash', self::$namespace ),
+        );
+
+        $args = array(
+            'public' => true,
+            'label'  => 'Shop Notify',
+            'labels' => $labels,
+            'publicly_queryable' => false,
+            'show_ui' => true,
+            'query_var' => true,
+            'menu_icon' => null,
+            'rewrite' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+            'menu_position' => null,
+            'supports' => array('title'),
+            'menu_icon' => 'dashicons-media-spreadsheet',
+          );
+        register_post_type( 'shop-notify', $args );
+    }
+
+    function post_grid_post_settings()
+	{
+        add_meta_box('sn_settings',
+                    __( 'Notification',self::$namespace),
+                    array($this,'render_notify_settings'),
+                    '',
+                    'advanced',
+                    'default',
+                null);
+    }
+
+    public function sn_style_editor(){
+        $styles = new Styles($this->datastore);
+        $styles->Show();
+        
+	}
+    
+    public function render_notify_settings( $post ) {
+        $this->logger->Call("render_notify_settings");
+        // Add nonce for security and authentication.
+        //Todo: ??
+        //wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
+        echo "----";
+        print_r(get_post_meta( $post->ID, 'foo' ));
+
+
+
+    }
+
+    function save_notify_settings( $post_id, $post, $update ) {
+        $this->logger->Call("save_notify_settings");
+
+        /*
+         * In production code, $slug should be set only once in the plugin,
+         * preferably as a class property, rather than in each function that needs it.
+         */
+        $post_type = get_post_type($post_id);
+        $this->logger->Info("Post Type: $post_type");
+        // If this isn't a 'book' post, don't update it.
+        if ( "shop-notify" != $post_type ) return;
+    
+        // - Update the post's metadata.
+        $this->logger->Info("Update Post Meta");
+    
+        update_post_meta( $post_id, 'foo', "hello" );
+    
+
+    }
+   
     private function AddAjaxFunction($code, $funcName)
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
@@ -126,6 +218,13 @@ class WoocommerceNotice{
     }
 
     public function createMenu(){
+        $namespace = self::$namespace;
+
+        echo $namespace;
+        add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'sn_style_editor' ));
+
+
+
         add_submenu_page(
            'options-general.php',
            'Woocommerce_Notice',
