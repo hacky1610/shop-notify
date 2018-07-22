@@ -17,6 +17,7 @@ include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
+include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
 $autoloader = dirname( __FILE__ ) . '/../vendor/autoload.php';
 
@@ -34,11 +35,12 @@ class WoocommerceNotice{
     private $datastore;   
     private $api;
     private $logger;
+    public $notifySettingsEditor;
 
     function __construct($datastore, $logger){
         $this->datastore  = $datastore;
         $this->logger = $logger;
-
+        $this->notifySettingsEditor = new NotifySettings($datastore);
         $this->logger->Call("Woocommerce_Notice Constructor");
       
         $wcApiLogic = new WoocommerceApiLogic($logger);
@@ -53,7 +55,7 @@ class WoocommerceNotice{
         add_action('get_footer', array($this, 'Load') );
         add_action('init',array($this, 'codex_custom_init') );
         add_action('add_meta_boxes', array($this, 'post_grid_post_settings') );
-        add_action('save_post', array($this,'save_notify_settings'), 10, 3 );
+        add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
         $this->logger->Call("Woocommerce_Notice Constructor End");
@@ -99,7 +101,7 @@ class WoocommerceNotice{
 	{
         add_meta_box('sn_settings',
                     __( 'Notification',self::$namespace),
-                    array($this,'render_notify_settings'),
+                    array($this->notifySettingsEditor,'Show'),
                     '',
                     'advanced',
                     'default',
@@ -111,39 +113,7 @@ class WoocommerceNotice{
         $styles->Show();
 
 	}
-    
-    public function render_notify_settings( $post ) {
-        $this->logger->Call("render_notify_settings");
-        // Add nonce for security and authentication.
-        //Todo: ??
-        //wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
-        $layout = Layout::DefaultContent();
-        echo Layout::PrintElement($layout[0]);
 
-        print_r(get_post_meta( $post->ID, 'foo' ));
-
-    }
-
-    function save_notify_settings( $post_id, $post, $update ) {
-        $this->logger->Call("save_notify_settings");
-
-        /*
-         * In production code, $slug should be set only once in the plugin,
-         * preferably as a class property, rather than in each function that needs it.
-         */
-        $post_type = get_post_type($post_id);
-        $this->logger->Info("Post Type: $post_type");
-        // If this isn't a 'book' post, don't update it.
-        if ( "shop-notify" != $post_type ) return;
-    
-        // - Update the post's metadata.
-        $this->logger->Info("Update Post Meta");
-    
-        update_post_meta( $post_id, 'foo', "hello" );
-    
-
-    }
-   
     private function AddAjaxFunction($code, $funcName)
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );

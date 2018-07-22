@@ -2,7 +2,7 @@
 
 include_once dirname( __FILE__ ) . '/../private/model/Layout.php';
 include_once dirname( __FILE__ ) . '/../private/CssLoader.php';
-
+include_once dirname( __FILE__ ) . '/CommonControls.php';
 
 class Styles {
 /* 
@@ -70,7 +70,7 @@ class Styles {
 
                     <div class="wcn_edit_section">
                     <?php
-                    $this->AddSelectBox($styleList);
+                    CommonControls::AddSelectBox($styleList,$this->selectedStyle);
                     $this->AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
                     $this->AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
                     $this->AddEditControl("wcn_color","","wcn-color-picker","Color");
@@ -97,31 +97,6 @@ class Styles {
                 return $style;
          }
          return null;
-     }
-
-  
-
-
-
-
-     private function AddSelectBox($styleList)
-     {?>
-        <select class="layout-content">
-        <option selected value=""></option>                    
-        <option value="create-new">Create New</option>
-            <?php
-
-            
-           // $layout_content_list = $class_post_grid_functions->layout_content_list();
-            foreach($styleList as $style){
-                ?>
-                <option <?php if($this->selectedStyle==$style->id) echo 'selected'; else "" ?> id="<?php echo $style->id; ?>" value="<?php echo $style->name; ?>"><?php echo $style->name; ?></option>
-                <?php
-                
-                }
-            ?>
-        </select>
-        <?php
      }
 
      private function JsCode()
