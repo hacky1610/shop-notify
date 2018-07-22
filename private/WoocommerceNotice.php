@@ -14,7 +14,7 @@
 include_once dirname( __FILE__ ) . '/WoocommerceApi.php';
 include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/CssLoader.php';
-include_once dirname( __FILE__ ) . '/Style.php';
+include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
@@ -109,7 +109,7 @@ class WoocommerceNotice{
     public function sn_style_editor(){
         $styles = new Styles($this->datastore);
         $styles->Show();
-        
+
 	}
     
     public function render_notify_settings( $post ) {
@@ -117,7 +117,6 @@ class WoocommerceNotice{
         // Add nonce for security and authentication.
         //Todo: ??
         //wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
-        echo "----";
         print_r(get_post_meta( $post->ID, 'foo' ));
 
 
@@ -217,11 +216,20 @@ class WoocommerceNotice{
         </script>"';
     }
 
+    public function Install()
+    {
+        $styleList = Style::GetDefaultStyles();
+        $this->datastore->SetStyleList($styleList);
+    }
+
+    
+
     public function createMenu(){
         $namespace = self::$namespace;
 
         echo $namespace;
         add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'sn_style_editor' ));
+        add_submenu_page("edit.php?post_type=shop-notify", __('Install',"shop-notify"), __("Install","shop-notify"), 'manage_options', 'sn_install', array( $this, 'Install' ));
 
 
 

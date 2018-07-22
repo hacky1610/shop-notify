@@ -113,12 +113,9 @@ var clicked = function(event)
 
         $("#wcn_" + propsToChange[i] + "_container").show();
     }
-
-    
- 
+}
 
 
-} 
 
 var changed = function(event)
 {
@@ -136,6 +133,10 @@ $(".button").click(function() {
 		};
 		SendAjaxSync(data, JSON.parse);
   });
+
+
+
+
 
 
 
