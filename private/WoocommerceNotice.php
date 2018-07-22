@@ -117,9 +117,10 @@ class WoocommerceNotice{
         // Add nonce for security and authentication.
         //Todo: ??
         //wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
+        $layout = Layout::DefaultContent();
+        echo Layout::PrintElement($layout[0]);
+
         print_r(get_post_meta( $post->ID, 'foo' ));
-
-
 
     }
 
