@@ -57,7 +57,7 @@ class Styles {
         }
 
          $styleList  = $this->datastore->GetStyleList();
-         $currentStyle = self::GetStyle($styleList,$this->selectedStyle);
+         $currentStyle = Style::GetStyle($styleList,$this->selectedStyle);
          $cssLoader = new CssLoader($currentStyle->content);
          $cssLoader->Load();
 
@@ -70,7 +70,7 @@ class Styles {
 
                     <div class="wcn_edit_section">
                     <?php
-                    CommonControls::AddSelectBox($styleList,$this->selectedStyle);
+                    CommonControls::AddSelectBox($styleList,$this->selectedStyle,true);
                     $this->AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
                     $this->AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
                     $this->AddEditControl("wcn_color","","wcn-color-picker","Color");
@@ -89,15 +89,7 @@ class Styles {
         echo Layout::PrintElement($this->layout[0]);
      }
 
-     private static function GetStyle($styleList,$id)
-     {
-         foreach($styleList as &$style)
-         {
-             if($style->id == $id)
-                return $style;
-         }
-         return null;
-     }
+   
 
      private function JsCode()
      {?>

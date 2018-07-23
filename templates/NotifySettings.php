@@ -13,6 +13,7 @@ class NotifySettings {
  * and open the template in the editor.
  */
     private $datastore;
+    private $selectedStyle; 
     
     function __construct($datastore){
         $this->datastore = $datastore;
@@ -23,12 +24,21 @@ class NotifySettings {
     {
         echo "Show";
         $styleList  = $this->datastore->GetStyleList();
-        CommonControls::AddSelectBox($styleList,"modern");
+        $currentStyle = Style::GetStyle($styleList,$this->selectedStyle);
+
+        CommonControls::AddSelectBox($styleList,$this->selectedStyle);
+
+
+        $cssLoader = new CssLoader($currentStyle->content);
+        $cssLoader->Load();
+
 
         $layout = Layout::DefaultContent();
         echo Layout::PrintElement($layout[0]);
 
-        print_r(get_post_meta( $post->ID, 'foo' ));
+        //print_r(get_post_meta( $post->ID, 'foo' ));
+
+        $this->JsCode();
     }
 
     public function Save( $post_id, $post, $update)
@@ -50,6 +60,32 @@ class NotifySettings {
         update_post_meta( $post_id, 'selected_style', "hello" );
     }
 
+    private function JsCode()
+    {?>
+       <script>
+       jQuery(document).ready(function($)
+           {
+
+               
+               $(document).on('change', '.layout-content', function()
+                   {
+       
+                       var style = $(this).children(":selected").attr("id");
+                       
+                       var data = {
+                        'action': 'wcn_get_style',
+                        'style_id': style
+                        };
+                        SendAjaxSync(data).then((s) =>
+                        {
+                            $("#wcn_style_sheet").html(s);
+                        });
+                   })
+               
+               })
+       </script>
+       <?php
+    }
  
   
 

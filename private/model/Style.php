@@ -30,6 +30,17 @@ class Style {
         );
         return $default;
     }
+
+    
+    public static function GetStyle($styleList,$id)
+    {
+        foreach($styleList as &$style)
+        {
+            if($style->id == $id)
+               return $style;
+        }
+        return null;
+    }
  
 }
 

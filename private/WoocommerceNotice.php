@@ -58,6 +58,7 @@ class WoocommerceNotice{
         add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
+        $this->AddAjaxFunction("wcn_get_style","GetStyle");
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
@@ -124,7 +125,15 @@ class WoocommerceNotice{
     public function SaveStyle()
     {
         $style = $_POST['style'];
-        $this->datastore->SetGlobalStyle($style);
+        wp_die();
+    }
+
+    public function GetStyle()
+    {
+        $styleId = $_POST['style_id'];
+        $style = Style::GetStyle($this->datastore->GetStyleList(),$styleId);
+        // echo "Foo" . $style->content;
+        print_r($style->content);
         wp_die();
     }
 
