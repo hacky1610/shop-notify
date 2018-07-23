@@ -86,7 +86,7 @@ class Styles {
                     <?php //submit_button(); ?>
         </form> <?php
 
-        echo Layout::PrintElement($this->layout[0]);
+        echo Layout::PrintElement($this->layout);
      }
 
    

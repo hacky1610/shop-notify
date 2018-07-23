@@ -34,9 +34,13 @@ class NotifySettings {
 
 
         $layout = Layout::DefaultContent();
-        echo Layout::PrintElement($layout[0]);
+        echo Layout::PrintElement($layout);
 
-        //print_r(get_post_meta( $post->ID, 'foo' ));
+        print_r("Show live preview");
+        print_r("Text editor");
+        print_r("Type");
+        print_r("Display Time");
+        print_r("Effects");
 
         $this->JsCode();
     }

@@ -47,8 +47,6 @@ class Layout {
 		
         $default = array
         (
-            '0'=>array
-            (
                 'type' => "div",
                 'attributes' => array
                 (
@@ -137,11 +135,23 @@ class Layout {
                                 ),
                                 'childs' => array
                                 (
-                                    '0'=>array
+                                    /*'0'=>array
                                     (
                                         'type' => "Text",
                                         'value' => "Message"
-                                    )
+                                    ),
+                                    '1' => array(
+                                         //Message Start
+                                        'type' => "a",
+                                        'childs' => array(
+                                            '0'=>array
+                                            (
+                                                'type' => "Text",
+                                                'value' => "Link"
+                                            ),
+                                        )
+                                       
+                                    )*/
                                 )
                                 //Message End
                             ),
@@ -187,7 +197,6 @@ class Layout {
                         )
                     )
                 )
-            )
         );
 			
 		return $default;
