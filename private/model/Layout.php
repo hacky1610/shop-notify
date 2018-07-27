@@ -7,11 +7,29 @@
  */
 
 class Layout {
- 
+    private $layout;
+    private $title;
+    private $message;
 
     function __construct(){
+        $this->title = array();
+        $this->message = array();
+    }
 
+    public function AddToTitle($element)
+    {
+        array_push($this->title,$element);
+    }
 
+    public function AddToMessage($element)
+    {
+        array_push($this->message,$element);
+    }
+
+    public function Render()
+    {
+        $this->layout = self::DefaultContent( $this->title,$this->message);
+        echo Layout::PrintElement($this->layout);
     }
 
     public static function PrintElement($element)
@@ -23,14 +41,42 @@ class Layout {
         }
         else
         {
-           $attribs = self::GetAttributes($element['attributes'] );
+            $attribs = "";
+            if (isset($element['attributes']))
+            {
+                $attribs = self::GetAttributes($element['attributes'] );
+            }
            $html = "<" . $type ." " . $attribs  . ">";
-           foreach ($element['childs'] as &$child) {
-               $html .= self::PrintElement($child);
+           if (isset($element['childs']))
+           {
+              foreach ($element['childs'] as &$child) {
+                   $html .= self::PrintElement($child);
+              }
+           }
           }  
            $html .=   "</" . $type  . ">";
            return $html;
-        }
+        
+    }
+
+    public static function CreateMessage($text)
+    {
+       return array
+        (
+            'type' => "Text",
+            'value' => $text
+        );
+    }
+
+    public static function CreateLink($text,$dest = "")
+    {
+       return array(
+       'type' => "a",
+       'attributes' => array
+       (
+           'src'=> $dest
+       ),
+       'childs' => array(self::CreateMessage($text)));
     }
 
     private static function GetAttributes($attributes)
@@ -43,7 +89,7 @@ class Layout {
        return $attr;
     }
 
-    public static function DefaultContent(){
+    public static function DefaultContent($title,$message){
 		
         $default = array
         (
@@ -113,14 +159,7 @@ class Layout {
                                     'wcn_style_props' => "color,font-size,font-family"
                                     
                                 ),
-                                'childs' => array
-                                (
-                                    '0'=>array
-                                    (
-                                        'type' => "Text",
-                                        'value' => "Titel"
-                                    )
-                                )
+                                'childs' => $title
                                 //Title End
                             ),
                             '1'=>array
@@ -133,9 +172,9 @@ class Layout {
                                     'wcn_class' => '.message',
                                     'wcn_style_props' => "color,font-size,font-family"
                                 ),
-                                'childs' => array
+                                'childs' => $message /*array
                                 (
-                                    /*'0'=>array
+                                    '0'=>array
                                     (
                                         'type' => "Text",
                                         'value' => "Message"
@@ -151,8 +190,8 @@ class Layout {
                                             ),
                                         )
                                        
-                                    )*/
-                                )
+                                    )
+                                )*/
                                 //Message End
                             ),
                         )
@@ -204,4 +243,6 @@ class Layout {
 
 
 }
+
+
 

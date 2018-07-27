@@ -33,8 +33,10 @@ class NotifySettings {
         $cssLoader->Load();
 
 
-        $layout = Layout::DefaultContent();
-        echo Layout::PrintElement($layout);
+        $layout = new Layout();
+        $layout->AddToTitle(Layout::CreateMessage("Title"));
+        $layout->AddToMessage(Layout::CreateMessage("Message"));
+        $layout->Render();
 
         print_r("Show live preview");
         print_r("Text editor");

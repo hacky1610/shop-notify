@@ -11,12 +11,10 @@ class Styles {
  * and open the template in the editor.
  */
     private $datastore;
-    private $layout;
     private $selectedStyle = "modern";
     
     function __construct($datastore){
         $this->datastore = $datastore;
-        $this->layout = Layout::DefaultContent();
     }
 
     function AddEditControl($id,$value,$class,$labeltext,$isWcnControl = true)
@@ -86,7 +84,12 @@ class Styles {
                     <?php //submit_button(); ?>
         </form> <?php
 
-        echo Layout::PrintElement($this->layout);
+        $layout = new Layout();
+        $layout->AddToTitle(Layout::CreateMessage("Title "));
+        $layout->AddToTitle(Layout::CreateLink("with Link"));
+        $layout->AddToMessage(Layout::CreateMessage("Message"));
+        
+        $layout->Render();
      }
 
    
