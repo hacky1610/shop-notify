@@ -33,7 +33,6 @@
 	font-weight: 600;
 	font-size: 18px;
 	margin-bottom: 7px;
-	display: block;
 }
 
 .wcn-notify .link{
@@ -50,4 +49,14 @@
 	visibility: visible;
 	opacity: 1;
 	bottom:20px !important;
+}
+
+.wcn-notify-message a
+{
+	display: inline-block;
+}
+
+.wcn-notify-message p
+{
+	display: inline-block;
 }

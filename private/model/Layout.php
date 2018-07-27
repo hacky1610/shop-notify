@@ -18,11 +18,18 @@ class Layout {
 
     public function AddToTitle($element)
     {
+        $element["attributes"]["wcn_class"] = ".title" . $element["attributes"]["wcn_class"];    
+        $element["attributes"]["class"] = "title " . $element["attributes"]["class"];    
+
         array_push($this->title,$element);
     }
+    
 
     public function AddToMessage($element)
     {
+        $element["attributes"]["wcn_class"] = ".message" . $element["attributes"]["wcn_class"];    
+        $element["attributes"]["class"] = "message " . $element["attributes"]["class"];    
+
         array_push($this->message,$element);
     }
 
@@ -59,12 +66,23 @@ class Layout {
         
     }
 
-    public static function CreateMessage($text)
+    public static function CreateText($text)
     {
        return array
         (
-            'type' => "Text",
-            'value' => $text
+            'type' => "p",
+            'attributes' => array
+            (
+                'class'=>"text wcn-editable",
+                'wcn_class' => '.text',
+                'wcn_style_props' => "color,font-size,font-family"
+            ),
+            'childs' => array(
+                '0' => array(
+                    'type' => "Text",
+                    'value' => $text
+                )
+            )
         );
     }
 
@@ -74,9 +92,19 @@ class Layout {
        'type' => "a",
        'attributes' => array
        (
-           'src'=> $dest
+           'src'=> $dest,
+           'class' => "link wcn-editable",
+           'wcn_class' => '.link',
+           'wcn_style_props' => "color,font-size,font-family"
        ),
-       'childs' => array(self::CreateMessage($text)));
+       'childs' => array(
+        '0' => array(
+            'type' => "Text",
+            'value' => $text
+        )
+       )
+        );
+    
     }
 
     private static function GetAttributes($attributes)
@@ -151,13 +179,10 @@ class Layout {
                             '0'=>array
                             (
                                 //Title Start
-                                'type' => "a",
+                                'type' => "div",
                                 'attributes' => array
                                 (
-                                    'class'=>"title link wcn-editable",
-                                    'wcn_class' => '.title',
-                                    'wcn_style_props' => "color,font-size,font-family"
-                                    
+                                    'class'=>"title-container",
                                 ),
                                 'childs' => $title
                                 //Title End
@@ -165,33 +190,12 @@ class Layout {
                             '1'=>array
                             (
                                 //Message Start
-                                'type' => "span",
+                                'type' => "div",
                                 'attributes' => array
                                 (
-                                    'class'=>"message wcn-editable",
-                                    'wcn_class' => '.message',
-                                    'wcn_style_props' => "color,font-size,font-family"
+                                    'class'=>"message",
                                 ),
-                                'childs' => $message /*array
-                                (
-                                    '0'=>array
-                                    (
-                                        'type' => "Text",
-                                        'value' => "Message"
-                                    ),
-                                    '1' => array(
-                                         //Message Start
-                                        'type' => "a",
-                                        'childs' => array(
-                                            '0'=>array
-                                            (
-                                                'type' => "Text",
-                                                'value' => "Link"
-                                            ),
-                                        )
-                                       
-                                    )
-                                )*/
+                                'childs' => $message
                                 //Message End
                             ),
                         )

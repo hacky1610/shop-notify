@@ -34,8 +34,11 @@ class NotifySettings {
 
 
         $layout = new Layout();
-        $layout->AddToTitle(Layout::CreateMessage("Title"));
-        $layout->AddToMessage(Layout::CreateMessage("Message"));
+        $layout->AddToTitle(Layout::CreateText("Title "));
+        $layout->AddToTitle(Layout::CreateLink("with Link"));
+        $layout->AddToMessage(Layout::CreateText("Message"));
+        $layout->AddToMessage(Layout::CreateLink("with Link"));
+        
         $layout->Render();
 
         print_r("Show live preview");

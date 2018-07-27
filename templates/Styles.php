@@ -85,9 +85,11 @@ class Styles {
         </form> <?php
 
         $layout = new Layout();
-        $layout->AddToTitle(Layout::CreateMessage("Title "));
+        $layout->AddToTitle(Layout::CreateText("Title "));
         $layout->AddToTitle(Layout::CreateLink("with Link"));
-        $layout->AddToMessage(Layout::CreateMessage("Message"));
+        $layout->AddToMessage(Layout::CreateText("Message"));
+        $layout->AddToMessage(Layout::CreateLink("with Link"));
+        
         
         $layout->Render();
      }
