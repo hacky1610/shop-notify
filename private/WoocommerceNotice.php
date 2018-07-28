@@ -40,7 +40,8 @@ class WoocommerceNotice{
     function __construct($datastore, $logger){
         $this->datastore  = $datastore;
         $this->logger = $logger;
-        $this->notifySettingsEditor = new NotifySettings($datastore);
+        $this->notifySettingsEditor = new NotifySettings($datastore,$logger);
+
         $this->logger->Call("Woocommerce_Notice Constructor");
       
         $wcApiLogic = new WoocommerceApiLogic($logger);
@@ -59,6 +60,8 @@ class WoocommerceNotice{
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
         $this->AddAjaxFunction("wcn_get_style","GetStyle");
+        $this->AddAjaxFunction("wcn_get_notify","GetNotify");
+
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
@@ -135,6 +138,11 @@ class WoocommerceNotice{
         // echo "Foo" . $style->content;
         print_r($style->content);
         wp_die();
+    }
+
+    public function GetNotify()
+    {
+        $this->logger->Call("Woocommerce_Notice GetNotify");
     }
 
     public function loadJs($hook){

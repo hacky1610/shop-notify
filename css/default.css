@@ -54,9 +54,11 @@
 .wcn-notify-message a
 {
 	display: inline-block;
+	white-space: pre;
 }
 
 .wcn-notify-message p
 {
 	display: inline-block;
+	white-space: pre;
 }

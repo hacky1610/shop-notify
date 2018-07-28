@@ -14,9 +14,11 @@ class NotifySettings {
  */
     private $datastore;
     private $selectedStyle; 
+    private $logger;
     
-    function __construct($datastore){
+    function __construct($datastore,$logger){
         $this->datastore = $datastore;
+        $this->logger = $logger;
     }
 
 
@@ -46,6 +48,10 @@ class NotifySettings {
         print_r("Type");
         print_r("Display Time");
         print_r("Effects");
+
+        ?>
+        <input  class="button" id="foo" value="Send" />
+        <?php
 
         $this->JsCode();
     }

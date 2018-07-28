@@ -134,6 +134,13 @@ $(".button").click(function() {
 		SendAjaxSync(data, JSON.parse);
   });
 
+  $("#foo").click(function() {
+    var data = {
+        'action': 'wcn_update'
+		};
+		SendAjaxSync(data);
+  });
+
 
 
 
