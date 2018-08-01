@@ -17,6 +17,7 @@ include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/model/Layout.php';
 include_once dirname( __FILE__ ) . '/adapter/StyleAdapter.php';
+include_once dirname( __FILE__ ) . '/adapter/NotifyAdapter.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
@@ -42,6 +43,7 @@ class WoocommerceNotice{
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore );
+        $this->styleAdapter = new NotifyAdapter($this->datastore );
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
       
@@ -57,8 +59,6 @@ class WoocommerceNotice{
         add_action('init',array($this, 'init') );
         add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
         add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
-
-        $this->AddAjaxFunction("wcn_get_notify","GetNotify");
 
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
@@ -78,48 +78,6 @@ class WoocommerceNotice{
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
         add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
-    }
-
-    public function GetNotify()
-    {
-        $id =  $_POST['id'];
-        $title =  $_POST['title_content'];
-        $message =  $_POST['message_content'];
-
-        $layout = new Layout($id);
-
-        $title = str_replace('\\',"",$title);
-        $titleArray = json_decode($title);
-        
-        foreach ($titleArray as $value)
-        {
-            if($value->type == "text")
-            {
-                $layout->AddToTitle(Layout::CreateText($value->val));
-            }
-            else
-            {
-                $layout->AddToTitle(Layout::CreateLink($value->val));
-            }
-        }
-        $message = str_replace('\\',"",$message);
-        $messageArray = json_decode($message);
-        
-        foreach ($messageArray as $value)
-        {
-            if($value->type == "text")
-            {
-                $layout->AddToMessage(Layout::CreateText($value->val));
-            }
-            else
-            {
-                $layout->AddToMessage(Layout::CreateLink($value->val));
-            }
-        }
-        
-        $layout->Render();
-        wp_die();
-
     }
 
     public function loadJs($hook){
