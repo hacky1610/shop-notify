@@ -16,6 +16,7 @@ include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/model/Layout.php';
+include_once dirname( __FILE__ ) . '/adapter/StyleAdapter.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
@@ -32,6 +33,7 @@ class WoocommerceNotice{
     private $logger;
     public $notifySettingsEditor;
     private $postMetaAdapter;
+    private $styleAdapter;
 
     function __construct($datastore, $logger,$postMetaAdapter){
         $this->logger = $logger;
@@ -39,6 +41,7 @@ class WoocommerceNotice{
 
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
+        StyleAdapter::register($this->datastore);
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
       
@@ -55,8 +58,6 @@ class WoocommerceNotice{
         add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
         add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
 
-        $this->AddAjaxFunction("wcn_save_style","SaveStyle");
-        $this->AddAjaxFunction("wcn_get_style","GetStyle");
         $this->AddAjaxFunction("wcn_get_notify","GetNotify");
 
         $this->logger->Call("Woocommerce_Notice Constructor End");
@@ -67,7 +68,7 @@ class WoocommerceNotice{
         $this->notifySettingsEditor->RegisterPostType();
     }
 
-    public function sn_style_editor(){
+    public function ShowStylesEditor(){
         $styles = new Styles($this->datastore);
         $styles->Show();
 
@@ -77,20 +78,6 @@ class WoocommerceNotice{
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
         add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
-    }
-
-    public function SaveStyle()
-    {
-        $style = $_POST['style'];
-        wp_die();
-    }
-
-    public function GetStyle()
-    {
-        $styleId = $_POST['style_id'];
-        $style = Style::GetStyle($this->datastore->GetStyleList(),$styleId);
-        print_r($style->content);
-        wp_die();
     }
 
     public function GetNotify()
@@ -129,7 +116,6 @@ class WoocommerceNotice{
                 $layout->AddToMessage(Layout::CreateLink($value->val));
             }
         }
-
         
         $layout->Render();
         wp_die();
@@ -181,7 +167,6 @@ class WoocommerceNotice{
 
     public function Load()
     {
-        $this->my_print_stars();
         $globalStyle  = $this->datastore->GetGlobalStyle();
         $cssloader = new CssLoader($globalStyle);
         $cssloader->Load();
@@ -193,7 +178,6 @@ class WoocommerceNotice{
                 ShowReview();
                 });
         </script>"';
-
     }
 
     public function Install()
@@ -202,92 +186,12 @@ class WoocommerceNotice{
         $this->datastore->SetStyleList($styleList);
     }
 
-    
-
     public function createMenu(){
         $namespace = self::$namespace;
 
-        add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'sn_style_editor' ));
+        add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'ShowStylesEditor' ));
         add_submenu_page("edit.php?post_type=shop-notify", __('Install',"shop-notify"), __("Install","shop-notify"), 'manage_options', 'sn_install', array( $this, 'Install' ));
     }
-
-    public function pageTemplate(){
-        $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general_settings';
-        $this->logger->Info("Active Tab: $active_tab"); 
-
-        ?>
-        <div class="wrap">
-            <div id="icon-themes" class="icon32"></div>
-            <h2 class="wpb-inline" id="yrc-icon">Woocommerce<span class="wpb-inline">Notice</span></h2>
-            <h2 class="nav-tab-wrapper">
-            <?php   
-                 echo GetTab('general_settings', "General",$active_tab );       
-                 echo GetTab('style', "Style",$active_tab );
-             ?>
-            </h2>
-            <?php 
-            if ($active_tab === 'general_settings') { 
-                 $this->logger->Info("Show General Settings Tab");   
-                 $genSets = new GeneralSettings($this->datastore);
-                 $genSets->Show();
-            } 
-            elseif($active_tab === 'style') 
-            {
-                $this->logger->Info("Show Styles Tab");
-                $styles = new Styles($this->datastore);
-                $styles->Show();
-            }?>
-        </div>
-        <?php 
-    }
-    
-    public function ShowOrders(){
-        $query = new WC_Order_Query( array(
-            'limit' => 10,
-            'orderby' => 'date',
-            'order' => 'DESC'
-        ) );
-        $orders = $query->get_orders();
-        print_r($orders);
-        
-    }
-
-    public function GetProduct($id)
-    {
-        $args = array(
-            'post_type' => 'product',
-            'posts_per_page' => 1,
-            'post__in'=> array($product_id)
-        );
-
-        $products = wc_get_products( $args );
-        return $products;
-    }
-
-    //https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
-    //http://itadminguide.com/difference-between-wpdb-get_row-get_results-get_var-and-get_query/
-    //https://stackoverflow.com/questions/14227121/how-do-you-add-the-star-ratings-for-products-in-woocommerce/20794406
-        function my_print_stars(){
-        global $wpdb;
-        global $post;
-       //comment_date,meta_value,comment_content,comment_author,comment_post_ID
-
-        $comments = $wpdb->get_results("
-        SELECT comment_date,meta_value,comment_content,comment_author,comment_post_ID FROM $wpdb->commentmeta
-        LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
-        WHERE meta_key = 'rating'
-        ");
-
-        $id = $comments[0]->comment_post_ID;
-        $product = $this->GetProduct(1024);
-
-    }
-
-    
-
-
-
- 
  
 }
 
