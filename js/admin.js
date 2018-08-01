@@ -194,7 +194,7 @@ var ShowPreviewPopup = function()
 		};
     SendAjaxSync(data).then((body) => {
         $("#" + id).remove();
-        ShowPopup("","", 150000,body);
+        ShowPopup("","", 150000,body,"#wpbody-content","static");
     });
 }
 

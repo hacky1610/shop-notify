@@ -33,15 +33,5 @@ class Datastore {
     public function SetShowOrderList($value) {
         $this->wpDataStore->Set(self::$showOrderList,$value);
     }
-
-    public function GetGlobalStyle() {
-        return $this->wpDataStore->Get(self::$globalStyle);
-    }
-
-    public function SetGlobalStyle($value) {
-        $this->wpDataStore->Set(self::$globalStyle,$value);
-    }
-
-
 }
 

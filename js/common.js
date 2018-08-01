@@ -14,7 +14,7 @@ function GetOrderTemplate(title, link, additionalClass)
     '</div>' 
 }
 
-function ShowPopup(message, icon,delay, template)
+function ShowPopup(message, icon,delay, template,element = "body",position = "fixed")
 {
 	jQuery.notify(
 		{
@@ -31,8 +31,8 @@ function ShowPopup(message, icon,delay, template)
 			delay: delay,
 			timer: 1000,
             template: template,
-            element: "#wpbody-content",
-            position: "static"
+            element: element,
+            position: position
 
 		});
 	
