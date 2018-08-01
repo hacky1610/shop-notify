@@ -17,6 +17,10 @@ class NotifySettings {
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
 
+    private static $POSTTYPE = "shop-notify";
+    static $namespace = "shop-notify";
+
+
 
 
     private $datastore;
@@ -33,7 +37,7 @@ class NotifySettings {
     {
         ?>
         <div class="notify-editor"> 
-            
+
         <?php
         $this->logger->Call("Show");
 
@@ -77,7 +81,7 @@ class NotifySettings {
         $this->logger->Info("Post ID:$post_id");
 
         // If this isn't a 'book' post, don't update it.
-        if ( "shop-notify" != $post_type ) return;
+        if ( self::$POSTTYPE != $post_type ) return;
     
         // - Update the post's metadata.
         $style = $_POST[self::$CONTROL_STYLE];
@@ -88,6 +92,53 @@ class NotifySettings {
         $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_TITLE, $title  );
         $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_MESSAGE, $message);
 
+    }
+
+    public function RegisterPostType()
+    {
+        $labels = array(
+            'name'                => _x( 'Notifications', 'Post Type General Name', self::$namespace),
+            'singular_name'       => _x( 'Movie', 'Post Type Singular Name', self::$namespace ),
+            'menu_name'           => __( 'Shop Notify', self::$namespace ),
+            'parent_item_colon'   => __( 'Parent Movie', self::$namespace ),
+            'all_items'           => __( 'Notifications', self::$namespace ),
+            'view_item'           => __( 'View Movie', self::$namespace ),
+            'add_new_item'        => __( 'Add Notification', self::$namespace),
+            'add_new'             => __( 'Add Notification', self::$namespace ),
+            'edit_item'           => __( 'Edit Notification', self::$namespace ),
+            'update_item'         => __( 'Update Notification', self::$namespace ),
+            'search_items'        => __( 'Search Notification', self::$namespace ),
+            'not_found'           => __( 'Not Found', self::$namespace ),
+            'not_found_in_trash'  => __( 'Not found in Trash', self::$namespace ),
+        );
+
+        $args = array(
+            'public' => true,
+            'label'  => 'Shop Notify',
+            'labels' => $labels,
+            'publicly_queryable' => false,
+            'show_ui' => true,
+            'query_var' => true,
+            'menu_icon' => null,
+            'rewrite' => true,
+            'capability_type' => 'post',
+            'hierarchical' => false,
+            'menu_position' => null,
+            'supports' => array('title'),
+            'menu_icon' => 'dashicons-media-spreadsheet',
+          );
+        register_post_type( 'shop-notify', $args );
+    }
+
+    public function AddContent()
+    {
+        add_meta_box('sn_settings',
+                    __( 'Notification',self::$POSTTYPE),
+                    array($this,'Show'),
+                    '',
+                    'advanced',
+                    'default',
+                null);
     }
 
     private function JsCode()

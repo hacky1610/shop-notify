@@ -45,16 +45,15 @@ class WoocommerceNotice{
         $wcApiLogic = new WoocommerceApiLogic($logger);
         
         WoocommerceApi::$woocommerceApiLogic =  $wcApiLogic;
-        WoocommerceApi::DisableAuthentification(); //TODO: To be removed
         WoocommerceApi::InitAjax();
 
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_enqueue_scripts', array($this, 'loadJsAdmin'));
         add_action('admin_menu', array($this, 'createMenu'));
         add_action('get_footer', array($this, 'Load') );
-        add_action('init',array($this, 'codex_custom_init') );
-        add_action('add_meta_boxes', array($this, 'post_grid_post_settings') );
-        add_action('save_post', array($this,'Save'), 10, 3 );
+        add_action('init',array($this, 'init') );
+        add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
+        add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
         $this->AddAjaxFunction("wcn_get_style","GetStyle");
@@ -64,50 +63,8 @@ class WoocommerceNotice{
     }
 
 
-    function codex_custom_init() {
-        $labels = array(
-            'name'                => _x( 'Notifications', 'Post Type General Name', self::$namespace),
-            'singular_name'       => _x( 'Movie', 'Post Type Singular Name', self::$namespace ),
-            'menu_name'           => __( 'Shop Notify', self::$namespace ),
-            'parent_item_colon'   => __( 'Parent Movie', self::$namespace ),
-            'all_items'           => __( 'Notifications', self::$namespace ),
-            'view_item'           => __( 'View Movie', self::$namespace ),
-            'add_new_item'        => __( 'Add Notification', self::$namespace),
-            'add_new'             => __( 'Add Notification', self::$namespace ),
-            'edit_item'           => __( 'Edit Notification', self::$namespace ),
-            'update_item'         => __( 'Update Notification', self::$namespace ),
-            'search_items'        => __( 'Search Notification', self::$namespace ),
-            'not_found'           => __( 'Not Found', self::$namespace ),
-            'not_found_in_trash'  => __( 'Not found in Trash', self::$namespace ),
-        );
-
-        $args = array(
-            'public' => true,
-            'label'  => 'Shop Notify',
-            'labels' => $labels,
-            'publicly_queryable' => false,
-            'show_ui' => true,
-            'query_var' => true,
-            'menu_icon' => null,
-            'rewrite' => true,
-            'capability_type' => 'post',
-            'hierarchical' => false,
-            'menu_position' => null,
-            'supports' => array('title'),
-            'menu_icon' => 'dashicons-media-spreadsheet',
-          );
-        register_post_type( 'shop-notify', $args );
-    }
-
-    function post_grid_post_settings()
-	{
-        add_meta_box('sn_settings',
-                    __( 'Notification',self::$namespace),
-                    array($this->notifySettingsEditor,'Show'),
-                    '',
-                    'advanced',
-                    'default',
-                null);
+    function init() {
+        $this->notifySettingsEditor->RegisterPostType();
     }
 
     public function sn_style_editor(){
@@ -119,7 +76,6 @@ class WoocommerceNotice{
     private function AddAjaxFunction($code, $funcName)
     {
         add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
-        
         add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
     }
 
@@ -128,13 +84,6 @@ class WoocommerceNotice{
         $style = $_POST['style'];
         wp_die();
     }
-
-    public function Save($post_id, $post, $update)
-    {
-        $this->logger->Call("Woocommerce_Notice Save");
-        $this->notifySettingsEditor->Save($post_id, $post, $update);
-    }
-
 
     public function GetStyle()
     {
