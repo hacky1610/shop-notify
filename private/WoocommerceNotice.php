@@ -16,8 +16,10 @@ include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/model/Layout.php';
+include_once dirname( __FILE__ ) . '/model/Notify.php';
 include_once dirname( __FILE__ ) . '/adapter/StyleAdapter.php';
-include_once dirname( __FILE__ ) . '/adapter/NotifyAdapter.php';
+include_once dirname( __FILE__ ) . '/adapter/PostMetaAdapter.php';
+include_once dirname( __FILE__ ) . '/adapter/NotifyLayoutAdapter.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
@@ -35,7 +37,7 @@ class WoocommerceNotice{
     public $notifySettingsEditor;
     private $postMetaAdapter;
     private $styleAdapter;
-    private $notifyAdapter;
+    private $notifyLayoutAdapter;
 
     function __construct($datastore, $logger,$postMetaAdapter){
         $this->logger = $logger;
@@ -44,7 +46,7 @@ class WoocommerceNotice{
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore );
-        $this->notifyAdapter = new NotifyAdapter($this->datastore );
+        $this->notifyLayoutAdapter = new NotifyLayoutAdapter();
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
          new WoocommerceApi(new WoocommerceApiLogic($logger));
@@ -119,6 +121,7 @@ class WoocommerceNotice{
         $cssLoader = new CssLoader($currentStyleObject->content);
         $cssLoader->Load();
 
+        //Test
         $args = array(
             'numberposts' => 10,
             'post_type'   => "shop-notify"
@@ -126,8 +129,13 @@ class WoocommerceNotice{
            
           $notifies = get_posts( $args );
 
-          print_r($latest_books );
+          $pma = new PostMetaAdapter();
+          $notify = new Notify($notifies[0]->ID,$pma);
 
+
+          //print_r($latest_books );
+
+          //end Test
         echo '<script>
         var $ = jQuery;
         jQuery( document ).ready(function( $ )

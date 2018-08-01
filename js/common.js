@@ -14,7 +14,51 @@ function GetOrderTemplate(title, link, additionalClass)
     '</div>' 
 }
 
-function ShowPopup(message, icon,delay, template,element = "body",position = "fixed")
+function isSpecialKey(element)
+{
+    return (element.match(/^{\w+}$/));
+}
+
+function getMessageArray(text,keyVals)
+{
+    var newtext = text.replace("{","_{");
+    newtext = newtext.replace("}","}_")
+    var elements = newtext.split("_");
+
+    var filledText = "";
+    elements.forEach(element => {
+        if(isSpecialKey(element))
+        {
+            filledText += getVal(element,keyVals);
+        }
+        else
+        {
+            filledText += element;
+        }
+    });
+
+    var link = filledText.match(/<.+>/);
+
+    var result = [];
+    if(link)
+    {
+        texts = filledText.split(link[0]);
+        result.push({type: 'text', val: texts[0]});
+        result.push({type: 'link', val: cleanLink(link[0])});
+        if(texts.length > 1)
+            result.push({type: 'text', val: texts[1]});
+
+    }
+    else
+    {
+        result.push({type: 'text', val: filledText });
+    }
+
+    return result;
+
+} 
+
+function ShowPopup(message, icon,delay, template,element,position)
 {
 	jQuery.notify(
 		{
@@ -35,7 +79,24 @@ function ShowPopup(message, icon,delay, template,element = "body",position = "fi
             position: position
 
 		});
-	
+}
+
+function ShowNotify(id,keyVals,title,message,element = "body",position = "fixed")
+{
+    var titleArray = getMessageArray(title,keyVals)
+    var messageArray = getMessageArray(message,keyVals)
+
+    var data = {
+        'action': 'wcn_get_notify_layout',
+        'id': id,
+        'title_content': JSON.stringify(titleArray),
+        'message_content': JSON.stringify(messageArray)
+		};
+    SendAjaxSync(data).then((body) => {
+        jQuery("#" + id).remove();
+        ShowPopup("","", 150000,body,element,position);
+    });
+    
 }
 
 function SendAjaxSync(data, parser) {

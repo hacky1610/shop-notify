@@ -8,13 +8,11 @@ include_once dirname( __FILE__ ) . '/../model/Layout.php';
  * and open the template in the editor.
  */
 
-class NotifyAdapter {
+class NotifyLayoutAdapter {
   
-    const ACTION = 'wcn_get_notify';
-    private $datastore;
+    const ACTION = 'wcn_get_notify_layout';
     
-    function __construct($datastore){
-        $this->datastore = $datastore;
+    function __construct(){
         add_action('wp_ajax_' . self::ACTION, array($this, 'GetNotifyAjax'));
         add_action('wp_ajax_nopriv_' . self::ACTION, array($this, 'GetNotifyAjax'));
     }
@@ -25,11 +23,11 @@ class NotifyAdapter {
         $title =  $_POST['title_content'];
         $message =  $_POST['message_content'];
 
-        echo $this->GetNotify($id,$title,$message);
+        echo $this->GetNotifyLayout($id,$title,$message);
         wp_die();
     }
 
-    public function GetNotify($id, $title, $message)
+    public function GetNotifyLayout($id, $title, $message)
     {
         $layout = new Layout($id);
 
