@@ -6,68 +6,66 @@
  * and open the template in the editor.
  */
 
-include_once dirname( __FILE__ ) . '/Review.php';
+include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 
 class WoocommerceApi
 {
-    public static $woocommerceApiLogic;
+     /**
+     * Action argument used by the nonce validating the AJAX request.
+     *
+     * @var WoocommerceApiLogic
+     */
+    private $woocommerceApiLogic;
          
-    function __construct(){
+    function __construct($woocommerceApiLogic){
+        $this->woocommerceApiLogic = $woocommerceApiLogic;
+        InitAjax();
     }
         
-    static function AddAjaxFunction($code, $funcName)
+    private function AddAjaxFunction($code, $funcName)
     {
-        add_action( 'wp_ajax_nopriv_' . $code, array( "WoocommerceApi", $funcName ) );
-        add_action( 'wp_ajax_' . $code, array( "WoocommerceApi", $funcName ) );
-    }
-
-    static function DisableAuthentification()
-    {
-        add_filter( 'woocommerce_api_check_authentication', function() { return new WP_User( 1 ); } );
+        add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
+        add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
     }
     
-    static public function InitAjax()
+    private function InitAjax()
     {
-        self::AddAjaxFunction("get_language","GetLanguageAjax");
-        self::AddAjaxFunction("get_product","GetProductAjax");
-        self::AddAjaxFunction("get_last_orders","GetLastOrdersAjax");
-        self::AddAjaxFunction("get_last_reviews","GetLastReviewsAjax");
-        self::AddAjaxFunction("get_css","GetCssAjax");
+        $this->AddAjaxFunction("get_language","GetLanguageAjax");
+        $this->AddAjaxFunction("get_product","GetProductAjax");
+        $this->AddAjaxFunction("get_last_orders","GetLastOrdersAjax");
+        $this->AddAjaxFunction("get_last_reviews","GetLastReviewsAjax");
+        $this->AddAjaxFunction("get_css","GetCssAjax");
     }
 
-    public static function GetLanguageAjax()
+    public function GetLanguageAjax()
     {
-        echo  self::$woocommerceApiLogic->GetLanguage($_POST['code']);
+        echo  $this->woocommerceApiLogic->GetLanguage($_POST['code']);
         wp_die();
     }
 
 
-    public static function GetProductAjax()
+    public function GetProductAjax()
     {
-        $prod = self::$woocommerceApiLogic->GetProduct(intval($_POST['id']));
+        $prod = $this->woocommerceApiLogic->GetProduct(intval($_POST['id']));
         echo json_encode($prod);
         wp_die();
     }
 
-    public static function GetLastOrdersAjax()
+    public  function GetLastOrdersAjax()
     {
         //echo json_encode(self::$woocommerceApiLogic->GetLastOrders(5));
         //self::$woocommerceApiLogic->GetLastOrders(5);
-        echo json_encode(self::$woocommerceApiLogic->GetLastOrders(5));
+        echo json_encode($this->woocommerceApiLogic->GetLastOrders(5));
         
 
         wp_die();
     }
 
-   public static function GetLastReviewsAjax()
+    public function GetLastReviewsAjax()
     {
-        echo json_encode(self::$woocommerceApiLogic->GetLastReviews(5));
+        echo json_encode($this->woocommerceApiLogic->GetLastReviews(5));
         wp_die();
     }
     
-     public static function GetCssAjax()
-    {
-        echo "#000000";
-        wp_die();
-    }
+
 }

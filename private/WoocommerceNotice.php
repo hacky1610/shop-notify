@@ -46,11 +46,7 @@ class WoocommerceNotice{
         $this->styleAdapter = new NotifyAdapter($this->datastore );
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
-      
-        $wcApiLogic = new WoocommerceApiLogic($logger);
-        
-        WoocommerceApi::$woocommerceApiLogic =  $wcApiLogic;
-        WoocommerceApi::InitAjax();
+        new WoocommerceApi(new WoocommerceApiLogic($logger));
 
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_enqueue_scripts', array($this, 'loadJsAdmin'));
@@ -63,7 +59,6 @@ class WoocommerceNotice{
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
-
     function init() {
         $this->notifySettingsEditor->RegisterPostType();
     }
@@ -71,14 +66,7 @@ class WoocommerceNotice{
     public function ShowStylesEditor(){
         $styles = new Styles($this->datastore);
         $styles->Show();
-
 	}
-
-    private function AddAjaxFunction($code, $funcName)
-    {
-        add_action( 'wp_ajax_nopriv_' . $code, array( $this, $funcName ) );
-        add_action( 'wp_ajax_' . $code, array( $this, $funcName ) );
-    }
 
     public function loadJs($hook){
         $this->logger->Call("loadJs");
@@ -97,7 +85,6 @@ class WoocommerceNotice{
         $this->logger->Call("loadJsAdmin");
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
-            // Add the color picker css file       
             wp_enqueue_style( 'wp-color-picker' ); 
             wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_bootstrap');
@@ -120,9 +107,7 @@ class WoocommerceNotice{
 
             wp_enqueue_script( 'wcn_input_mask_script', plugins_url( '/../js/jquery.inputmask.bundle.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.min.js?'.self::$version_file, __FILE__), array(), null, 1);
-
         //}
-
     }
 
     public function Load()
