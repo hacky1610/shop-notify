@@ -19,7 +19,7 @@ class WoocommerceApi
          
     function __construct($woocommerceApiLogic){
         $this->woocommerceApiLogic = $woocommerceApiLogic;
-        InitAjax();
+        $this->InitAjax();
     }
         
     private function AddAjaxFunction($code, $funcName)
@@ -34,7 +34,7 @@ class WoocommerceApi
         $this->AddAjaxFunction("get_product","GetProductAjax");
         $this->AddAjaxFunction("get_last_orders","GetLastOrdersAjax");
         $this->AddAjaxFunction("get_last_reviews","GetLastReviewsAjax");
-        $this->AddAjaxFunction("get_css","GetCssAjax");
+        $this->AddAjaxFunction("get_css","GetCssAjax");  
     }
 
     public function GetLanguageAjax()

@@ -35,6 +35,7 @@ class WoocommerceNotice{
     public $notifySettingsEditor;
     private $postMetaAdapter;
     private $styleAdapter;
+    private $notifyAdapter;
 
     function __construct($datastore, $logger,$postMetaAdapter){
         $this->logger = $logger;
@@ -43,10 +44,10 @@ class WoocommerceNotice{
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore );
-        $this->styleAdapter = new NotifyAdapter($this->datastore );
+        $this->notifyAdapter = new NotifyAdapter($this->datastore );
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
-        new WoocommerceApi(new WoocommerceApiLogic($logger));
+         new WoocommerceApi(new WoocommerceApiLogic($logger));
 
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
         add_action('admin_enqueue_scripts', array($this, 'loadJsAdmin'));

@@ -20,9 +20,6 @@ class NotifySettings {
     private static $POSTTYPE = "shop-notify";
     static $namespace = "shop-notify";
 
-
-
-
     private $datastore;
     private $postMetaAdapter;
     private $logger;
