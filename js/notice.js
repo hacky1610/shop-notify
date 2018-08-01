@@ -49,16 +49,20 @@ function SwitchTabToReviews()
 
 
 
-function ShowOrderPopup(title, message, icon, link)
+function ShowOrderPopup(keyVals)
 {
 	var additionalClass = "";
 	if(jQuery(".cookie-notice-container").length == 1)
 	   additionalClass = "wcn-notify-cookie";
 	
 
-	var id = "sn_admin_sample";
-    var keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
-    ShowNotify(id,keyVals,"Title","Message");
+	var id = "anyID";
+	
+	GetNotifyObject(1441).then((body) => {
+		var object = JSON.parse(body);
+		ShowNotify(id,keyVals,object.title,object.message);
+	});
+
 		
 	
 	setTimeout(() => 
@@ -109,22 +113,15 @@ function ShowReviewPopup(title, message, icon, link)
 		}, 20000);
 	}
 
-	
-		
-	function GetLanguage(code) {
+	function GetNotifyObject(id) {
 		var data = {
-		'action': 'get_language',
-		'code': code     
+		'action': 'wcn_get_notify',
+		'id': id     
 		};
 		return SendAjaxSync(data);
 	}
 	
-    function GetCss() {
-		var data = {
-		'action': 'get_css'
-		};
-		return SendAjaxSync(data);
-	}
+	
 	
 	function GetProduct(id) {
 		var data = {
@@ -149,20 +146,7 @@ function ShowReviewPopup(title, message, icon, link)
 		};
 		return SendAjaxSync(data, JSON.parse);
 	}
-	
-	function GetOrderMessage(name, country, diff_formated)
-	{
-			var myRe = /^[AEIOU]/g;
-			if(myRe.exec(country) != null)
-			{
-				return name + " d\'" + country + " a acheté ce produit " + diff_formated;
-			}
-			else
-			{
-				return name + " de " + country + " a acheté ce produit " + diff_formated;
-			}	
-	}
-	
+		
 	function GetMillisecondsDiff(date1, date2)
 	{
 		if (date1 < date2) {
@@ -243,8 +227,12 @@ function ShowReviewPopup(title, message, icon, link)
 			var image = product.productImage;
 			var link = product.productPermalink;
 			var time = GetTimeString(lastorder.dateCreated);
-			var message = GetOrderMessage(name, lastorder.country,time);
-			ShowOrderPopup(productName,message,image,link);
+			
+			var keyVals = {ProductName: product.name, GivenName: name};
+			
+
+
+			ShowOrderPopup(keyVals);
 
 		});
 	}

@@ -19,6 +19,18 @@ function isSpecialKey(element)
     return (element.match(/^{\w+}$/));
 }
 
+function getVal(key,keyVals)
+{
+    cleanKey = key.replace("{","").replace("}","");
+    return keyVals[cleanKey];
+}
+
+function cleanLink(link)
+{
+    return link.replace("<","").replace(">","");
+
+}
+
 function getMessageArray(text,keyVals)
 {
     var newtext = text.replace("{","_{");

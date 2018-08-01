@@ -125,17 +125,7 @@ var changed = function(event)
 
 
 
-var getVal = function(key,keyVals)
-{
-    cleanKey = key.replace("{","").replace("}","");
-    return keyVals[cleanKey];
-}
 
-var cleanLink = function(link)
-{
-    return link.replace("<","").replace(">","");
-
-}
 
 
 

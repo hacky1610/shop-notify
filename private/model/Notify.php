@@ -40,6 +40,15 @@ class Notify {
         return $this->postmetaAdapter->GetPostMeta($this->id,self::$ENTERED_MESSAGE);
     }
 
+    public function GetObject()
+    {
+        $object->style = $this->GetStyle();
+        $object->title = $this->GetTitle();
+        $object->message = $this->GetMessage();
+
+        return json_encode($object);
+    }
+
     public function SaveStyle($value)
     {
         $this->postmetaAdapter->SavePostMeta( $this->id, self::$SELECTED_STYLE, $value );

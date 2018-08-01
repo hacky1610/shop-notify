@@ -19,6 +19,7 @@ include_once dirname( __FILE__ ) . '/model/Layout.php';
 include_once dirname( __FILE__ ) . '/model/Notify.php';
 include_once dirname( __FILE__ ) . '/adapter/StyleAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/PostMetaAdapter.php';
+include_once dirname( __FILE__ ) . '/adapter/NotifyAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/NotifyLayoutAdapter.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
@@ -38,6 +39,7 @@ class WoocommerceNotice{
     private $postMetaAdapter;
     private $styleAdapter;
     private $notifyLayoutAdapter;
+    private $notifyAdapter;
 
     function __construct($datastore, $logger,$postMetaAdapter){
         $this->logger = $logger;
@@ -46,6 +48,7 @@ class WoocommerceNotice{
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore );
+        $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
         $this->notifyLayoutAdapter = new NotifyLayoutAdapter();
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
