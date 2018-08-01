@@ -35,10 +35,13 @@ class Style {
     
     public static function GetStyle($styleList,$id)
     {
-        foreach($styleList as &$style)
+        if(isset($styleList))
         {
-            if($style->id == $id)
-               return $style;
+            foreach($styleList as &$style)
+            {
+                if($style->id == $id)
+                return $style;
+            }
         }
         return null;
     }

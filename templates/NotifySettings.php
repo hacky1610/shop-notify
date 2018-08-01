@@ -1,56 +1,65 @@
 <?php
 
 include_once dirname( __FILE__ ) . '/../private/model/Layout.php';
+include_once dirname( __FILE__ ) . '/../private/model/Style.php';
 include_once dirname( __FILE__ ) . '/../private/CssLoader.php';
 include_once dirname( __FILE__ ) . '/CommonControls.php';
 
 
 
 class NotifySettings {
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+    //Constants
+    private static $SELECTED_STYLE = "selected_style";
+    private static $ENTERED_TITLE = "entered_title";
+    private static $ENTERED_MESSAGE = "entered_message";
+
+    private static $CONTROL_STYLE = "sn_style_content";
+    private static $CONTROL_TITLE = "sn_title_content";
+    private static $CONTROL_MESSAGE = "sn_message_content";
+
+
+
     private $datastore;
-    private $selectedStyle; 
+    private $postMetaAdapter;
     private $logger;
     
-    function __construct($datastore,$logger){
+    function __construct($datastore,$logger,$postMetaAdapter){
         $this->datastore = $datastore;
         $this->logger = $logger;
+        $this->postMetaAdapter = $postMetaAdapter;
     }
-
 
     public function Show($post)
     {
-        echo "Show";
+        ?>
+        <div class="notify-editor"> 
+            
+        <?php
+        $this->logger->Call("Show");
+
+        //Get Post Meta Data
+        $selectedStyle = $this->postMetaAdapter->GetPostMeta($post->ID,self::$SELECTED_STYLE);
+        $titel = $this->postMetaAdapter->GetPostMeta($post->ID,self::$ENTERED_TITLE);
+        $message = $this->postMetaAdapter->GetPostMeta($post->ID,self::$ENTERED_MESSAGE);
+
+        $this->logger->Info("Style: $selectedStyle");
+
         $styleList  = $this->datastore->GetStyleList();
-        $currentStyle = Style::GetStyle($styleList,$this->selectedStyle);
+        $currentStyleObject = Style::GetStyle($styleList,$selectedStyle);
 
-        CommonControls::AddSelectBox($styleList,$this->selectedStyle);
-
-
-        $cssLoader = new CssLoader($currentStyle->content);
+        $cssLoader = new CssLoader($currentStyleObject->content);
         $cssLoader->Load();
 
-
-        $layout = new Layout();
-        $layout->AddToTitle(Layout::CreateText("Title "));
-        $layout->AddToTitle(Layout::CreateLink("with Link"));
-        $layout->AddToMessage(Layout::CreateText("Message"));
-        $layout->AddToMessage(Layout::CreateLink("with Link"));
-        
-        $layout->Render();
-
-        print_r("Show live preview");
-        print_r("Text editor");
-        print_r("Type");
-        print_r("Display Time");
-        print_r("Effects");
-
+        // print_r("Show live preview");
+        // print_r("Text editor");
+        // print_r("Type");
+        // print_r("Display Time");
+        // print_r("Effects");
+        CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle);
+        CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content");
+        CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content");
         ?>
-        <input  class="button" id="foo" value="Send" />
+        </div>
         <?php
 
         $this->JsCode();
@@ -59,20 +68,26 @@ class NotifySettings {
     public function Save( $post_id, $post, $update)
     {
         $this->logger->Call("Save");
-
         /*
          * In production code, $slug should be set only once in the plugin,
          * preferably as a class property, rather than in each function that needs it.
          */
         $post_type = get_post_type($post_id);
         $this->logger->Info("Post Type: $post_type");
+        $this->logger->Info("Post ID:$post_id");
+
         // If this isn't a 'book' post, don't update it.
         if ( "shop-notify" != $post_type ) return;
     
         // - Update the post's metadata.
-        $this->logger->Info("Update Post Meta");
-    
-        update_post_meta( $post_id, 'selected_style', "hello" );
+        $style = $_POST[self::$CONTROL_STYLE];
+        $title = $_POST[self::$CONTROL_TITLE];
+        $message = $_POST[self::$CONTROL_MESSAGE];
+
+        $this->postMetaAdapter->SavePostMeta( $post_id, self::$SELECTED_STYLE, $style );
+        $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_TITLE, $title  );
+        $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_MESSAGE, $message);
+
     }
 
     private function JsCode()
@@ -80,8 +95,8 @@ class NotifySettings {
        <script>
        jQuery(document).ready(function($)
            {
-
-               
+    
+              ShowPreviewPopup();
                $(document).on('change', '.layout-content', function()
                    {
        

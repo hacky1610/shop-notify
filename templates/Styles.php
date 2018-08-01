@@ -17,20 +17,6 @@ class Styles {
         $this->datastore = $datastore;
     }
 
-    function AddEditControl($id,$value,$class,$labeltext,$isWcnControl = true)
-    {
-        if($isWcnControl)
-            $editControl = "wcn-edit-control";
-        ?>
-            
-        <div id="<?php echo $id."_container"; ?>">
-            <label><?php echo $labeltext . ":"; ?></label>
-            <input type="text" id="<?php echo $id;; ?>" value="<?php echo $value;; ?>" class="<?php echo $editControl . " " . $class; ?>" >
-            </br>
-        </div>
-        <?php
-    }
-
     function AddSlider($id,$value,$class,$labeltext)
     {
         ?>
@@ -68,12 +54,12 @@ class Styles {
 
                     <div class="wcn_edit_section">
                     <?php
-                    CommonControls::AddSelectBox($styleList,$this->selectedStyle,true);
-                    $this->AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
-                    $this->AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
-                    $this->AddEditControl("wcn_color","","wcn-color-picker","Color");
-                    $this->AddEditControl("wcn_font-size","","wcn_mask","Font Size");
-                    $this->AddEditControl("wcn_font-family","","wcn_font_select","Font family", false);
+                    CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,true);
+                    CommonControls::AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
+                    CommonControls::AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
+                    CommonControls::AddEditControl("wcn_color","","wcn-color-picker","Color");
+                    CommonControls::AddEditControl("wcn_font-size","","wcn_mask","Font Size");
+                    CommonControls::AddEditControl("wcn_font-family","","wcn_font_select","Font family", false);
                     $this->AddSlider("wcn_opacity","","","Opacity");
                     $this->JsCode();
                     ?>

@@ -123,9 +123,84 @@ var changed = function(event)
     ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
 } 
 
+var isSpecialKey = function(element)
+{
+    return (element.match(/^{\w+}$/));
+}
+
+var getVal = function(key,keyVals)
+{
+    cleanKey = key.replace("{","").replace("}","");
+    return keyVals[cleanKey];
+}
+
+var cleanLink = function(link)
+{
+    return link.replace("<","").replace(">","");
+
+}
+
+var getMessageArray = function(text,keyVals)
+{
+    var newtext = text.replace("{","_{");
+    newtext = newtext.replace("}","}_")
+    var elements = newtext.split("_");
+
+    var filledText = "";
+    elements.forEach(element => {
+        if(isSpecialKey(element))
+        {
+            filledText += getVal(element,keyVals);
+        }
+        else
+        {
+            filledText += element;
+        }
+    });
+
+    var link = filledText.match(/<.+>/);
+
+    var result = [];
+    if(link)
+    {
+        texts = filledText.split(link[0]);
+        result.push({type: 'text', val: texts[0]});
+        result.push({type: 'link', val: cleanLink(link[0])});
+        if(texts.length > 1)
+            result.push({type: 'text', val: texts[1]});
+
+    }
+    else
+    {
+        result.push({type: 'text', val: filledText });
+    }
+
+    return result;
+
+} 
+
+var ShowPreviewPopup = function()
+{
+    var id = "sn_admin_sample";
+    var keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
+    var titleArray = getMessageArray($("#sn_title_content").val(),keyVals)
+    var messageArray = getMessageArray($("#sn_message_content").val(),keyVals)
+
+    var data = {
+        'action': 'wcn_get_notify',
+        'id': id,
+        'title_content': JSON.stringify(titleArray),
+        'message_content': JSON.stringify(messageArray)
+		};
+    SendAjaxSync(data).then((body) => {
+        $("#" + id).remove();
+        ShowPopup("","", 150000,body);
+    });
+}
+
 
 $('.wcn-editable').on('click', clicked );
-$('.wcn-edit-control').on('change', changed );
+$('.wcn_edit_section .wcn-edit-control').on('change', changed );
 $(".button").click(function() {
     var data = {
         'action': 'wcn_save_style',
@@ -134,12 +209,8 @@ $(".button").click(function() {
 		SendAjaxSync(data, JSON.parse);
   });
 
-  $("#foo").click(function() {
-    var data = {
-        'action': 'wcn_update'
-		};
-		SendAjaxSync(data);
-  });
+  $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );
+
 
 
 

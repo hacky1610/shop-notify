@@ -10,10 +10,12 @@ class Layout {
     private $layout;
     private $title;
     private $message;
+    private $id;
 
-    function __construct(){
+    function __construct($id = ""){
         $this->title = array();
         $this->message = array();
+        $this->id = $id;
     }
 
     public function AddToTitle($element)
@@ -35,7 +37,7 @@ class Layout {
 
     public function Render()
     {
-        $this->layout = self::DefaultContent( $this->title,$this->message);
+        $this->layout = self::DefaultContent( $this->title,$this->message,$this->id);
         echo Layout::PrintElement($this->layout);
     }
 
@@ -117,7 +119,7 @@ class Layout {
        return $attr;
     }
 
-    public static function DefaultContent($title,$message){
+    public static function DefaultContent($title,$message,$id){
 		
         $default = array
         (
@@ -125,6 +127,7 @@ class Layout {
                 'attributes' => array
                 (
                     'class'=>'col-xs-11 col-sm-3 alert wcn-notify wcn-editable wcn-notify-orders',
+                    'id' => $id,
                     'role'=> 'alert',
                     'data-notify' => "container",
                     'wcn_class' => '.wcn-notify',

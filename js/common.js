@@ -14,6 +14,30 @@ function GetOrderTemplate(title, link, additionalClass)
     '</div>' 
 }
 
+function ShowPopup(message, icon,delay, template)
+{
+	jQuery.notify(
+		{
+			message: message,
+			icon: icon
+		},
+		{
+			type: "info",
+			icon_type: "img",
+			placement: {
+				from: "bottom",
+				align: "left"
+			},
+			delay: delay,
+			timer: 1000,
+            template: template,
+            element: "#wpbody-content",
+            position: "static"
+
+		});
+	
+}
+
 function SendAjaxSync(data, parser) {
     return new Promise(function(resolve, reject) {
       /*stuff using username, password*/

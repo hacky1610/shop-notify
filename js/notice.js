@@ -47,26 +47,7 @@ function SwitchTabToReviews()
     }, 'slow');
 }
 
-function ShowPopup(message, icon,delay, template)
-{
-	jQuery.notify(
-		{
-			message: message,
-			icon: icon
-		},
-		{
-			type: "info",
-			icon_type: "img",
-			placement: {
-				from: "bottom",
-				align: "left"
-			},
-			delay: delay,
-			timer: 1000,
-			template: template 
-		});
-	
-}
+
 
 function ShowOrderPopup(title, message, icon, link)
 {

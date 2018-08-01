@@ -15,17 +15,12 @@ include_once dirname( __FILE__ ) . '/WoocommerceApi.php';
 include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 include_once dirname( __FILE__ ) . '/CssLoader.php';
 include_once dirname( __FILE__ ) . '/model/Style.php';
+include_once dirname( __FILE__ ) . '/model/Layout.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
-$autoloader = dirname( __FILE__ ) . '/../vendor/autoload.php';
 
-if ( is_readable( $autoloader ) ) {
-	require_once $autoloader;
-}
-
-use Automattic\WooCommerce\Client;
 
 
 class WoocommerceNotice{
@@ -36,13 +31,16 @@ class WoocommerceNotice{
     private $api;
     private $logger;
     public $notifySettingsEditor;
+    private $postMetaAdapter;
 
-    function __construct($datastore, $logger){
-        $this->datastore  = $datastore;
+    function __construct($datastore, $logger,$postMetaAdapter){
         $this->logger = $logger;
-        $this->notifySettingsEditor = new NotifySettings($datastore,$logger);
-
         $this->logger->Call("Woocommerce_Notice Constructor");
+
+        $this->datastore  = $datastore;
+        $this->postMetaAdapter = $postMetaAdapter;
+        $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
+
       
         $wcApiLogic = new WoocommerceApiLogic($logger);
         
@@ -56,7 +54,7 @@ class WoocommerceNotice{
         add_action('get_footer', array($this, 'Load') );
         add_action('init',array($this, 'codex_custom_init') );
         add_action('add_meta_boxes', array($this, 'post_grid_post_settings') );
-        add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
+        add_action('save_post', array($this,'Save'), 10, 3 );
 
         $this->AddAjaxFunction("wcn_save_style","SaveStyle");
         $this->AddAjaxFunction("wcn_get_style","GetStyle");
@@ -131,18 +129,62 @@ class WoocommerceNotice{
         wp_die();
     }
 
+    public function Save($post_id, $post, $update)
+    {
+        $this->logger->Call("Woocommerce_Notice Save");
+        $this->notifySettingsEditor->Save($post_id, $post, $update);
+    }
+
+
     public function GetStyle()
     {
         $styleId = $_POST['style_id'];
         $style = Style::GetStyle($this->datastore->GetStyleList(),$styleId);
-        // echo "Foo" . $style->content;
         print_r($style->content);
         wp_die();
     }
 
     public function GetNotify()
     {
-        $this->logger->Call("Woocommerce_Notice GetNotify");
+        $id =  $_POST['id'];
+        $title =  $_POST['title_content'];
+        $message =  $_POST['message_content'];
+
+        $layout = new Layout($id);
+
+        $title = str_replace('\\',"",$title);
+        $titleArray = json_decode($title);
+        
+        foreach ($titleArray as $value)
+        {
+            if($value->type == "text")
+            {
+                $layout->AddToTitle(Layout::CreateText($value->val));
+            }
+            else
+            {
+                $layout->AddToTitle(Layout::CreateLink($value->val));
+            }
+        }
+        $message = str_replace('\\',"",$message);
+        $messageArray = json_decode($message);
+        
+        foreach ($messageArray as $value)
+        {
+            if($value->type == "text")
+            {
+                $layout->AddToMessage(Layout::CreateText($value->val));
+            }
+            else
+            {
+                $layout->AddToMessage(Layout::CreateLink($value->val));
+            }
+        }
+
+        
+        $layout->Render();
+        wp_die();
+
     }
 
     public function loadJs($hook){
@@ -202,6 +244,7 @@ class WoocommerceNotice{
                 ShowReview();
                 });
         </script>"';
+
     }
 
     public function Install()
@@ -215,20 +258,8 @@ class WoocommerceNotice{
     public function createMenu(){
         $namespace = self::$namespace;
 
-        echo $namespace;
         add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'sn_style_editor' ));
         add_submenu_page("edit.php?post_type=shop-notify", __('Install',"shop-notify"), __("Install","shop-notify"), 'manage_options', 'sn_install', array( $this, 'Install' ));
-
-
-
-        add_submenu_page(
-           'options-general.php',
-           'Woocommerce_Notice',
-           'Woocommerce Notice',
-           apply_filters('yourchannel_settings_permission', 'manage_options'),
-           'Woocommerce_Notice',
-           array($this, 'pageTemplate')
-        );
     }
 
     public function pageTemplate(){
@@ -287,7 +318,7 @@ class WoocommerceNotice{
     //https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
     //http://itadminguide.com/difference-between-wpdb-get_row-get_results-get_var-and-get_query/
     //https://stackoverflow.com/questions/14227121/how-do-you-add-the-star-ratings-for-products-in-woocommerce/20794406
-    function my_print_stars(){
+        function my_print_stars(){
         global $wpdb;
         global $post;
        //comment_date,meta_value,comment_content,comment_author,comment_post_ID
