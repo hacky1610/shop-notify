@@ -119,6 +119,15 @@ class WoocommerceNotice{
         $cssLoader = new CssLoader($currentStyleObject->content);
         $cssLoader->Load();
 
+        $args = array(
+            'numberposts' => 10,
+            'post_type'   => "shop-notify"
+          );
+           
+          $notifies = get_posts( $args );
+
+          print_r($latest_books );
+
         echo '<script>
         var $ = jQuery;
         jQuery( document ).ready(function( $ )

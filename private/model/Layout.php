@@ -38,7 +38,7 @@ class Layout {
     public function Render()
     {
         $this->layout = self::DefaultContent( $this->title,$this->message,$this->id);
-        echo Layout::PrintElement($this->layout);
+        return Layout::PrintElement($this->layout);
     }
 
     public static function PrintElement($element)

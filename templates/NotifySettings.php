@@ -2,6 +2,7 @@
 
 include_once dirname( __FILE__ ) . '/../private/model/Layout.php';
 include_once dirname( __FILE__ ) . '/../private/model/Style.php';
+include_once dirname( __FILE__ ) . '/../private/model/Notify.php';
 include_once dirname( __FILE__ ) . '/../private/CssLoader.php';
 include_once dirname( __FILE__ ) . '/CommonControls.php';
 
@@ -9,10 +10,6 @@ include_once dirname( __FILE__ ) . '/CommonControls.php';
 
 class NotifySettings {
     //Constants
-    private static $SELECTED_STYLE = "selected_style";
-    private static $ENTERED_TITLE = "entered_title";
-    private static $ENTERED_MESSAGE = "entered_message";
-
     private static $CONTROL_STYLE = "sn_style_content";
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
@@ -38,12 +35,16 @@ class NotifySettings {
         <?php
         $this->logger->Call("Show");
 
-        //Get Post Meta Data
-        $selectedStyle = $this->postMetaAdapter->GetPostMeta($post->ID,self::$SELECTED_STYLE);
-        $titel = $this->postMetaAdapter->GetPostMeta($post->ID,self::$ENTERED_TITLE);
-        $message = $this->postMetaAdapter->GetPostMeta($post->ID,self::$ENTERED_MESSAGE);
+        $notify = new Notify($post->ID,$this->postMetaAdapter);
+        $this->logger->Info("New Notify");
 
-        $this->logger->Info("Style: $selectedStyle");
+        //Get Post Meta Data
+        $selectedStyle = $notify->GetStyle();
+        $this->logger->Info("Style is: " . $selectedStyle);
+
+        $titel = $notify->GetTitle();
+        $message = $notify->GetMessage();
+
 
         $styleList  = $this->datastore->GetStyleList();
         $currentStyleObject = Style::GetStyle($styleList,$selectedStyle);
@@ -85,10 +86,10 @@ class NotifySettings {
         $title = $_POST[self::$CONTROL_TITLE];
         $message = $_POST[self::$CONTROL_MESSAGE];
 
-        $this->postMetaAdapter->SavePostMeta( $post_id, self::$SELECTED_STYLE, $style );
-        $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_TITLE, $title  );
-        $this->postMetaAdapter->SavePostMeta( $post_id, self::$ENTERED_MESSAGE, $message);
-
+        $notify = new Notify($post_id,$this->postMetaAdapter);
+        $notify->SaveStyle($style);
+        $notify->SaveTitle($title);
+        $notify->SaveMessage( $message);
     }
 
     public function RegisterPostType()

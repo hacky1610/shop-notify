@@ -11,7 +11,7 @@ include_once dirname( __FILE__ ) . '/WoocommerceApiLogic.php';
 class WoocommerceApi
 {
      /**
-     * Action argument used by the nonce validating the AJAX request.
+     * Logic for Woocommerce 
      *
      * @var WoocommerceApiLogic
      */

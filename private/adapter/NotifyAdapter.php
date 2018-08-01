@@ -15,16 +15,22 @@ class NotifyAdapter {
     
     function __construct($datastore){
         $this->datastore = $datastore;
-        add_action('wp_ajax_' . self::ACTION, array($this, 'GetNotify'));
-        add_action('wp_ajax_nopriv_' . self::ACTION, array($this, 'GetNotify'));
+        add_action('wp_ajax_' . self::ACTION, array($this, 'GetNotifyAjax'));
+        add_action('wp_ajax_nopriv_' . self::ACTION, array($this, 'GetNotifyAjax'));
     }
 
-    public function GetNotify()
+    public function GetNotifyAjax()
     {
         $id =  $_POST['id'];
         $title =  $_POST['title_content'];
         $message =  $_POST['message_content'];
 
+        echo $this->GetNotify($id,$title,$message);
+        wp_die();
+    }
+
+    public function GetNotify($id, $title, $message)
+    {
         $layout = new Layout($id);
 
         $title = str_replace('\\',"",$title);
@@ -56,8 +62,7 @@ class NotifyAdapter {
             }
         }
         
-        $layout->Render();
-        wp_die();
+        return $layout->Render();
     }
 
   
