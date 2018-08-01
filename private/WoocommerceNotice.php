@@ -55,12 +55,12 @@ class WoocommerceNotice{
         add_action('admin_menu', array($this, 'createMenu'));
         add_action('get_footer', array($this, 'Load') );
         add_action('init',array($this, 'init') );
-        // add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
-        // add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
+        add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
+        add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
 
-        // $this->AddAjaxFunction("wcn_get_notify","GetNotify");
+        $this->AddAjaxFunction("wcn_get_notify","GetNotify");
 
-        // $this->logger->Call("Woocommerce_Notice Constructor End");
+        $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
 
