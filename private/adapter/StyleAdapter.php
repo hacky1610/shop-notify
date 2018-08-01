@@ -20,15 +20,8 @@ class StyleAdapter {
 
     function __construct($datastore){
         $this->datastore = $datastore;
-        
-    }
-
-    public static function register($datastore)
-    {
-        $handler = new self($datastore);
- 
-        add_action('wp_ajax_' . self::ACTION, array($handler, 'GetStyle'));
-        add_action('wp_ajax_nopriv_' . self::ACTION, array($handler, 'GetStyle'));
+        add_action('wp_ajax_' . self::ACTION, array($this, 'GetStyle'));
+        add_action('wp_ajax_nopriv_' . self::ACTION, array($this, 'GetStyle'));
     }
 
     public function SaveStyle()

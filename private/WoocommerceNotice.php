@@ -41,7 +41,7 @@ class WoocommerceNotice{
 
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
-        StyleAdapter::register($this->datastore);
+        $this->styleAdapter = new StyleAdapter($this->datastore );
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
       
