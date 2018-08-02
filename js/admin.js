@@ -141,7 +141,7 @@ var ShowPreviewPopup = function()
 {
     var id = "sn_admin_sample";
     var keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
-    ShowNotify(id,keyVals,$("#sn_title_content").val(),$("#sn_message_content").val(),"","#wpbody-content","static");
+    ShowNotify(id,keyVals,$("#sn_title_content").val(),$("#sn_message_content").val(),"#","","#wpbody-content","static");
 }
 
 

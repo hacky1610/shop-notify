@@ -17,11 +17,15 @@ class Layout {
         $this->title = array();
         $this->message = array();
         $this->id = $id;
+        $this->pictureLink = plugins_url( '/../../assets/preview_image.png', __FILE__ );
     }
 
     public function AddPicture($path)
     {
-        $this->pictureLink = $path;
+        if(!empty($path))
+             $this->pictureLink = $path;
+             
+
     }
 
     public function AddToTitle($element)
