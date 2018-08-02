@@ -22,14 +22,16 @@ class NotifyLayoutAdapter {
         $id =  $_POST['id'];
         $title =  $_POST['title_content'];
         $message =  $_POST['message_content'];
+        $pictureLink =  $_POST['pictureLink'];
 
-        echo $this->GetNotifyLayout($id,$title,$message);
+        echo $this->GetNotifyLayout($id,$title,$message,$pictureLink);
         wp_die();
     }
 
-    public function GetNotifyLayout($id, $title, $message)
+    public function GetNotifyLayout($id, $title, $message,$pictureLink)
     {
         $layout = new Layout($id);
+        $layout->AddPicture($pictureLink);
 
         $title = str_replace('\\',"",$title);
         $titleArray = json_decode($title);
@@ -42,7 +44,7 @@ class NotifyLayoutAdapter {
             }
             else
             {
-                $layout->AddToTitle(Layout::CreateLink($value->val));
+                $layout->AddToTitle(Layout::CreateLink($value->val,$value->link));
             }
         }
         $message = str_replace('\\',"",$message);
@@ -56,7 +58,7 @@ class NotifyLayoutAdapter {
             }
             else
             {
-                $layout->AddToMessage(Layout::CreateLink($value->val));
+                $layout->AddToMessage(Layout::CreateLink($value->val,$value->link));
             }
         }
         

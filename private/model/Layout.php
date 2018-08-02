@@ -10,12 +10,18 @@ class Layout {
     private $layout;
     private $title;
     private $message;
+    private $pictureLink;
     private $id;
 
     function __construct($id = ""){
         $this->title = array();
         $this->message = array();
         $this->id = $id;
+    }
+
+    public function AddPicture($path)
+    {
+        $this->pictureLink = $path;
     }
 
     public function AddToTitle($element)
@@ -37,7 +43,7 @@ class Layout {
 
     public function Render()
     {
-        $this->layout = self::DefaultContent( $this->title,$this->message,$this->id);
+        $this->layout = self::DefaultContent( $this->title,$this->message,$this->pictureLink,$this->id);
         return Layout::PrintElement($this->layout);
     }
 
@@ -94,7 +100,7 @@ class Layout {
        'type' => "a",
        'attributes' => array
        (
-           'src'=> $dest,
+           'href'=> $dest,
            'class' => "link wcn-editable",
            'wcn_class' => '.link',
            'wcn_style_props' => "color,font-size,font-family"
@@ -119,7 +125,7 @@ class Layout {
        return $attr;
     }
 
-    public static function DefaultContent($title,$message,$id){
+    public static function DefaultContent($title,$message,$pictureLink, $id){
 		
         $default = array
         (
@@ -160,7 +166,7 @@ class Layout {
                                         'onlyAdmin' => true,
                                         'attributes' => array
                                         (
-                                            'src'=>"http://sharonne-design.com/wp-content/uploads/2017/11/Black-Ella-Ohrringe.jpg",
+                                            'src'=> $pictureLink,
                                             'class' => "wcn-editable"
                                         ),
                                     )

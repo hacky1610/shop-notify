@@ -31,7 +31,7 @@ function cleanLink(link)
 
 }
 
-function getMessageArray(text,keyVals)
+function getMessageArray(text,keyVals,productLink)
 {
     var newtext = text.replace("{","_{");
     newtext = newtext.replace("}","}_")
@@ -56,7 +56,7 @@ function getMessageArray(text,keyVals)
     {
         texts = filledText.split(link[0]);
         result.push({type: 'text', val: texts[0]});
-        result.push({type: 'link', val: cleanLink(link[0])});
+        result.push({type: 'link', val: cleanLink(link[0]), link: productLink });
         if(texts.length > 1)
             result.push({type: 'text', val: texts[1]});
 
@@ -93,14 +93,16 @@ function ShowPopup(message, icon,delay, template,element,position)
 		});
 }
 
-function ShowNotify(id,keyVals,title,message,element = "body",position = "fixed")
+function ShowNotify(id,keyVals,title,message,productLink,pictureLink, element = "body",position = "fixed")
 {
-    var titleArray = getMessageArray(title,keyVals)
-    var messageArray = getMessageArray(message,keyVals)
+    var titleArray = getMessageArray(title,keyVals,productLink)
+    var messageArray = getMessageArray(message,keyVals,productLink)
 
     var data = {
         'action': 'wcn_get_notify_layout',
         'id': id,
+        'productLink' : productLink,
+        'pictureLink' : pictureLink,
         'title_content': JSON.stringify(titleArray),
         'message_content': JSON.stringify(messageArray)
 		};

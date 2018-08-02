@@ -49,7 +49,7 @@ function SwitchTabToReviews()
 
 
 
-function ShowOrderPopup(keyVals)
+function ShowOrderPopup(keyVals,productLink,pictureLink)
 {
 	var additionalClass = "";
 	if(jQuery(".cookie-notice-container").length == 1)
@@ -60,7 +60,7 @@ function ShowOrderPopup(keyVals)
 	
 	GetNotifyObject(1441).then((body) => {
 		var object = JSON.parse(body);
-		ShowNotify(id,keyVals,object.title,object.message);
+		ShowNotify(id,keyVals,object.title,object.message,productLink,pictureLink);
 	});
 
 		
@@ -232,7 +232,7 @@ function ShowReviewPopup(title, message, icon, link)
 			
 
 
-			ShowOrderPopup(keyVals);
+			ShowOrderPopup(keyVals,link,image);
 
 		});
 	}
