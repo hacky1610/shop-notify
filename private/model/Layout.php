@@ -94,7 +94,7 @@ class Layout {
         );
     }
 
-    public static function CreateLink($text,$dest = "")
+    public static function CreateLink($text,$dest = "#")
     {
        return array(
        'type' => "a",

@@ -73,7 +73,7 @@ class Styles {
         $layout = new Layout();
         $layout->AddToTitle(Layout::CreateText("Title "));
         $layout->AddToTitle(Layout::CreateLink("with Link"));
-        $layout->AddToMessage(Layout::CreateText("Message"));
+        $layout->AddToMessage(Layout::CreateText("Message "));
         $layout->AddToMessage(Layout::CreateLink("with Link"));
         
         echo $layout->Render();
