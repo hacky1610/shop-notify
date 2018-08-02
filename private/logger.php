@@ -4,8 +4,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+require_once dirname( __FILE__ ) . '/interfaces/ILogger.php';
 
-class Logger {
+
+class Logger implements ILogger{
 
     public function Info($message) {
         if (WP_DEBUG === true) {

@@ -11,6 +11,7 @@ include(__DIR__. '/../templates/NotifySettings.php' );
 include(__DIR__. '/../private/logger.php' );
 include(__DIR__. '/../private/DataStore.php' );
 include_once dirname( __FILE__ ) . '/../private/adapter/PostMetaAdapter.php' ;
+include_once dirname( __FILE__ ) . '/../private/mocks/LoggerMock.php' ;
 include(__DIR__. '/../private/mocks/PostMock.php' );
 
 
@@ -33,7 +34,7 @@ class NotifySettingsTest extends TestCase
 
     public function testShow()
     {
-        $logger = $this->createMock(Logger::class);
+        $logger = new LoggerMock();
         $pmAdapter = $this->createMock(PostMetaAdapter::class);
         $post = $this->createMock(PostMock::class);
        
@@ -50,6 +51,8 @@ class NotifySettingsTest extends TestCase
        $notSet = new NotifySettings($dataStore,$logger,$pmAdapter);
        $notSet->Show($post);
        $this->assertNotNull($notSet);
+
+       echo $logger->GetMessages();
 
     }
 
