@@ -76,8 +76,7 @@ class Styles {
         $layout->AddToMessage(Layout::CreateText("Message"));
         $layout->AddToMessage(Layout::CreateLink("with Link"));
         
-        
-        $layout->Render();
+        echo $layout->Render();
      }
 
    

@@ -115,6 +115,14 @@ var clicked = function(event)
     }
 }
 
+function CheckResponse(res)
+{
+    if(res !== "OK")
+    {
+        alert("ERROR: " +res);
+    }
+}
+
 
 
 var changed = function(event)
@@ -142,9 +150,10 @@ $('.wcn_edit_section .wcn-edit-control').on('change', changed );
 $(".button").click(function() {
     var data = {
         'action': 'wcn_save_style',
-        'style': GetCssText("wcn_style_sheet")
+        'style_id': 'classic',
+        'style_content': GetCssText("wcn_style_sheet")
 		};
-		SendAjaxSync(data, JSON.parse);
+		SendAjaxSync(data).then(CheckResponse);
   });
 
   $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );

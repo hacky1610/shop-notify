@@ -45,6 +45,18 @@ class Style {
         }
         return null;
     }
+
+    public static function SaveStyle($styleList,$id, $content)
+    {
+        if(isset($styleList))
+        {
+            foreach($styleList as &$style)
+            {
+                if($style->id == $id)
+                    $style->content = $content;
+            }
+        }
+    }
  
 }
 
