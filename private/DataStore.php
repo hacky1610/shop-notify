@@ -7,8 +7,6 @@
  */
 
 class Datastore {
-    static $consumerKeyName = "wcn_consumerKey";
-    static $consumerSecret = "wcn_consumerSecret";
     static $showOrderList = "wcn_showOrderList";
     static $styleList = "sn_style_list";
 

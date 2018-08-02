@@ -23,7 +23,7 @@ class LayoutTest extends TestCase
     public function testAddTextToTitle()
     {
         $l = new Layout();
-        $l->AddToTitle(Layout::CreateMessage("Foo"));
+        $l->AddToTitle(Layout::CreateText("Foo"));
         $l->Render();
 
         $this->assertNotNull($l);
@@ -45,8 +45,8 @@ class LayoutTest extends TestCase
     
         $layout = new Layout();
 
-        $layout->AddToTitle(Layout::CreateMessage("Title"));
-        $layout->AddToMessage(Layout::CreateMessage("Message"));
+        $layout->AddToTitle(Layout::CreateText("Title"));
+        $layout->AddToMessage(Layout::CreateText("Message"));
         $layout->Render();
 
         $this->assertNotNull($layout);

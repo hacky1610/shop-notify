@@ -12,7 +12,7 @@ include(__DIR__. '/../private/WpDataStore.php' );
 
 class DataStoreTest extends TestCase
 {
-    public function testGetConsumerKey()
+    public function testGetStyleList()
     {
         $valueToSave = "HelloWorld";
 
@@ -20,10 +20,10 @@ class DataStoreTest extends TestCase
         ->setMethods(['Get'])
         ->getMock();
 
-        $wpDataStore->method('Get')->with($this->stringContains('wcn_consumerKey'))->willReturn($valueToSave);
+        $wpDataStore->method('Get')->with($this->stringContains('sn_style_list'))->willReturn($valueToSave);
         $dataStore = new Datastore($wpDataStore);
 
-        $this->assertContains($dataStore->GetConsumerKey(),   $valueToSave);
+        $this->assertContains($dataStore->GetStyleList(),   $valueToSave);
     }
 
 }
