@@ -1,6 +1,13 @@
 <?php
 
 class CommonControls {
+    public static function Addbutton($id,$image,$link,$class)
+    {?>
+       <a class="<?php echo $class;?>" href="<?php echo $link;?>"> <img src="<?php echo $image;?>"></img></a>
+       <?php
+    }
+    
+
     public static function AddSelectBox($id, $styleList,$selectedStyle,$showCreateNew = false)
     {?>
        <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">

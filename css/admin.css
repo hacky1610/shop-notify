@@ -43,3 +43,8 @@
     border-width: 4px !important;
     border-style: dashed !important;
 }
+
+.sn-edit-button img
+{
+    height: 25px;
+}

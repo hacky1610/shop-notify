@@ -51,13 +51,14 @@ class NotifySettings {
 
         $cssLoader = new CssLoader($currentStyleObject->content);
         $cssLoader->Load();
-
         // print_r("Show live preview");
         // print_r("Text editor");
         // print_r("Type");
         // print_r("Display Time");
         // print_r("Effects");
+        $url = get_admin_url() . "/edit.php?post_type=shop-notify&page=sn_style_editor&style=$selectedStyle";
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle);
+        CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),$url,"sn-edit-button");
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content");
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content");
         ?>
