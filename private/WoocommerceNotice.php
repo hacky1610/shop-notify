@@ -96,6 +96,8 @@ class WoocommerceNotice{
             wp_enqueue_style('wcn_admin_bootstrap');
             wp_register_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_fontselect');
+            wp_register_style('wcn_jqui', plugins_url('/../css/jquery-ui.min.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_jqui');
 
             wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_style');
@@ -105,6 +107,7 @@ class WoocommerceNotice{
              
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script( 'wcn_jqui', plugins_url( '/../js/jquery-ui.min.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_ajax_script', plugins_url( '/../js/ajax.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
 

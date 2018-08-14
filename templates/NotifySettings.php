@@ -31,6 +31,8 @@ class NotifySettings {
     {
         ?>
         <div class="notify-editor"> 
+        <div class="head"><span>Settings</span> </div>
+        
 
         <?php
         $this->logger->Call("Show");
@@ -57,17 +59,42 @@ class NotifySettings {
         // print_r("Display Time");
         // print_r("Effects");
         $url = get_admin_url() . "/edit.php?post_type=shop-notify&page=sn_style_editor&style=$selectedStyle";
-        CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle);
+        CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
         CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),$url,"sn-edit-button");
-        CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content");
-        CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content");
+        $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
+        CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true,"ondrop='drop(event)'" );
+        CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true,"ondrop='drop(event)'");
+        ?>
+        </div>
+       
+        <?php
+        $this->JsCode();
+
+    }
+
+    private function DisplayDragItems($labelUrl)
+    {
+        ?>
+        <div class="dragitems">
+        <?php
+        $this->DisplayDragItem("ProductName","{ProductName}",$labelUrl);
+        $this->DisplayDragItem("GivenName","{GivenName}",$labelUrl);
         ?>
         </div>
         <?php
-
-        $this->JsCode();
     }
 
+    private function DisplayDragItem($name,$id, $labelUrl)
+    {
+        ?>
+        <span class="Foo" id="<?php echo $id;?>" draggable="true" ondragstart="drag(event)">
+            <img src="<?php echo $labelUrl;?>"></img>
+            <p><?php echo $name;?></p>
+        </span>
+        <?php
+    }
+
+    
     public function Save( $post_id, $post, $update)
     {
         $this->logger->Call("Save");

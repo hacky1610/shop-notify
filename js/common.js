@@ -16,25 +16,24 @@ function GetOrderTemplate(title, link, additionalClass)
 
 function isSpecialKey(element)
 {
-    return (element.match(/^{\w+}$/));
+    return (element.match(/^\s*{\w+}\s*$/));
 }
 
 function getVal(key,keyVals)
 {
-    cleanKey = key.replace("{","").replace("}","");
+    cleanKey = key.replace(/{/g,"").replace(/}/g,"");
     return keyVals[cleanKey];
 }
 
 function cleanLink(link)
 {
-    return link.replace("<","").replace(">","");
+    return link.replace(/</g,"").replace(/>/g,"");
 
 }
 
 function getMessageArray(text,keyVals,productLink)
 {
-    var newtext = text.replace("{","_{");
-    newtext = newtext.replace("}","}_")
+    var newtext = text.replace(/{/g,"_{").replace(/}/g,"}_")
     var elements = newtext.split("_");
 
     var filledText = "";

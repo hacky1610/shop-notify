@@ -54,7 +54,7 @@ class Styles {
 
                     <div class="wcn_edit_section">
                     <?php
-                    CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,true);
+                    CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,"Style",true);
                     CommonControls::AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
                     CommonControls::AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
                     CommonControls::AddEditControl("wcn_color","","wcn-color-picker","Color");

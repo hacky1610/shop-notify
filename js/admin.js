@@ -29,6 +29,27 @@
             delay: "60000",
             template: GetOrderTemplate("Foo","","wcn-notify-visible")
         });
+
+        //$('.Foo').on('dragstart',drag);
+        //$('.wcn-edit-control ').on('drop',drop);
+        //$('.wcn-edit-control ').on('dragover',allowDrop);
+
+        // document.addEventListener("dragstart", function( event ) {
+        //     // store a ref. on the dragged elem
+        //     dragged = event.target;
+        //     event.dataTransfer.setData("text", event.target.id);
+        //     // make it half transparent
+        //     //event.target.style.opacity = .5;
+        // }, false);
+
+        // document.addEventListener("dragover", function( event ) {
+        //     // prevent default to allow drop
+        //     event.preventDefault();
+        // }, false);
+
+      
+
+     
     });
      
 })( jQuery );
@@ -131,6 +152,20 @@ var changed = function(event)
     ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
 } 
 
+
+function allowDrop(ev) {
+    ev.preventDefault();
+    console.log(ev.target.selectionStart);
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", " " + ev.target.id + " ");
+}
+
+function drop(ev) {
+    console.log(ev.target.selectionStart);
+    setTimeout(ShowPreviewPopup, 100)
+}
 
 
 

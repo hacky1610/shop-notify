@@ -6,38 +6,40 @@ class CommonControls {
        <a class="<?php echo $class;?>" href="<?php echo $link;?>"> <img src="<?php echo $image;?>"></img></a>
        <?php
     }
-    
 
-    public static function AddSelectBox($id, $styleList,$selectedStyle,$showCreateNew = false)
+    public static function AddSelectBox($id, $styleList,$selectedStyle,$labeltext,$showCreateNew = false)
     {?>
-       <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
-       <?php if($showCreateNew) { ?>                  
-       <option value="create-new">Create New</option>
-           <?php
-        }
-           foreach($styleList as $style){
-               ?>
-               <option <?php if($selectedStyle==$style->id) echo 'selected'; else "" ?> id="<?php echo $style->id; ?>" value="<?php echo $style->id; ?>"><?php echo $style->name; ?></option>
-               <?php
-               
-               }
-           ?>
-       </select>
+    
+    <div class="select-box-container">
+        <label><?php echo $labeltext . ":"; ?></label>
+        <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
+        <?php if($showCreateNew) { ?>                  
+        <option value="create-new">Create New</option>
+            <?php
+            }
+            foreach($styleList as $style){
+                ?>
+                <option <?php if($selectedStyle==$style->id) echo 'selected'; else "" ?> id="<?php echo $style->id; ?>" value="<?php echo $style->id; ?>"><?php echo $style->name; ?></option>
+                <?php
+                
+                }
+            ?>
+        </select>
+       </div>
        <?php
     }
 
-    public static function AddEditControl($id,$value,$class,$labeltext,$isWcnControl = true)
+    public static function AddEditControl($id,$value,$class,$labeltext,$isWcnControl = true, $additionalAttribute = "")
     {
         if($isWcnControl)
             $editControl = "wcn-edit-control";
         ?>
-            
-        <div id="<?php echo $id."_container"; ?>">
+        <div class="edit-control-container" id="<?php echo $id."_container"; ?>">
             <label><?php echo $labeltext . ":"; ?></label>
-            <input type="text" id="<?php echo $id; ?>" name="<?php echo $id; ?>" value="<?php echo $value;; ?>" class="<?php echo $editControl . " " . $class; ?>" >
+            <input type="text" id="<?php echo $id; ?>" name="<?php echo $id; ?>" value="<?php echo $value;; ?>" class="<?php echo $editControl . " " . $class; ?>" <?php echo $additionalAttribute; ?>>
             </br>
         </div>
         <?php
     }
-
+    
 }
