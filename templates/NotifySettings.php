@@ -58,7 +58,8 @@ class NotifySettings {
         // print_r("Type");
         // print_r("Display Time");
         // print_r("Effects");
-        $url = get_admin_url() . "/edit.php?post_type=shop-notify&page=sn_style_editor&style=$selectedStyle";
+        
+        $url = get_admin_url() . "/edit.php?post_type=shop-notify&page=sn_style_editor&style=$selectedStyle&source=" . $post->ID;
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
         CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),$url,"sn-edit-button");
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));

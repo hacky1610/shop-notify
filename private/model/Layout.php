@@ -133,10 +133,11 @@ class Layout {
 		
         $default = array
         (
+            
                 'type' => "div",
                 'attributes' => array
                 (
-                    'class'=>'col-xs-11 col-sm-3 alert wcn-notify wcn-editable wcn-notify-orders',
+                    'class'=>'col-xs-11 col-sm-3 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
                     'id' => $id,
                     'role'=> 'alert',
                     'data-notify' => "container",

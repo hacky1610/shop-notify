@@ -3,8 +3,6 @@
     // Add Color Picker to all inputs that have 'color-field' class
     $(function() {
       
-        $('.wcn_edit_section > div').hide();
-        //$('.wcn_mask').inputmask({ regex: '-?[0-9]+.?([0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' }); 
         $('.wcn_mask').inputmask({ regex: '-?[0-9]+([,.][0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' }); 
         
         $('.wcn_font_select').fontselect().change(function(){
@@ -47,7 +45,7 @@
         //     event.preventDefault();
         // }, false);
 
-      
+        $(".wcn-notify-orders").click();
 
      
     });
@@ -136,12 +134,14 @@ var clicked = function(event)
     }
 }
 
-function CheckResponse(res)
+function CheckResponse(res,callback)
 {
     if(res !== "OK")
     {
         alert("ERROR: " +res);
     }
+    else
+        callback();
 }
 
 
@@ -167,6 +167,15 @@ function drop(ev) {
     setTimeout(ShowPreviewPopup, 100)
 }
 
+function jumpToSource()
+{
+    var source = getUrlParam("source");
+    if (source != null)
+    {
+        var url = "http://sharonne-design.com/wp-admin/post.php?post=" + source + "&action=edit";
+        window.open (url,'_self',false)
+    }
+}
 
 
 
@@ -182,13 +191,17 @@ var ShowPreviewPopup = function()
 
 $('.wcn-editable').on('click', clicked );
 $('.wcn_edit_section .wcn-edit-control').on('change', changed );
-$(".button").click(function() {
+$("#style-editor-save-button").click(function() {
     var data = {
         'action': 'wcn_save_style',
         'style_id': 'classic',
         'style_content': GetCssText("wcn_style_sheet")
 		};
-		SendAjaxSync(data).then(CheckResponse);
+    SendAjaxSync(data).then((res) => {
+        CheckResponse(res,jumpToSource);
+    });
+    
+   
   });
 
   $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );

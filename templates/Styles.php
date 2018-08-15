@@ -12,6 +12,7 @@ class Styles {
  */
     private $datastore;
     private $selectedStyle = "modern";
+    private $source = null;
     
     function __construct($datastore){
         $this->datastore = $datastore;
@@ -40,6 +41,10 @@ class Styles {
             $this->selectedStyle = sanitize_text_field($_GET['style']); 
         }
 
+        if(!empty($_GET['source'])){
+            $this->source = $_GET['source']; 
+        }
+
          $styleList  = $this->datastore->GetStyleList();
          $currentStyle = Style::GetStyle($styleList,$this->selectedStyle);
          $cssLoader = new CssLoader($currentStyle->content);
@@ -50,11 +55,12 @@ class Styles {
 
         <h2>Style</h2>
         <form method="post">
-
-
+        <?php
+                    CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,"Style",true);
+                    ?>
                     <div class="wcn_edit_section">
                     <?php
-                    CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,"Style",true);
+
                     CommonControls::AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
                     CommonControls::AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
                     CommonControls::AddEditControl("wcn_color","","wcn-color-picker","Color");
@@ -64,10 +70,10 @@ class Styles {
                     $this->JsCode();
                     ?>
                     </div>
-                    <input  class="button" id="submit_btn" value="Send" />
-
+                    <input  class="button" id="style-editor-save-button" value="Save" />
 
                     <?php //submit_button(); ?>
+                    
         </form> <?php
 
         $layout = new Layout();
