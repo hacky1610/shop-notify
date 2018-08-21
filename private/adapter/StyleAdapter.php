@@ -13,7 +13,7 @@ class StyleAdapter extends AjaxAdapter{
     const ACTION_GET_STYLE = 'wcn_get_style';
     const ACTION_SAVE_STYLE = 'wcn_save_style';
     private $datastore;
-    
+
     /**
      * Action argument used by the nonce validating the AJAX request.
      *
@@ -21,8 +21,10 @@ class StyleAdapter extends AjaxAdapter{
      */
     const NONCE = 'my-plugin-ajax';
 
-    function __construct($datastore){
+    function __construct($datastore,$logger){
+        parent::__construct($logger);
         $this->datastore = $datastore;
+        
         add_action('wp_ajax_' . self::ACTION_GET_STYLE, array($this, 'GetStyle'));
         add_action('wp_ajax_nopriv_' . self::ACTION_GET_STYLE, array($this, 'GetStyle'));
 
@@ -43,14 +45,19 @@ class StyleAdapter extends AjaxAdapter{
         Style::SaveStyle($styleList,$styleId,$content);
         $this->datastore->SetStyleList($styleList);
         $this->OK();
+        $this->logger->Info("Save Style $styleId with content $content" );
         wp_die();
     }
+
 
     public function GetStyle()
     {
         $styleId = $_POST['style_id'];
         $style = Style::GetStyle($this->datastore->GetStyleList(),$styleId);
         print_r($style->content);
+        $this->logger->Info("Load Style with id $styleId" );
+        $this->logger->Info($style->content );
+
         wp_die();
     }
 

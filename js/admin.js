@@ -1,3 +1,5 @@
+var fontSelector;
+
 (function( $ ) {
  
     // Add Color Picker to all inputs that have 'color-field' class
@@ -5,7 +7,8 @@
       
         $('.wcn_mask').inputmask({ regex: '-?[0-9]+([,.][0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' }); 
         
-        $('.wcn_font_select').fontselect().change(function(){
+        fontSelector = $('.wcn_font_select').fontselect();
+        fontSelector.Original().change(function(){
                 // replace + signs with spaces for css
                 var font = $(this).val().replace(/\+/g, ' ');
                 // split font into family and weight
@@ -28,25 +31,7 @@
             template: GetOrderTemplate("Foo","","wcn-notify-visible")
         });
 
-        //$('.Foo').on('dragstart',drag);
-        //$('.wcn-edit-control ').on('drop',drop);
-        //$('.wcn-edit-control ').on('dragover',allowDrop);
-
-        // document.addEventListener("dragstart", function( event ) {
-        //     // store a ref. on the dragged elem
-        //     dragged = event.target;
-        //     event.dataTransfer.setData("text", event.target.id);
-        //     // make it half transparent
-        //     //event.target.style.opacity = .5;
-        // }, false);
-
-        // document.addEventListener("dragover", function( event ) {
-        //     // prevent default to allow drop
-        //     event.preventDefault();
-        // }, false);
-
         $(".wcn-notify-orders").click();
-
      
     });
      
@@ -59,7 +44,9 @@ var GetCssText = function(styleSheetId)
     for (var i = 0; i < cssRules.length; i++) {
         cssText += cssRules[i].cssText;
     }
-    return cssText;
+
+    return cssText.replace(/"/g,"");
+
 }
 
 var GetRule = function(rules, ruleName)
@@ -87,6 +74,15 @@ var hideAllEditControls = function(rulename,style,value)
 
     rule.style[style] = value
 }
+
+function addFontLink(font){
+      
+    var link = 'https://fonts.googleapis.com/css?family=' + font;
+  
+    if ($("link[href*='" + font + "']").length === 0){
+        $('link:last').after('<link href="' + link + '" rel="stylesheet" type="text/css">');
+    }
+  };
 
 var clicked = function(event)
 {
@@ -125,8 +121,13 @@ var clicked = function(event)
             cssCval = c.toCSS();
             $(cp).wpColorPicker("color",cssCval)
         }
+        else if(propsToChange[i] === "font-family")
+        {
+            fontSelector.selectFontByName(cssCval.replace(/\"/g,""));
+        }
         else
         {
+            addFontLink(cssCval);
             $("#wcn_" + propsToChange[i] + "_container input").val(cssCval)
         }
 
@@ -194,13 +195,12 @@ $('.wcn_edit_section .wcn-edit-control').on('change', changed );
 $("#style-editor-save-button").click(function() {
     var data = {
         'action': 'wcn_save_style',
-        'style_id': 'classic',
+        'style_id': $("#wcn_select-style").val(),
         'style_content': GetCssText("wcn_style_sheet")
 		};
     SendAjaxSync(data).then((res) => {
         CheckResponse(res,jumpToSource);
     });
-    
    
   });
 

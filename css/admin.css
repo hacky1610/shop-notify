@@ -37,10 +37,10 @@
 
 /*Editor*/
 
-.wcn_selected
+.sn_style_editor .wcn_selected
 {
     border: red !important;
-    border-width: 4px !important;
+    border-width: 2px !important;
     border-style: dashed !important;
 }
 

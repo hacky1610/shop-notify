@@ -51,7 +51,8 @@ class NotifySettings {
         $styleList  = $this->datastore->GetStyleList();
         $currentStyleObject = Style::GetStyle($styleList,$selectedStyle);
 
-        $cssLoader = new CssLoader($currentStyleObject->content);
+        $cssLoader = new CssLoader();
+        $cssLoader->AddStyle($currentStyleObject);
         $cssLoader->Load();
         // print_r("Show live preview");
         // print_r("Text editor");

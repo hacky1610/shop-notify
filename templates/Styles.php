@@ -1,6 +1,7 @@
 <?php
 
 include_once dirname( __FILE__ ) . '/../private/model/Layout.php';
+include_once dirname( __FILE__ ) . '/../private/logger.php';
 include_once dirname( __FILE__ ) . '/../private/CssLoader.php';
 include_once dirname( __FILE__ ) . '/CommonControls.php';
 
@@ -13,9 +14,16 @@ class Styles {
     private $datastore;
     private $selectedStyle = "modern";
     private $source = null;
+    /**
+     * Action argument used by the nonce validating the AJAX request.
+     *
+     * @var Logger
+     */
+    private $logger;
     
-    function __construct($datastore){
+    function __construct($datastore,$logger){
         $this->datastore = $datastore;
+        $this->logger = $logger;
     }
 
     function AddSlider($id,$value,$class,$labeltext)
@@ -32,6 +40,7 @@ class Styles {
 
     function Show()
     {
+        $this->logger->Call("Show StyleEditor");
         if (isset($_POST['submit']) && !empty($_POST['submit'])) 
         {
             //$this->datastore->SetGlobalStyle($this->globalStyle);
@@ -47,13 +56,19 @@ class Styles {
 
          $styleList  = $this->datastore->GetStyleList();
          $currentStyle = Style::GetStyle($styleList,$this->selectedStyle);
-         $cssLoader = new CssLoader($currentStyle->content);
+         $this->logger->Info("Selected Style: $($this->selectedStyle)");
+         $this->logger->Info("Style content");
+         $this->logger->Info($currentStyle);
+         $cssLoader = new CssLoader();
+         $cssLoader->AddStyle($currentStyle);
          $cssLoader->Load();
 
     
         ?>
 
         <h2>Style</h2>
+        
+        <div class="sn_style_editor">
         <form method="post">
         <?php
                     CommonControls::AddSelectBox("wcn_select-style",$styleList,$this->selectedStyle,"Style",true);
@@ -83,6 +98,9 @@ class Styles {
         $layout->AddToMessage(Layout::CreateLink("with Link"));
         
         echo $layout->Render();
+        ?>
+        </div> 
+        <?php
      }
 
    

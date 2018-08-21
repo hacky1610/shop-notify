@@ -47,7 +47,7 @@ class WoocommerceNotice{
 
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
-        $this->styleAdapter = new StyleAdapter($this->datastore );
+        $this->styleAdapter = new StyleAdapter($this->datastore,$this->logger );
         $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
         $this->notifyLayoutAdapter = new NotifyLayoutAdapter();
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
@@ -70,7 +70,7 @@ class WoocommerceNotice{
     }
 
     public function ShowStylesEditor(){
-        $styles = new Styles($this->datastore);
+        $styles = new Styles($this->datastore,$this->logger);
         $styles->Show();
 	}
 
@@ -115,17 +115,14 @@ class WoocommerceNotice{
             wp_enqueue_script('wcn_bootstrap_notify');
 
             wp_enqueue_script( 'wcn_input_mask_script', plugins_url( '/../js/jquery.inputmask.bundle.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.min.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.js?'.self::$version_file, __FILE__), array(), null, 1);
         //}
     }
+    
 
     public function Load()
     {
-        $styleList  = $this->datastore->GetStyleList();
-        $currentStyleObject = Style::GetStyle($styleList,"classic");
-
-        $cssLoader = new CssLoader($currentStyleObject->content);
-        $cssLoader->Load();
+        
 
         //Test
         $args = array(
@@ -138,6 +135,12 @@ class WoocommerceNotice{
           $pma = new PostMetaAdapter();
           $notify = new Notify($notifies[0]->ID,$pma);
 
+          $styleList  = $this->datastore->GetStyleList();
+          $currentStyleObject = Style::GetStyle($styleList,$notify->GetStyle());
+  
+          $cssLoader = new CssLoader();
+          $cssLoader->AddStyle($currentStyleObject);
+          $cssLoader->Load();
 
           //print_r($latest_books );
 

@@ -20,13 +20,23 @@ class Style {
         $this->originalContent = $content;
         $this->deletable = $deletable;
     }
+
+    public function GetFontList()
+    {
+        preg_match_all('/font-family:\W*([^;]+)/', $this->content, $matches);
+        if(isset($matches))
+        {
+            return $matches[1];
+        }
+        return array();
+    }
    
     public static function GetDefaultStyles()
     {
         $default = array
         (
-                new Style("modern","Modern",".wcn-notify { border-radius: 20px; background-color: rgb(211, 145, 31); opacity: 0.63; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"\\\"Annie Use Your Telescope\\\"\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link{ color: rgb(255, 255, 255); }" ),
-                new Style("classic","Classic", ".wcn-notify { border-radius: 50px; background-color: rgb(21, 145, 31); opacity: 1; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"\\\"Annie Use Your Telescope\\\"\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link { color: rgb(255, 255, 255); }")
+                new Style("modern","Modern",".wcn-notify { border-radius: 20px; background-color: rgb(211, 145, 31); opacity: 0.63; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"Annie Use Your Telescope\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link{ color: rgb(255, 255, 255); }" ),
+                new Style("classic","Classic", ".wcn-notify { border-radius: 50px; background-color: rgb(21, 145, 31); opacity: 1; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"Annie Use Your Telescope\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link { color: rgb(255, 255, 255); }")
         );
         
         return $default;

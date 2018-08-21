@@ -253,6 +253,7 @@
           this.updateSelected();
           this.addFontLink(font);
         }
+        return this;
       }
       
       Fontselect.prototype.bindEvents = function(){
@@ -287,6 +288,17 @@
         }
         
         this.active = !this.active;
+      };
+
+      Fontselect.prototype.Original = function(){
+        
+        return this.$original;
+      };
+
+      Fontselect.prototype.selectFontByName = function(name){
+        
+        this.$original.val(name).change();
+        this.updateSelected();
       };
       
       Fontselect.prototype.selectFont = function(){
@@ -399,12 +411,9 @@
       return Fontselect;
     })();
 
-    return this.each(function() {        
-      // If options exist, lets merge them
-      if (options) $.extend( settings, options );
-      
+   
       return new Fontselect(this, settings);
-    });
+  
 
   };
 })(jQuery);
