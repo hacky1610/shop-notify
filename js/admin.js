@@ -75,15 +75,6 @@ var hideAllEditControls = function(rulename,style,value)
     rule.style[style] = value
 }
 
-function addFontLink(font){
-      
-    var link = 'https://fonts.googleapis.com/css?family=' + font;
-  
-    if ($("link[href*='" + font + "']").length === 0){
-        $('link:last').after('<link href="' + link + '" rel="stylesheet" type="text/css">');
-    }
-  };
-
 var clicked = function(event)
 {
     event.stopPropagation();
@@ -127,7 +118,6 @@ var clicked = function(event)
         }
         else
         {
-            addFontLink(cssCval);
             $("#wcn_" + propsToChange[i] + "_container input").val(cssCval)
         }
 
