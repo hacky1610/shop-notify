@@ -106,7 +106,6 @@ class WoocommerceNotice{
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_jqui', plugins_url( '/../js/jquery-ui.min.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_ajax_script', plugins_url( '/../js/ajax.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
 
             wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
