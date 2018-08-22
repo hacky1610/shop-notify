@@ -26,8 +26,6 @@ include_once dirname( __FILE__ ) . '/../templates/Styles.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
 
-
-
 class WoocommerceNotice{
     static $version = '0.9.94';
     static $version_file = '0.9.94';
@@ -41,13 +39,13 @@ class WoocommerceNotice{
     private $notifyLayoutAdapter;
     private $notifyAdapter;
 
-    function __construct($datastore, $logger,$postMetaAdapter){
+    function __construct($datastore, $logger,$postMetaAdapter,$wpAdapter){
         $this->logger = $logger;
         $this->logger->Call("Woocommerce_Notice Constructor");
 
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
-        $this->styleAdapter = new StyleAdapter($this->datastore,$this->logger );
+        $this->styleAdapter = new StyleAdapter($this->datastore,$wpAdapter,$this->logger );
         $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
         $this->notifyLayoutAdapter = new NotifyLayoutAdapter();
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);

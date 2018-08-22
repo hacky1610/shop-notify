@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 include_once dirname( __FILE__ ) . '/AjaxAdapter.php';
+include_once dirname( __FILE__ ) . './../model/Style.php';
 
 
 class StyleAdapter extends AjaxAdapter{
@@ -13,7 +14,6 @@ class StyleAdapter extends AjaxAdapter{
     const ACTION_GET_STYLE = 'wcn_get_style';
     const ACTION_SAVE_STYLE = 'wcn_save_style';
     private $datastore;
-
     /**
      * Action argument used by the nonce validating the AJAX request.
      *
@@ -21,21 +21,18 @@ class StyleAdapter extends AjaxAdapter{
      */
     const NONCE = 'my-plugin-ajax';
 
-    function __construct($datastore,$logger){
-        parent::__construct($logger);
+    function __construct($datastore,$wpAdapter,$logger){
+        parent::__construct($wpAdapter,$logger);
         $this->datastore = $datastore;
-        
-        add_action('wp_ajax_' . self::ACTION_GET_STYLE, array($this, 'GetStyle'));
-        add_action('wp_ajax_nopriv_' . self::ACTION_GET_STYLE, array($this, 'GetStyle'));
 
-        add_action('wp_ajax_' . self::ACTION_SAVE_STYLE, array($this, 'SaveStyle'));
-        add_action('wp_ajax_nopriv_' . self::ACTION_SAVE_STYLE, array($this, 'SaveStyle'));
+        parent::AddAction(self::ACTION_GET_STYLE,$this,"GetStyle");
+        parent::AddAction(self::ACTION_SAVE_STYLE,$this,"SaveStyle");
     }
 
     public function SaveStyle()
     {
-        $styleId = $_POST['style_id'];
-        $content = $_POST['style_content'];
+        $styleId = parent::GetPost('style_id');
+        $content = parent::GetPost('style_content');
 
         if(!isset($styleId) || !isset($content))
             $this->ThrowError();
@@ -46,19 +43,19 @@ class StyleAdapter extends AjaxAdapter{
         $this->datastore->SetStyleList($styleList);
         $this->OK();
         $this->logger->Info("Save Style $styleId with content $content" );
-        wp_die();
+        parent::WpDie();
     }
 
 
     public function GetStyle()
     {
-        $styleId = $_POST['style_id'];
+        $styleId = parent::GetPost('style_id');
         $style = Style::GetStyle($this->datastore->GetStyleList(),$styleId);
         print_r($style->content);
         $this->logger->Info("Load Style with id $styleId" );
         $this->logger->Info($style->content );
 
-        wp_die();
+        parent::WpDie();
     }
 
 
