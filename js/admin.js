@@ -1,5 +1,59 @@
 var fontSelector;
 
+class SnFontSelector {
+
+    constructor(selector,callback) {
+        this.internalSelector = $(selector).fontselect();
+        this.internalSelector.Original().change(function(){
+                // replace + signs with spaces for css
+                var font = $(this).val().replace(/\+/g, ' ');
+                // split font into family and weight
+                font = font.split(':');
+                // set family on paragraphs
+               callback(font[0]);
+        });
+    }
+
+    selectFontByName(font)
+    {
+        this.internalSelector.selectFontByName(font);
+    }
+
+  }
+
+  class StyleHelper {
+    GetRule(rules, ruleName)
+    {
+        for (var i = 0; i < rules.length; i++) {
+            if(rules[i].selectorText.match( ruleName))
+            {
+                return rules[i];
+            }
+        }
+    }
+
+     ChangeStyle(sheetname,rulename,style,value)
+    {
+        var styleSheet = document.getElementById(sheetname).sheet;
+        var rule = this.GetRule(styleSheet.cssRules,rulename);
+
+        rule.style[style] = value
+    }
+
+  }
+
+  function SaveStyle()
+  {
+    var data = {
+        'action': 'wcn_save_style',
+        'style_id': $("#wcn_select-style").val(),
+        'style_content': GetCssText("wcn_style_sheet")
+        };
+    SendAjaxSync(data).then((res) => {
+        CheckResponse(res,jumpToSource);
+    });
+  }
+
 (function( $ ) {
  
     // Add Color Picker to all inputs that have 'color-field' class
@@ -7,31 +61,21 @@ var fontSelector;
       
         $('.wcn_mask').inputmask({ regex: '-?[0-9]+([,.][0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' }); 
         
-        fontSelector = $('.wcn_font_select').fontselect();
-        fontSelector.Original().change(function(){
-                // replace + signs with spaces for css
-                var font = $(this).val().replace(/\+/g, ' ');
-                // split font into family and weight
-                font = font.split(':');
-                // set family on paragraphs
-                var classToEdit = $(this).attr("wcn_class")
-                ChangeStyle(classToEdit,"font-family",font[0]);
-        });
+        fontSelector = new SnFontSelector('.wcn_font_select', (font) => {
+            var classToEdit = $(this).attr("wcn_class")
+            var styleHelper = new StyleHelper();
+            styleHelper.ChangeStyle("wcn_style_sheet",classToEdit,"font-family",font);
+        } );
             
 
+        $('.wcn-editable').on('click', clicked );
+        $('.wcn_edit_section .wcn-edit-control').on('change', changed );
+        $("#style-editor-save-button").click(SaveStyle);
 
-        $.notify({
-            title: "Welcome:",
-            message: "This plugin has been provided to you by Robert McIntosh aka mouse0270"
-        },
-        {
-            element: '#sampleContainer',
-            position: "absolute",
-            delay: "60000",
-            template: GetOrderTemplate("Foo","","wcn-notify-visible")
-        });
+        $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );
 
         $(".wcn-notify-orders").click();
+
      
     });
      
@@ -47,24 +91,6 @@ var GetCssText = function(styleSheetId)
 
     return cssText.replace(/"/g,"");
 
-}
-
-var GetRule = function(rules, ruleName)
-{
-    for (var i = 0; i < rules.length; i++) {
-        if(rules[i].selectorText.match( ruleName))
-        {
-            return rules[i];
-        }
-    }
-}
-
-var ChangeStyle = function(rulename,style,value)
-{
-    var styleSheet = document.getElementById("wcn_style_sheet").sheet;
-    var rule = GetRule(styleSheet.cssRules,rulename);
-
-    rule.style[style] = value
 }
 
 var hideAllEditControls = function(rulename,style,value)
@@ -105,7 +131,10 @@ var clicked = function(event)
                  */
                 change: function (event, ui) {
                     if(event.target.value !== "")
-                        ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), ui.color.toCSS());
+                    {
+                        var styleHelper = new StyleHelper();
+                        styleHelper.ChangeStyle("wcn_style_sheet",event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), ui.color.toCSS());
+                    }
     
                 }})
             var c = new Color(cssCval);
@@ -139,8 +168,8 @@ function CheckResponse(res,callback)
 
 var changed = function(event)
 {
-    
-    ChangeStyle(event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
+    var styleHelper = new StyleHelper();
+    styleHelper.ChangeStyle("wcn_style_sheet",event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
 } 
 
 
@@ -169,9 +198,6 @@ function jumpToSource()
 }
 
 
-
-
-
 var ShowPreviewPopup = function()
 {
     var id = "sn_admin_sample";
@@ -180,21 +206,7 @@ var ShowPreviewPopup = function()
 }
 
 
-$('.wcn-editable').on('click', clicked );
-$('.wcn_edit_section .wcn-edit-control').on('change', changed );
-$("#style-editor-save-button").click(function() {
-    var data = {
-        'action': 'wcn_save_style',
-        'style_id': $("#wcn_select-style").val(),
-        'style_content': GetCssText("wcn_style_sheet")
-		};
-    SendAjaxSync(data).then((res) => {
-        CheckResponse(res,jumpToSource);
-    });
-   
-  });
 
-  $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );
 
 
 
