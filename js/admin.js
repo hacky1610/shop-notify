@@ -195,6 +195,10 @@ function jumpToSource()
         var url = "http://sharonne-design.com/wp-admin/post.php?post=" + source + "&action=edit";
         window.open (url,'_self',false)
     }
+    else
+    {
+        alert("Saved");
+    }
 }
 
 
