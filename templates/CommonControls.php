@@ -3,7 +3,7 @@
 class CommonControls {
     public static function Addbutton($id,$image,$link,$class)
     {?>
-       <a class="<?php echo $class;?>" href="<?php echo $link;?>"> <img src="<?php echo $image;?>"></img></a>
+       <div class="<?php echo $class;?>"> <img src="<?php echo $image;?>"></img></div>
        <?php
     }
 

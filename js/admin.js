@@ -54,6 +54,8 @@ class SnFontSelector {
     });
   }
 
+
+ 
 (function( $ ) {
  
     // Add Color Picker to all inputs that have 'color-field' class
@@ -75,7 +77,6 @@ class SnFontSelector {
         $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );
 
         $(".wcn-notify-orders").click();
-
      
     });
      
@@ -173,19 +174,7 @@ var changed = function(event)
 } 
 
 
-function allowDrop(ev) {
-    ev.preventDefault();
-    console.log(ev.target.selectionStart);
-}
 
-function drag(ev) {
-    ev.dataTransfer.setData("text", " " + ev.target.id + " ");
-}
-
-function drop(ev) {
-    console.log(ev.target.selectionStart);
-    setTimeout(ShowPreviewPopup, 100)
-}
 
 function jumpToSource()
 {

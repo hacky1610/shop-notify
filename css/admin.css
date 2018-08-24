@@ -35,6 +35,24 @@
     cursor: pointer;
 }
 
+/*Notify Settings*/
+
+.sn-edit-button
+{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sn-edit-button img
+{
+    height: 25px;
+}
+
+#saveModal
+{
+    opacity: 1;
+}
+
 /*Editor*/
 
 .sn_style_editor .wcn_selected
@@ -44,10 +62,7 @@
     border-style: dashed !important;
 }
 
-.sn-edit-button img
-{
-    height: 25px;
-}
+
 
 #sn_settings .inside{
         display: flex; 

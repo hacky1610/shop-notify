@@ -97,6 +97,9 @@ class WoocommerceNotice{
             wp_register_style('wcn_jqui', plugins_url('/../css/jquery-ui.min.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_jqui');
 
+            wp_register_style('prefix_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css');
+            wp_enqueue_style('prefix_bootstrap');
+
             wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_style');
 
@@ -107,6 +110,15 @@ class WoocommerceNotice{
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_jqui', plugins_url( '/../js/jquery-ui.min.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
+
+
+            
+            wp_register_script('prefix_popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js');
+            wp_enqueue_script('prefix_popper');
+
+            wp_register_script('prefix_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js');
+            wp_enqueue_script('prefix_bootstrap');
+
 
             wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script('wcn_bootstrap_notify');

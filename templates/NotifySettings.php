@@ -60,9 +60,9 @@ class NotifySettings {
         // print_r("Display Time");
         // print_r("Effects");
         
-        $url = get_admin_url() . "/edit.php?post_type=shop-notify&page=sn_style_editor&style=$selectedStyle&source=" . $post->ID;
+        $editorUrl = get_admin_url() . "edit.php?post_type=shop-notify&page=sn_style_editor&source=" . $post->ID;
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
-        CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),$url,"sn-edit-button");
+        CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),"","sn-edit-button");
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true,"ondrop='drop(event)'" );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true,"ondrop='drop(event)'");
@@ -70,7 +70,12 @@ class NotifySettings {
         </div>
        
         <?php
-        $this->JsCode();
+        wp_enqueue_script( 'notify-editor-script',  plugins_url( '/../js/adminNotifyEditor.js?', __FILE__));
+        wp_localize_script('notify-editor-script', 'notify_editor_vars', array(
+                'editor_url' => $editorUrl
+            )
+        );
+        $this->AddDialog();
 
     }
 
@@ -84,6 +89,30 @@ class NotifySettings {
         ?>
         </div>
         <?php
+    }
+
+    private function AddDialog()
+    {?>
+        <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Unsaved changes</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              You have still unsaved changes. Do you still want to leave this page?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Abort</button>
+              <button type="button" class="btn btn-primary" onclick="OpenStyleEditor();">Leave without saving</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php
     }
 
     private function DisplayDragItem($name,$id, $labelUrl)
@@ -168,42 +197,6 @@ class NotifySettings {
                     'default',
                 null);
     }
-
-    private function JsCode()
-    {?>
-       <script>
-       jQuery(document).ready(function($)
-           {
-    
-              ShowPreviewPopup();
-               $(document).on('change', '.layout-content', function()
-                   {
-       
-                       var style = $(this).children(":selected").attr("id");
-                       
-                       var data = {
-                        'action': 'wcn_get_style',
-                        'style_id': style
-                        };
-                        SendAjaxSync(data).then((s) =>
-                        {
-                            $("#wcn_style_sheet").html(s);
-                        });
-                   })
-               
-               })
-       </script>
-       <?php
-    }
- 
-  
-
-
-
-
-
-   
-    
 
 }
 
