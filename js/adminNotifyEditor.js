@@ -5,6 +5,13 @@
      var url = notify_editor_vars.editor_url + "&style=" + style;
      window.open(url,'_self');
  }
+
+ function ShowPreviewPopup()
+{
+    var id = "sn_admin_sample";
+    var keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
+    ShowNotify(id,keyVals,$("#sn_title_content").val(),$("#sn_message_content").val(),"#","","#wpbody-content","static");
+}
  
 jQuery(document).ready(function($) {
     var changed = false;
