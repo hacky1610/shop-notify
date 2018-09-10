@@ -93,10 +93,19 @@ class Styles {
         </form> <?php
 
         $layout = new Layout();
-        $layout->AddToTitle(Layout::CreateText("Title "));
-        $layout->AddToTitle(Layout::CreateLink("with Link"));
-        $layout->AddToMessage(Layout::CreateText("Message "));
-        $layout->AddToMessage(Layout::CreateLink("with Link"));
+
+        $title = array(
+            Layout::CreateParagraph("A title"),
+            Layout::CreateLink("with link")
+        );
+
+        $message = array(
+            Layout::CreateParagraph("A message"),
+            Layout::CreateLink("with link")
+        );
+        
+        $layout->AddToTitle(Layout::CreateText($title));
+        $layout->AddToMessage(Layout::CreateText($message));
         
         echo $layout->Render();
         ?>

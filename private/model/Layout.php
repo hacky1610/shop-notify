@@ -78,7 +78,7 @@ class Layout {
         
     }
 
-    public static function CreateText($text)
+    public static function CreateText($content)
     {
        return array
         (
@@ -89,12 +89,7 @@ class Layout {
                 'wcn_class' => '.text',
                 'wcn_style_props' => "color,font-size,font-family"
             ),
-            'childs' => array(
-                '0' => array(
-                    'type' => "Text",
-                    'value' => $text
-                )
-            )
+            'childs' => $content
         );
     }
 
@@ -116,8 +111,18 @@ class Layout {
         )
        )
         );
-    
     }
+
+    public static function CreateParagraph($text)
+    {
+       return  array(
+        'type' => "Text",
+        'value' => $text
+        );
+    }
+
+
+    
 
     private static function GetAttributes($attributes)
     {

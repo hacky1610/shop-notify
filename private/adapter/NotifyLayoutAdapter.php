@@ -35,32 +35,38 @@ class NotifyLayoutAdapter {
 
         $title = str_replace('\\',"",$title);
         $titleArray = json_decode($title);
-        
+        $titleContent = array();
         foreach ($titleArray as $value)
         {
             if($value->type == "text")
             {
-                $layout->AddToTitle(Layout::CreateText($value->val));
+                array_push($titleContent,Layout::CreateParagraph($value->val));
             }
             else
             {
-                $layout->AddToTitle(Layout::CreateLink($value->val,$value->link));
+                array_push($titleContent,Layout::CreateLink($value->val,$value->link));
             }
         }
+        $layout->AddToTitle(Layout::CreateText($titleContent));
+
         $message = str_replace('\\',"",$message);
         $messageArray = json_decode($message);
-        
+        $messageContent = array();
+
         foreach ($messageArray as $value)
         {
             if($value->type == "text")
             {
-                $layout->AddToMessage(Layout::CreateText($value->val));
+                array_push($messageContent,Layout::CreateParagraph($value->val));
+                
             }
             else
             {
-                $layout->AddToMessage(Layout::CreateLink($value->val,$value->link));
+                array_push($messageContent,Layout::CreateLink($value->val,$value->link));
             }
         }
+        $layout->AddToMessage(Layout::CreateText($messageContent));
+
         
         return $layout->Render();
     }

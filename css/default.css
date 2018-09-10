@@ -57,6 +57,5 @@
 
 .wcn-notify-message p
 {
-	display: inline-block;
-	white-space: pre;
+	white-space: pre-wrap;
 }

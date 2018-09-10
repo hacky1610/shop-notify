@@ -45,9 +45,18 @@ class LayoutTest extends TestCase
     
         $layout = new Layout();
 
-        $layout->AddToTitle(Layout::CreateText("Title"));
-        $layout->AddToMessage(Layout::CreateText("Message"));
-        $layout->Render();
+        $title = array(
+            Layout::CreateParagraph("Hello"),
+            Layout::CreateLink("World","www.google.de")
+        );
+
+        $message = array(
+            Layout::CreateParagraph("Foo"),
+            Layout::CreateLink("Bar","www.google.de")
+        );
+        $layout->AddToTitle(Layout::CreateText($title));
+        $layout->AddToMessage(Layout::CreateText($message));
+        echo $layout->Render();
 
         $this->assertNotNull($layout);
 
