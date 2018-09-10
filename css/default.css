@@ -4,7 +4,6 @@
    /*transition: visibility 0s, opacity 3.5s linear , bottom 1.5s linear !important;*/
    display: flex !important;
    box-shadow: 3px -3px 10px #1111118f;
-   width: 480px !important;
 }
 
 .wcn-notify-cookie {

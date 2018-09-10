@@ -137,12 +137,12 @@ class Layout {
                 'type' => "div",
                 'attributes' => array
                 (
-                    'class'=>'col-xs-11 col-sm-3 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
+                    'class'=>'col-xs-11 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
                     'id' => $id,
                     'role'=> 'alert',
                     'data-notify' => "container",
                     'wcn_class' => '.wcn-notify',
-                    'wcn_style_props' => "background-color,opacity,border-radius"
+                    'wcn_style_props' => "background-color,opacity,border-radius,width"
 
                 ),
                 'childs' => array

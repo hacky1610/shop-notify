@@ -78,6 +78,7 @@ class Styles {
 
                     CommonControls::AddEditControl("wcn_background-color","","wcn-color-picker","Background color");
                     CommonControls::AddEditControl("wcn_border-radius","","wcn_mask","Border radius");
+                    CommonControls::AddEditControl("wcn_width","","wcn_mask","Width");
                     CommonControls::AddEditControl("wcn_color","","wcn-color-picker","Color");
                     CommonControls::AddEditControl("wcn_font-size","","wcn_mask","Font Size");
                     CommonControls::AddEditControl("wcn_font-family","","wcn_font_select","Font family", false);
