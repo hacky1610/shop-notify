@@ -153,127 +153,120 @@ class Layout {
 		
         $default = array
         (
-            
-                'type' => "div",
-                'attributes' => array
-                (
-                    'class'=>'col-xs-11 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
-                    'id' => $id,
-                    'role'=> 'alert',
-                    'data-notify' => "container",
-                    'wcn_class' => '.wcn-notify',
-                    'wcn_style_props' => "background-color,opacity,border-radius,width"
+        
+            'type' => "div",
+            'attributes' => array
+            (
+                'class'=>'col-xs-11 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
+                'id' => $id,
+                'role'=> 'alert',
+                'data-notify' => "container",
+                'wcn_class' => '.wcn-notify',
+                'wcn_style_props' => "background-color,opacity,border-radius,width"
 
-                ),
-                'childs' => array
+            ),
+            'childs' => array
+            (
+                '0'=>array
                 (
-                    '0'=>array
+                    'type' => "div",
+                    'attributes' => array
                     (
-                        'type' => "div",
-                        'attributes' => array
+                        'class'=>'wcn-notify-icon'
+                    ),
+                    'childs' => array
+                    (
+                        '0'=>array
                         (
-                            'class'=>'wcn-notify-icon'
-                        ),
-                        'childs' => array
-                        (
-                            '0'=>array
+                            'type' => "span",
+                            'attributes' => array
                             (
-                                'type' => "span",
-                                'attributes' => array
+                                'data-notify'=>"icon"
+                            ),
+                            'childs' => array
+                            (
+                                '0'=>array
                                 (
-                                    'data-notify'=>"icon"
-                                ),
-                                'childs' => array
-                                (
-                                    '0'=>array
+                                    'type' => "img",
+                                    'onlyAdmin' => true,
+                                    'attributes' => array
                                     (
-                                        'type' => "img",
-                                        'onlyAdmin' => true,
-                                        'attributes' => array
-                                        (
-                                            'src'=> $pictureLink,
-                                            'class' => "wcn-editable"
-                                        ),
-                                    )
+                                        'src'=> $pictureLink,
+                                        'class' => "wcn-editable"
+                                    ),
                                 )
                             )
-                           
                         )
-                    ),
-                    '1'=>array
+                        
+                    )
+                ),
+                '1'=>array
+                (
+                    //Message Container Start
+                    'type' => "div",
+                    'attributes' => array
                     (
-                        //Message Container Start
-                        'type' => "div",
-                        'attributes' => array
+                        'class'=>'wcn-notify-message'
+                    ),
+                    'childs' => array
+                    (
+                        '0'=>array
                         (
-                            'class'=>'wcn-notify-message'
+                            //Title Start
+                            'type' => "div",
+                            'attributes' => array
+                            (
+                                'class'=>"title-container",
+                            ),
+                            'childs' => $title
+                            //Title End
                         ),
-                        'childs' => array
+                        '1'=>array
                         (
-                            '0'=>array
+                            //Message Start
+                            'type' => "div",
+                            'attributes' => array
                             (
-                                //Title Start
-                                'type' => "div",
-                                'attributes' => array
-                                (
-                                    'class'=>"title-container",
-                                ),
-                                'childs' => $title
-                                //Title End
+                                'class'=>"message",
                             ),
-                            '1'=>array
-                            (
-                                //Message Start
-                                'type' => "div",
-                                'attributes' => array
-                                (
-                                    'class'=>"message",
-                                ),
-                                'childs' => $message
-                                //Message End
-                            ),
-                        )
-                        //Message Container End
-                    ),
-                    '2'=>array
+                            'childs' => $message
+                            //Message End
+                        ),
+                    )
+                    //Message Container End
+                ),
+                '2'=>array
+                (
+                    'type' => "div",
+                    'attributes' => array
                     (
-                        'type' => "div",
-                        'childs' => array
+                        'class'=>"wcn-notify-close"
+                    ),
+                    'childs' => array
+                    (
+                        '0'=>array
                         (
-                            '0'=>array
+                            'type' => "button",
+                            'attributes' => array
                             (
-                                'type' => "div",
-                                'attributes' => array
-                                (
-                                    'class'=>"wcn-notify-close"
-                                ),
-                                'childs' => array
-                                (
-                                    '0'=>array
-                                    (
-                                        'type' => "button",
-                                        'attributes' => array
-                                        (
-                                            'type'=>"button",
-                                            "aria-hidden"=>"true",
-                                            "class"=>"close wcn-editable",
-                                            "data-notify"=>"dismiss"
+                                'type'=>"button",
+                                "aria-hidden"=>"true",
+                                "class"=>"close wcn-editable",
+                                "data-notify"=>"dismiss"
 
-                                        ),
-                                        'childs' => array
-                                        (
-                                            '0'=>array
-                                            (
-                                                'type' => "Text",
-                                                'value' => "x"
-                                            )
-                                        )
-                                    )
+                            ),
+                            'childs' => array
+                            (
+                                '0'=>array
+                                (
+                                    'type' => "Text",
+                                    'value' => "x"
                                 )
                             )
                         )
                     )
                 )
+            )
         );
 			
 		return $default;
