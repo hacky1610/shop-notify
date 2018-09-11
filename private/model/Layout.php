@@ -24,20 +24,24 @@ class Layout {
     {
         if(!empty($path))
              $this->pictureLink = $path;
-             
+    }
 
+    private static function AddAttribute($element,$attributeName)
+    {
+        $element["attributes"]["wcn_class"] = ".$attributeName" . $element["attributes"]["wcn_class"];    
+        $element["attributes"]["class"] = "$attributeName " . $element["attributes"]["class"];   
+
+        return $element;
     }
 
     public function AddToTitle($element)
     {
-        $element["attributes"]["wcn_class"] = ".title" . $element["attributes"]["wcn_class"];    
-        $element["attributes"]["class"] = "title " . $element["attributes"]["class"];   
+        $element = self::AddAttribute($element,"title"); 
         
         foreach ($element['childs'] as &$child) {
             if($child['type'] == "a")
             {
-                $child["attributes"]["wcn_class"] = ".title" . $child["attributes"]["wcn_class"];    
-                $child["attributes"]["class"] = "title " . $child["attributes"]["class"]; 
+                $child = self::AddAttribute($child,"title"); 
             }
        }
 
@@ -47,16 +51,14 @@ class Layout {
 
     public function AddToMessage($element)
     {
-        $element["attributes"]["wcn_class"] = ".message" . $element["attributes"]["wcn_class"];    
-        $element["attributes"]["class"] = "message " . $element["attributes"]["class"];   
-        
+        $element = self::AddAttribute($element,"message"); 
+  
         foreach ($element['childs'] as &$child) {
             if($child['type'] == "a")
             {
-                $child["attributes"]["wcn_class"] = ".message" . $child["attributes"]["wcn_class"];    
-                $child["attributes"]["class"] = "message " . $child["attributes"]["class"]; 
+                $child = self::AddAttribute($child,"message"); 
             }
-       }
+        }
 
         array_push($this->message,$element);
     }
@@ -136,9 +138,6 @@ class Layout {
         'value' => $text
         );
     }
-
-
-    
 
     private static function GetAttributes($attributes)
     {
