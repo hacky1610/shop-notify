@@ -10,7 +10,7 @@ class SnFontSelector {
                 // split font into family and weight
                 font = font.split(':');
                 // set family on paragraphs
-               callback(font[0]);
+               callback(font[0],$(this).attr("wcn_class"));
         });
     }
 
@@ -63,8 +63,7 @@ class SnFontSelector {
       
         $('.wcn_mask').inputmask({ regex: '-?[0-9]+([,.][0-9]+)?(px|em|rem|ex|%|in|cm|mm|pt|pc)' }); 
         
-        fontSelector = new SnFontSelector('.wcn_font_select', (font) => {
-            var classToEdit = $(this).attr("wcn_class")
+        fontSelector = new SnFontSelector('.wcn_font_select', (font,classToEdit) => {
             var styleHelper = new StyleHelper();
             styleHelper.ChangeStyle("wcn_style_sheet",classToEdit,"font-family",font);
         } );
