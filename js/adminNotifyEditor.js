@@ -6,29 +6,26 @@
      window.open(url,'_self');
  }
 
+ function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", " " + ev.target.id + " ");
+}
+
+function drop(ev) {
+    setTimeout(ShowPreviewPopup, 100)
+}
 
  
 jQuery(document).ready(function($) {
     var changed = false;
-  
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
-    
-    function drag(ev) {
-        ev.dataTransfer.setData("text", " " + ev.target.id + " ");
-    }
-    
-    function drop(ev) {
-        setTimeout(ShowPreviewPopup, 100)
-    }
 
     function textBoxCanged()
     {
         changed = true;
     }
-
-   
 
     function editButtonClicked()
     {
