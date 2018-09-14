@@ -23,6 +23,7 @@ include_once dirname( __FILE__ ) . '/adapter/NotifyAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/NotifyLayoutAdapter.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralSettings.php';
 include_once dirname( __FILE__ ) . '/../templates/Styles.php';
+include_once dirname( __FILE__ ) . '/../templates/WorkflowEditor.php';
 include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php';
 include_once dirname( __FILE__ ) . '/../templates/GeneralControls.php';
 
@@ -70,7 +71,13 @@ class WoocommerceNotice{
     public function ShowStylesEditor(){
         $styles = new Styles($this->datastore,$this->logger);
         $styles->Show();
-	}
+    }
+    
+    public function ShowWorkflowEditor(){
+        $wfe = new WorkflowEditor($this->datastore,$this->logger);
+        $wfe->Show();
+    }
+    
 
     public function loadJs($hook){
         $this->logger->Call("loadJs");
@@ -131,19 +138,6 @@ class WoocommerceNotice{
 
     public function Load()
     {
-        
-
-        //Test
-        $args = array(
-            'numberposts' => 10,
-            'post_type'   => "shop-notify"
-          );
-           
-          $notifies = get_posts( $args );
-
-          $pma = new PostMetaAdapter();
-          $notify = new Notify($notifies[0]->ID,$pma);
-
           $styleList  = $this->datastore->GetStyleList();
           $currentStyleObject = Style::GetStyle($styleList,$notify->GetStyle());
   
@@ -151,15 +145,11 @@ class WoocommerceNotice{
           $cssLoader->AddStyle($currentStyleObject);
           $cssLoader->Load();
 
-          //print_r($latest_books );
-
-          //end Test
         echo '<script>
         var $ = jQuery;
         jQuery( document ).ready(function( $ )
                 {
                 ShowOrder();
-                ShowReview();
                 });
         </script>"';
     }
@@ -171,10 +161,15 @@ class WoocommerceNotice{
     }
 
     public function createMenu(){
+        $this->logger->Call("CreateMenu");
+
         $namespace = self::$namespace;
 
         add_submenu_page("edit.php?post_type=shop-notify", __('Style Editor',"shop-notify"), __("Style Editor","shop-notify"), 'manage_options', 'sn_style_editor', array( $this, 'ShowStylesEditor' ));
+        add_submenu_page("edit.php?post_type=shop-notify", __('Workflow Editor',"shop-notify"), __("Workflow Editor","shop-notify"), 'manage_options', 'sn_workflow_editor', array( $this, 'ShowWorkflowEditor' ));
         add_submenu_page("edit.php?post_type=shop-notify", __('Install',"shop-notify"), __("Install","shop-notify"), 'manage_options', 'sn_install', array( $this, 'Install' ));
+        $this->logger->Call("CreateMenu End");
+
     }
  
 }

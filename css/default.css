@@ -60,3 +60,45 @@
 {
 	white-space: pre-wrap;
 }
+
+/*WorkflowEditor*/
+#workingarea
+{
+	width: 70%;
+	float: left;
+}
+
+#toolarea
+{
+	width: 30%;
+	float: left;
+}
+
+.wfeElement
+{
+	display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vl {
+    border-left: 2px solid green;
+    height: 50px;
+}
+
+.action
+{
+    border: black;
+    border-width: 3px;
+    border-style: double;
+ 
+    padding: 3px;
+}
+
+.plus
+{
+    border: black;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50px
+}
