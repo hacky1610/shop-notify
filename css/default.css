@@ -113,3 +113,8 @@
     border-style: solid;
     border-radius: 50px
 }
+
+.ui-state-hover
+{
+	background: #2c3ac4;
+}

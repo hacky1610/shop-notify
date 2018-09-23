@@ -62,6 +62,25 @@ var SleepEditor = function(element, options) {
       {
         selectedCallback(this);
       });
+      
+      frame.droppable({
+        classes: {
+            "ui-droppable-hover": "ui-state-hover"
+          },
+        accept: ".draggable",
+        drop: function(event, ui) {
+          var droppable = $(this);
+          var draggable = ui.draggable;
+          // Move draggable into droppable
+          var s = new WfeElement(new Sleep());
+         
+          droppable.after(s.content());
+          s.render();
+          draggable.css({
+            float: 'left'
+          });
+        }
+      });
 
       afterIcon.on("drop",function(event){
         alert();

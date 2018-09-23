@@ -37,7 +37,7 @@ class WorkflowEditor {
         <h2>WorkflowEditor</h2>
         <div id="wfeContent">
             <div id="workingarea" >
-                <ul class="droparea center droppable sortable">
+                <ul class="droparea center sortable">
 
                 </ul>
 

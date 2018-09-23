@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
             element.render();
         });
     }
-    
+
 
     $( ".sortable" ).sortable(({
         update: function( event, ui ) {renderAll();}
@@ -54,20 +54,6 @@ jQuery(document).ready(function($) {
         helper: 'clone'
       });
 
-      $('.droppable').droppable({
-        accept: ".draggable",
-        drop: function(event, ui) {
-          var droppable = $(this);
-          var draggable = ui.draggable;
-          // Move draggable into droppable
-          var s = new WfeElement(new Sleep());
-         
-          s.content().appendTo(droppable);
-          s.render();
-          draggable.css({
-            float: 'left'
-          });
-        }
-      });
+     
   
 });
