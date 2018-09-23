@@ -15,23 +15,18 @@ var SleepEditor = function(element, options) {
 
     var WfeElement = function(c)
     {
-       var frame = $("<div class='wfeElement'></div>");
-       var beforeLine = $( "<div class='wfeElement vl'>" )
-       var afterIcon = $( "<div class='wfeElement vl'></div><div class='wfeElement plus'>+</div>" )
-       var content = c;
-       var before = null;
-       var after = null;
-       var selectedCallback = null;
- 
-
       this.render = function() {
         frame.empty();
-        if(before === null)
+        if(frame.before()[0].className.includes("wfe"))
           frame.append(beforeLine);
-        frame.append(content.render())
-        if(after === null)
+        frame.append(content.content())
+        if(frame.next().length == 0 )
           frame.append(afterIcon);
+      };
 
+
+      this.content = function()
+      {
         return frame;
       };
 
@@ -40,19 +35,30 @@ var SleepEditor = function(element, options) {
         selectedCallback = callback;
       };
 
-      this.setBefore = function()
-      {
-
-      };
-
       this.addAfter = function(element)
       {
           after = element;
-          element.setBefore(this);
-          element.render().insertAfter(this.render())
+          element.content().insertAfter(this.content())
       };
 
-      content.render().click(() => 
+      var createUUID = function () {
+        // http://www.ietf.org/rfc/rfc4122.txt
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+    
+        var uuid = s.join("");
+        return uuid;
+    }
+    
+    var initEvents = function()
+    {
+      content.content().click(() => 
       {
         selectedCallback(this);
       });
@@ -65,9 +71,20 @@ var SleepEditor = function(element, options) {
         event.preventDefault();  
         event.stopPropagation();
         $(this).addClass('dragging');
-    });
-    
+      });
     }
+
+    var guid = createUUID();
+    var frame = $(`<li id='${guid}' class='wfeElement'></li>` );
+    var beforeLine = $( "<div class='wfeElement vl center'>" )
+    var afterIcon = $( "<div class='wfeElement vl center'></div><div class='wfeElement plus center'>+</div>" )
+    var content = c;
+    var before = null;
+    var after = null;
+    var selectedCallback = null;
+    initEvents();
+    
+    };
 
 
     var Sleep = function() {
@@ -76,7 +93,7 @@ var SleepEditor = function(element, options) {
       var editor = new SleepEditor();
       var time = "10";
 
-      this.render = function()
+      this.content = function()
       {
         return elem;
       }
@@ -108,7 +125,7 @@ var SleepEditor = function(element, options) {
   
       var elem = $("<div class='notify'>Notify</div>");
 
-      this.render = function()
+      this.content = function()
       {
         return elem;
       }

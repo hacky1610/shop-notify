@@ -36,8 +36,10 @@ class WorkflowEditor {
 
         <h2>WorkflowEditor</h2>
         <div id="wfeContent">
-            <div id="workingarea">
-            
+            <div id="workingarea" >
+                <ul class="droparea center droppable sortable">
+
+                </ul>
 
             </div>
 
@@ -46,7 +48,7 @@ class WorkflowEditor {
             
                 </div>
                 <div id="toollist">
-                    <div draggable="true" ondragstart="drag(event,'Foo')">Sleep</div>
+                    <div class="draggable" id="sleep">Sleep</div>
                 </div>
                 <div id="editorarea">
                 
