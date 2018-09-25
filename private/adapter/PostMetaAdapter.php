@@ -23,6 +23,17 @@ class PostMetaAdapter {
             return $default;
     }
 
+    public function GetTitle($id)
+    {
+        $post = get_post($id);
+        return $post->post_title;
+    }
+
+    public function GetPermaLink($id)
+    {
+        return get_permalink($id);
+    }
+
     public function SavePostMeta($postid,$key,$value)
     {
         update_post_meta($postid,$key,$value);

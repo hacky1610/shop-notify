@@ -25,6 +25,16 @@ class Notify {
         
     }
 
+    public function GetId()
+    {
+        return $this->id;
+    }
+
+    public function GetPostName()
+    {
+        return $this->postmetaAdapter->GetTitle($this->id);
+    }
+
     public function GetStyle()
     {
         return $this->postmetaAdapter->GetPostMeta($this->id,self::$SELECTED_STYLE);

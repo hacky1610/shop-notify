@@ -74,9 +74,10 @@ class WoocommerceNotice{
     }
     
     public function ShowWorkflowEditor(){
-        $wfe = new WorkflowEditor($this->datastore,$this->logger);
+        $wfe = new WorkflowEditor($this->datastore,$this->logger,$this->postMetaAdapter,$this->notifyLayoutAdapter);
         $wfe->Show();
     }
+    
     
 
     public function loadJs($hook){
