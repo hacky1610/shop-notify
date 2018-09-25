@@ -28,6 +28,14 @@ jQuery(document).ready(function($) {
         });
     }
 
+    var addElement = function(el, render = false)
+    {
+        items.push(el);
+        el.elementAdded(addElement);
+        if(render == true)
+            renderAll();
+    }
+
 
     $( ".sortable" ).sortable(({
         update: function( event, ui ) {renderAll();}
@@ -38,14 +46,15 @@ jQuery(document).ready(function($) {
       var s1 = new WfeElement(new Sleep());
       var n1 = new WfeElement(new Notify());
       var s2 = new WfeElement(new Sleep());
-  
+
+      addElement(s1);
+      addElement(n1);
+      addElement(s2);
+      
       $('.droparea').append(s1.content()) 
       s1.addAfter(n1);
       n1.addAfter(s2);
 
-      items.push(s1);
-      items.push(n1);
-      items.push(s2);
       renderAll();
 
       $('.draggable').draggable({

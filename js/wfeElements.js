@@ -20,6 +20,8 @@ var SleepEditor = function(element, options) {
         if(frame.before()[0].className.includes("wfe"))
           frame.append(beforeLine);
         frame.append(content.content())
+        frame.append(afteline);
+        frame.append(dropLine);
         if(frame.next().length == 0 )
           frame.append(afterIcon);
       };
@@ -33,6 +35,11 @@ var SleepEditor = function(element, options) {
       this.selected = function(callback)
       {
         selectedCallback = callback;
+      };
+
+      this.elementAdded = function(callback)
+      {
+        elementAddedCallback = callback;
       };
 
       this.addAfter = function(element)
@@ -62,7 +69,7 @@ var SleepEditor = function(element, options) {
       {
         selectedCallback(this);
       });
-      
+
       frame.droppable({
         classes: {
             "ui-droppable-hover": "ui-state-hover"
@@ -71,11 +78,10 @@ var SleepEditor = function(element, options) {
         drop: function(event, ui) {
           var droppable = $(this);
           var draggable = ui.draggable;
-          // Move draggable into droppable
-          var s = new WfeElement(new Sleep());
+          var newElement = new WfeElement(new Sleep());
          
-          droppable.after(s.content());
-          s.render();
+          droppable.after(newElement.content());
+          elementAddedCallback(newElement,true);
           draggable.css({
             float: 'left'
           });
@@ -94,13 +100,16 @@ var SleepEditor = function(element, options) {
     }
 
     var guid = createUUID();
-    var frame = $(`<li id='${guid}' class='wfeElement'></li>` );
+    var frame = $(`<li id='${guid}' class='wfeElement droppable'></li>` );
     var beforeLine = $( "<div class='wfeElement vl center'>" )
-    var afterIcon = $( "<div class='wfeElement vl center'></div><div class='wfeElement plus center'>+</div>" )
+    var afteline = $( "<div class='wfeElement vl center'>" )
+    var dropLine = $( "<div class='wfeElement hl center'>" )
+    var afterIcon = $( "<div class='wfeElement plus center'>+</div>" )
     var content = c;
     var before = null;
     var after = null;
     var selectedCallback = null;
+    var elementAddedCallback = null;
     initEvents();
     
     };

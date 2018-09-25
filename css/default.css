@@ -89,13 +89,27 @@
 {
 	display: table;
 	margin-left: auto;
-    margin-right: auto;
+	margin-right: auto;
+	margin-bottom: 0px;
+}
+
+.wfeElement div
+{
+	width: auto;
 }
 
 .vl {
     border-left: 2px solid green;
-    height: 50px;
+    height: 20px;
 }
+
+.hl {
+    height: 5px;
+	width: 100px;
+	background: green;
+	display: none;
+}
+
 
 .action
 {
@@ -114,7 +128,7 @@
     border-radius: 50px
 }
 
-.ui-state-hover
+.ui-state-hover .hl
 {
-	background: #2c3ac4;
+	display: block;
 }
