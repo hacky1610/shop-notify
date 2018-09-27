@@ -1,6 +1,8 @@
 <?php
 
 include_once dirname( __FILE__ ) . '/../model/Layout.php';
+include_once dirname( __FILE__ ) . '/AjaxAdapter.php';
+
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -8,25 +10,44 @@ include_once dirname( __FILE__ ) . '/../model/Layout.php';
  * and open the template in the editor.
  */
 
-class NotifyLayoutAdapter {
+class NotifyLayoutAdapter extends AjaxAdapter {
   
     const ACTION = 'wcn_get_notify_layout';
     
-    function __construct(){
-        add_action('wp_ajax_' . self::ACTION, array($this, 'GetNotifyAjax'));
-        add_action('wp_ajax_nopriv_' . self::ACTION, array($this, 'GetNotifyAjax'));
+    function __construct($wpAdapter,$logger){
+        parent::__construct($wpAdapter,$logger);
+        parent::AddAction( self::ACTION,$this,'GetNotifyAjax');
     }
 
     public function GetNotifyAjax()
     {
-        $id =  $_POST['id'];
-        $title =  $_POST['title_content'];
-        $message =  $_POST['message_content'];
-        $style =  $_POST['style'];
-        $pictureLink =  $_POST['pictureLink'];
+        $id =  parent::GetPost['id'];
+        $title =  parent::GetPost['title_content'];
+        $message =  parent::GetPost['message_content'];
+        $style =  parent::GetPost['style'];
+        $pictureLink =  parent::GetPost['pictureLink'];
 
         echo $this->GetNotifyLayout($id,$title,$message,$pictureLink,$style);
         wp_die();
+    }
+
+    public function GetContentFromJson($json)
+    {
+        $content = str_replace('\\',"",$json);
+        $contentArray = json_decode($content);
+        $textArray = array();
+        foreach ($contentArray as $value)
+        {
+            if($value->type == "text")
+            {
+                array_push($textArray,Layout::CreateParagraph($value->val));
+            }
+            else
+            {
+                array_push($textArray,Layout::CreateLink($value->val,$value->link));
+            }
+        }
+        return $textArray;
     }
 
     public function GetNotifyLayout($id, $title, $message,$pictureLink,$style)
@@ -34,38 +55,10 @@ class NotifyLayoutAdapter {
         $layout = new Layout($id,$style);
         $layout->AddPicture($pictureLink);
 
-        $title = str_replace('\\',"",$title);
-        $titleArray = json_decode($title);
-        $titleContent = array();
-        foreach ($titleArray as $value)
-        {
-            if($value->type == "text")
-            {
-                array_push($titleContent,Layout::CreateParagraph($value->val));
-            }
-            else
-            {
-                array_push($titleContent,Layout::CreateLink($value->val,$value->link));
-            }
-        }
+        $titleContent = $this->GetContentFromJson($title);
         $layout->AddToTitle(Layout::CreateText($titleContent));
 
-        $message = str_replace('\\',"",$message);
-        $messageArray = json_decode($message);
-        $messageContent = array();
-
-        foreach ($messageArray as $value)
-        {
-            if($value->type == "text")
-            {
-                array_push($messageContent,Layout::CreateParagraph($value->val));
-                
-            }
-            else
-            {
-                array_push($messageContent,Layout::CreateLink($value->val,$value->link));
-            }
-        }
+        $messageContent = $this->GetContentFromJson($message);
         $layout->AddToMessage(Layout::CreateText($messageContent));
 
         

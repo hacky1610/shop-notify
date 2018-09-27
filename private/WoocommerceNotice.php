@@ -48,9 +48,10 @@ class WoocommerceNotice{
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore,$wpAdapter,$this->logger );
         $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
-        $this->notifyLayoutAdapter = new NotifyLayoutAdapter();
+        $this->notifyLayoutAdapter = new NotifyLayoutAdapter($wpAdapter,$this->logger);
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
 
+        
          new WoocommerceApi(new WoocommerceApiLogic($logger));
 
         add_action('wp_enqueue_scripts', array($this, 'loadJs'));
