@@ -60,7 +60,14 @@ jQuery(document).ready(function($) {
       $('.draggable').draggable({
         revert: "invalid",
         stack: ".draggable",
-        helper: 'clone'
+        helper: 'clone',
+        cursor: "move",
+        
+        start: function(event, ui){
+            $(this).draggable('instance').offset.click = {
+            left: Math.floor(ui.helper.width() / 2),
+            top: Math.floor(ui.helper.height() / 2)
+        };} 
       });
 
      

@@ -91,6 +91,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 0px;
+	cursor: pointer;
 }
 
 .wfeElement div
@@ -136,4 +137,5 @@
 .notify-drag
 {
 	display: inline-grid;
+	cursor: pointer;
 }
