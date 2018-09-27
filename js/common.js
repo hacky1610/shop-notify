@@ -101,7 +101,7 @@ function ShowPopup(message, icon,delay, template,element,position)
 		});
 }
 
-function ShowNotify(id,keyVals,title,message,productLink,pictureLink, element = "body",position = "fixed")
+function ShowNotify(id,keyVals,title,message,productLink,pictureLink,style, element = "body",position = "fixed")
 {
     var titleArray = getMessageArray(title,keyVals,productLink)
     var messageArray = getMessageArray(message,keyVals,productLink)
@@ -111,6 +111,7 @@ function ShowNotify(id,keyVals,title,message,productLink,pictureLink, element = 
         'id': id,
         'productLink' : productLink,
         'pictureLink' : pictureLink,
+        'style' : style,
         'title_content': JSON.stringify(titleArray),
         'message_content': JSON.stringify(messageArray)
 		};

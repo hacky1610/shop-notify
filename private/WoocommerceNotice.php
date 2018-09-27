@@ -139,8 +139,10 @@ class WoocommerceNotice{
 
     public function Load()
     {
+          $this->logger->Call("loadJsAdmin");
+
           $styleList  = $this->datastore->GetStyleList();
-          $currentStyleObject = Style::GetStyle($styleList,$notify->GetStyle());
+          $currentStyleObject = Style::GetStyle($styleList,"modern");
   
           $cssLoader = new CssLoader();
           $cssLoader->AddStyle($currentStyleObject);

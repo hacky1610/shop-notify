@@ -92,7 +92,7 @@ class Styles {
                     
         </form> <?php
 
-        $layout = new Layout();
+        $layout = new Layout("",$this->selectedStyle);
 
         $title = array(
             Layout::CreateParagraph("A title"),

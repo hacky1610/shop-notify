@@ -50,13 +50,15 @@ jQuery(document).ready(function($) {
          {
              $("#wcn_style_sheet").html(s);
          });
+        ShowPreviewPopup(style);
+
+
     }
 
     $(".sn-edit-button").on("click",editButtonClicked);
     $(".layout-content").on("click",loadNewStyle);
     $(".edit-control-container input").on("change",textBoxCanged);
-
-    ShowPreviewPopup();
+    loadNewStyle();
 
   
 });

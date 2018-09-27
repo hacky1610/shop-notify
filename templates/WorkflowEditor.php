@@ -43,12 +43,23 @@ class WorkflowEditor {
         wp_enqueue_script( 'workflow-editor-script',  plugins_url( '/../js/adminWorkflowEditor.js?', __FILE__));
     }
 
+    function LoadStyles()
+    {
+        $cssLoader = new CssLoader();
+        $styleList  = $this->datastore->GetStyleList();
+        foreach ($styleList as $style) {
+            $cssLoader->AddStyle($style);
+        }
+  
+          $cssLoader->Load();
+    }
+
    
 
     function Show()
     {
         $this->logger->Call("Show WorkflowEditor");
-      
+        $this->LoadStyles();
         ?>
 
         <h2>WorkflowEditor</h2>
@@ -63,10 +74,13 @@ class WorkflowEditor {
             <div id="toolarea">
                 <div id="notifyList">
                 <?php
+
+                
                 foreach ($this->shopNotifyList as $notify) {
-                    ?> <div class="draggable" id="notify"> <?php
+                    ?> <div class="notify-drag draggable" id="notify"> <?php
                    echo $notify->GetPostName();
-                   echo $this->notifyLayoutAdapter->GetNotifyLayout($notify->GetId(),"","","");
+                   echo $this->notifyLayoutAdapter->GetNotifyLayout($notify->GetId(),"","","",$notify->GetStyle());
+                   
                    ?> </div> <?php
                 }
                 ?>

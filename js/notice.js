@@ -60,7 +60,7 @@ function ShowOrderPopup(keyVals,productLink,pictureLink)
 	
 	GetNotifyObject(1441).then((body) => {
 		var object = JSON.parse(body);
-		ShowNotify(id,keyVals,object.title,object.message,productLink,pictureLink);
+		ShowNotify(id,keyVals,object.title,object.message,object.style,productLink,pictureLink);
 	});
 
 		

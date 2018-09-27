@@ -22,15 +22,16 @@ class NotifyLayoutAdapter {
         $id =  $_POST['id'];
         $title =  $_POST['title_content'];
         $message =  $_POST['message_content'];
+        $style =  $_POST['style'];
         $pictureLink =  $_POST['pictureLink'];
 
-        echo $this->GetNotifyLayout($id,$title,$message,$pictureLink);
+        echo $this->GetNotifyLayout($id,$title,$message,$pictureLink,$style);
         wp_die();
     }
 
-    public function GetNotifyLayout($id, $title, $message,$pictureLink)
+    public function GetNotifyLayout($id, $title, $message,$pictureLink,$style)
     {
-        $layout = new Layout($id);
+        $layout = new Layout($id,$style);
         $layout->AddPicture($pictureLink);
 
         $title = str_replace('\\',"",$title);

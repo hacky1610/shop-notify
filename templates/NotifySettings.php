@@ -11,6 +11,7 @@ include_once dirname( __FILE__ ) . '/CommonControls.php';
 class NotifySettings {
     //Constants
     private static $CONTROL_STYLE = "sn_style_content";
+    private static $DEFAULT_STYLE = "modern";
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
 
@@ -42,6 +43,8 @@ class NotifySettings {
 
         //Get Post Meta Data
         $selectedStyle = $notify->GetStyle();
+        if(empty($selectedStyle))
+            $selectedStyle = self::$DEFAULT_STYLE;
         $this->logger->Info("Style is: " . $selectedStyle);
 
         $titel = $notify->GetTitle();

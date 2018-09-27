@@ -55,6 +55,7 @@ class Notify {
         $object->style = $this->GetStyle();
         $object->title = $this->GetTitle();
         $object->message = $this->GetMessage();
+        $object->style = $this->GetStyle();
 
         return json_encode($object);
     }

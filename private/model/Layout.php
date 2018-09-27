@@ -11,12 +11,14 @@ class Layout {
     private $title;
     private $message;
     private $pictureLink;
+    private $style;
     private $id;
 
-    function __construct($id = ""){
+    function __construct($id = "",$style){
         $this->title = array();
         $this->message = array();
         $this->id = $id;
+        $this->style = $style;
         $this->pictureLink = plugins_url( '/../../assets/preview_image.png', __FILE__ );
     }
 
@@ -65,7 +67,7 @@ class Layout {
 
     public function Render()
     {
-        $this->layout = self::DefaultContent( $this->title,$this->message,$this->pictureLink,$this->id);
+        $this->layout = self::DefaultContent( $this->title,$this->message,$this->pictureLink,$this->id,$this->style);
         return Layout::PrintElement($this->layout);
     }
 
@@ -149,7 +151,7 @@ class Layout {
        return $attr;
     }
 
-    public static function DefaultContent($title,$message,$pictureLink, $id){
+    public static function DefaultContent($title,$message,$pictureLink, $id, $style){
 		
         $default = array
         (
@@ -157,11 +159,11 @@ class Layout {
             'type' => "div",
             'attributes' => array
             (
-                'class'=>'col-xs-11 alert wcn-notify wcn-editable wcn_selected wcn-notify-orders',
+                'class'=>"col-xs-11 alert wcn-notify $style wcn-editable wcn_selected wcn-notify-orders",
                 'id' => $id,
                 'role'=> 'alert',
                 'data-notify' => "container",
-                'wcn_class' => '.wcn-notify',
+                'wcn_class' => ".wcn-notify.$style",
                 'wcn_style_props' => "background-color,opacity,border-radius,width"
 
             ),

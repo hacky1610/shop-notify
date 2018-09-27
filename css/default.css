@@ -132,3 +132,8 @@
 {
 	display: block;
 }
+
+.notify-drag
+{
+	display: inline-grid;
+}
