@@ -22,7 +22,7 @@ class NotifyLayoutAdapterTest extends TestCase
         $wpAdapter = $this->createMock(WpAdapter::class);
        $notLayAdap = new NotifyLayoutAdapter($wpAdapter,$logger);
        $this->assertNotNull($notLayAdap);
-    }
+    }   
 
     public function testGetContentFromJson()
     {
@@ -31,6 +31,14 @@ class NotifyLayoutAdapterTest extends TestCase
        $notLayAdap = new NotifyLayoutAdapter($wpAdapter,$logger);
        $content = $notLayAdap->GetContentFromJson('[{"type":"text","val":"Foo"  }]');
        $this->assertNotNull($content);
+    }
+
+    public function testGetNotfyAjax()
+    {
+        $logger = $this->createMock(Logger::class);
+        $wpAdapter = $this->createMock(WpAdapter::class);
+       $notLayAdap = new NotifyLayoutAdapter($wpAdapter,$logger);
+        $notLayAdap->GetNotifyAjax();
     }
 
   

@@ -35,8 +35,56 @@ class Style {
     {
         $default = array
         (
-                new Style("modern","Modern",".wcn-notify { border-radius: 20px; background-color: rgb(211, 145, 31); opacity: 0.63; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"Annie Use Your Telescope\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link{ color: rgb(255, 255, 255); }" ),
-                new Style("classic","Classic", ".wcn-notify { border-radius: 50px; background-color: rgb(21, 145, 31); opacity: 1; }.wcn-notify .title.text { color: rgb(10, 10, 10); font-size: 16px; font-family: \"Annie Use Your Telescope\"; } .wcn-notify .title.link { color: rgb(255, 255, 255); } .wcn-notify .message.text { color: rgb(255, 255, 255); } .message.link { color: rgb(255, 255, 255); }")
+                new Style("modern",
+                            "Modern",
+                            ".wcn-notify.modern 
+                            { 
+                                    border-radius: 20px; 
+                                    background-color: rgb(211, 145, 31); 
+                                    opacity: 0.63; 
+                            }
+                            .wcn-notify.modern .title.text 
+                            { 
+                                color: rgb(10, 10, 10); 
+                                font-size: 16px; 
+                                font-family: \"Annie Use Your Telescope\"; 
+                            } 
+                            .wcn-notify.modern .title.link 
+                            { 
+                                color: rgb(255, 255, 255); 
+                            } 
+                            .wcn-notify.modern .message.text 
+                            {  
+                                color: rgb(255, 255, 255); 
+                            } 
+                            .wcn-notify.modern .message.link{ 
+                                color: rgb(255, 255, 255); 
+                            }" ),
+                new Style("classic",
+                            "Classic",
+                            ".wcn-notify.classic 
+                            { 
+                                border-radius: 50px; 
+                                background-color: rgb(21, 145, 31); 
+                                opacity: 1; 
+                            }
+                            .wcn-notify.classic .title.text 
+                            { 
+                                color: rgb(10, 10, 10); 
+                                font-size: 16px; 
+                                font-family: \"Annie Use Your Telescope\"; 
+                            } .wcn-notify.classic .title.link 
+                            { 
+                                color: rgb(255, 255, 255);
+                             } 
+                             .wcn-notify.classic .message.text 
+                             { 
+                                 color: rgb(255, 255, 255); 
+                            } 
+                            .wcn-notify.classic .message.link 
+                            { 
+                                color: rgb(255, 255, 255); 
+                            }")
         );
         
         return $default;

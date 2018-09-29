@@ -44,16 +44,10 @@ jQuery(document).ready(function($) {
 
       // pass options to plugin constructor
       var s1 = new WfeElement(new Sleep());
-      var n1 = new WfeElement(new Notify());
-      var s2 = new WfeElement(new Sleep());
 
       addElement(s1);
-      addElement(n1);
-      addElement(s2);
       
       $('.droparea').append(s1.content()) 
-      s1.addAfter(n1);
-      n1.addAfter(s2);
 
       renderAll();
 

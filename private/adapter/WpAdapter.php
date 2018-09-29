@@ -23,13 +23,22 @@ class WpAdapter {
 
     public function AddAction($action,$object,$function)
     {
+        $this->logger->Call("AddAction");
+        $this->logger->Info("Add action: $action");
+
         add_action('wp_ajax_' . $action, array($object, $function));
         add_action('wp_ajax_nopriv_' . $action, array($object, $function));
     }
 
     public function GetPost($key)
     {
-        return $_POST[$key];
+        $this->logger->Call("GetPost");
+        $this->logger->Info("Key: $key");
+
+        $val = $_POST[$key];
+        $this->logger->Info("Val: $val");
+
+        return $val;
     }
 
     public function WpDie()

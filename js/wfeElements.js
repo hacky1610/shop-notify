@@ -78,7 +78,15 @@ var SleepEditor = function(element, options) {
         drop: function(event, ui) {
           var droppable = $(this);
           var draggable = ui.draggable;
-          var newElement = new WfeElement(new Sleep());
+
+          var type = $(ui.draggable).attr("type");
+          if(type === "sleep")
+            var newElement = new WfeElement(new Sleep());
+          else(type == "notify")
+          {
+            var id = $(ui.draggable).attr("notify-id");
+            var newElement = new WfeElement(new Notify(guid));
+          }
          
           droppable.after(newElement.content());
           elementAddedCallback(newElement,true);
@@ -87,6 +95,7 @@ var SleepEditor = function(element, options) {
           });
         }
       });
+
 
       afterIcon.on("drop",function(event){
         alert();
@@ -117,9 +126,9 @@ var SleepEditor = function(element, options) {
 
     var Sleep = function() {
   
-      var elem = $("<div class='action'></div>");
-      var editor = new SleepEditor();
-      var time = "10";
+      const elem = $("<div class='action'></div>");
+      const editor = new SleepEditor();
+      let time = "10";
 
       this.content = function()
       {
@@ -149,10 +158,11 @@ var SleepEditor = function(element, options) {
 
     };
 
-    var Notify = function() {
+    var Notify = function(id) {
   
-      var elem = $("<div class='notify'>Notify</div>");
-
+      const elem = $(`<div class="notify" id='notify_container_${id}'></div>`);
+      const notifyId = id;
+    
       this.content = function()
       {
         return elem;
@@ -162,7 +172,16 @@ var SleepEditor = function(element, options) {
       {
         return editor.getElement();
       }
-      
-     
 
+      this.ShowPopup = function(style)
+      {
+          const id = `notify_${notifyId}`;
+          const keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
+          const title = "Foo";
+          ShowNotify(id,keyVals,title,"","#","",style,`#notify_container_${notifyId}`,"static");
+      };
+
+
+      this.ShowPopup("modern");
+      
     };

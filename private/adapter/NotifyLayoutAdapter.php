@@ -15,24 +15,31 @@ class NotifyLayoutAdapter extends AjaxAdapter {
     const ACTION = 'wcn_get_notify_layout';
     
     function __construct($wpAdapter,$logger){
+        $this->logger = $logger;
+        $this->logger->Call("Constructor of NotifyLayoutAdapter");
         parent::__construct($wpAdapter,$logger);
         parent::AddAction( self::ACTION,$this,'GetNotifyAjax');
     }
 
     public function GetNotifyAjax()
     {
-        $id =  parent::GetPost['id'];
-        $title =  parent::GetPost['title_content'];
-        $message =  parent::GetPost['message_content'];
-        $style =  parent::GetPost['style'];
-        $pictureLink =  parent::GetPost['pictureLink'];
+        $this->logger->Call("GetNotifyAjax");
+
+        $id =  parent::GetPost('id');
+        $title =  parent::GetPost('title_content');
+        $message =  parent::GetPost('message_content');
+        $style =  parent::GetPost('style');
+        $pictureLink =  parent::GetPost('pictureLink');
 
         echo $this->GetNotifyLayout($id,$title,$message,$pictureLink,$style);
+        $this->logger->Call("End GetNotifyAjax");
         wp_die();
     }
+    
 
     public function GetContentFromJson($json)
     {
+        $this->logger->Call("GetContentFromJson");
         $content = str_replace('\\',"",$json);
         $contentArray = json_decode($content);
         $textArray = array();
@@ -47,11 +54,15 @@ class NotifyLayoutAdapter extends AjaxAdapter {
                 array_push($textArray,Layout::CreateLink($value->val,$value->link));
             }
         }
+        $this->logger->Call("End GetContentFromJson");
+
         return $textArray;
     }
 
     public function GetNotifyLayout($id, $title, $message,$pictureLink,$style)
     {
+        $this->logger->Call("GetNotifyLayout");
+
         $layout = new Layout($id,$style);
         $layout->AddPicture($pictureLink);
 
@@ -61,6 +72,7 @@ class NotifyLayoutAdapter extends AjaxAdapter {
         $messageContent = $this->GetContentFromJson($message);
         $layout->AddToMessage(Layout::CreateText($messageContent));
 
+        $this->logger->Call("End GetNotifyLayout");
         
         return $layout->Render();
     }

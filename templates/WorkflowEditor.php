@@ -77,7 +77,7 @@ class WorkflowEditor {
 
                 
                 foreach ($this->shopNotifyList as $notify) {
-                    ?> <div class="notify-drag draggable" id="notify"> <?php
+                    ?> <div class="notify-drag draggable" type="notify" notify-id="<?php echo $notify->GetId();  ?>"> <?php
                    $title = '[{"type":"text","val":"' . $notify->GetPostName() .'"}]';
                    echo $this->notifyLayoutAdapter->GetNotifyLayout($notify->GetId(),$title ,"","",$notify->GetStyle());
                    ?> </div> <?php
@@ -85,7 +85,7 @@ class WorkflowEditor {
                 ?>
                 </div>
                 <div id="toollist">
-                    <div class="draggable" id="sleep">Sleep</div>
+                    <div class="draggable" type="sleep">Sleep</div>
                 </div>
                 <div id="editorarea">
                 

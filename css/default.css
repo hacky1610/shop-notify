@@ -121,6 +121,11 @@
     padding: 3px;
 }
 
+.wfeElement .notify
+{
+	display: inline-block;
+}
+
 .plus
 {
     border: black;
@@ -138,4 +143,11 @@
 {
 	display: inline-grid;
 	cursor: pointer;
+}
+
+.notify-drag
+{
+	transform:scale(0.7);
+	transform-origin: top left;
+	margin-bottom: -10px;
 }
