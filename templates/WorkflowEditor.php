@@ -38,7 +38,7 @@ class WorkflowEditor {
             $notify = new  Notify($id,$postmetaAdapter);
             array_push($this->shopNotifyList,$notify);
         }
-
+        wp_enqueue_script( 'sn-notice',  plugins_url( '/../js/notice.js?', __FILE__));
         wp_enqueue_script( 'workflow-editor-element',  plugins_url( '/../js/wfeElements.js?', __FILE__));
         wp_enqueue_script( 'workflow-editor-script',  plugins_url( '/../js/adminWorkflowEditor.js?', __FILE__));
     }

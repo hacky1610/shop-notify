@@ -153,7 +153,7 @@ class WoocommerceNotice{
         var $ = jQuery;
         jQuery( document ).ready(function( $ )
                 {
-                ShowOrder();
+                ShowOrder(ShowOrderPopup,1441,"body","fixed","anyGuid");
                 });
         </script>"';
     }

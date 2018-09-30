@@ -49,27 +49,30 @@ function SwitchTabToReviews()
 
 
 
-function ShowOrderPopup(keyVals,productLink,pictureLink)
+function ShowOrderPopup(notifyId,keyVals,productLink,pictureLink,element, position,guid)
 {
-	var additionalClass = "";
 	if(jQuery(".cookie-notice-container").length == 1)
 	   additionalClass = "wcn-notify-cookie";
 	
-
-	var id = "anyID";
-	
-	GetNotifyObject(1441).then((body) => {
+	GetNotifyObject(notifyId).then((body) => {
 		var object = JSON.parse(body);
-		ShowNotify(id,keyVals,object.title,object.message,object.style,productLink,pictureLink);
+		ShowNotify(guid,keyVals,object.title,object.message,productLink,pictureLink,object.style,element, position);
 	});
 
-		
-	
 	setTimeout(() => 
 	{
 		jQuery(".wcn-notify-orders").addClass("wcn-notify-visible");
 	}, 5000);
 }
+
+function ShowOrderPopupAdmin(notifyId,keyVals,productLink,pictureLink,element, position,guid)
+{	
+	GetNotifyObject(notifyId).then((body) => {
+		var object = JSON.parse(body);
+		ShowNotify(guid,keyVals,object.title,object.message,productLink,pictureLink,object.style,element, position);
+	});
+}
+
 
 function GetReviewTemplate(title, linkSnippet)
 {
@@ -207,21 +210,20 @@ function ShowReviewPopup(title, message, icon, link)
 		});
 	}
 
-	function ShowOrder()
+	function ShowOrder(callback,notifyId,element, position,guid)
 	{
 		getLastOrder().then((lastorder) => {
 			var product = lastorder.items[0];
 
-			var productId = product.id;
-			var orderId = lastorder.id;
+			//var productId = product.id;
+			//var orderId = lastorder.id;
 			
-			var shownOrders = getCookie("ShownOrder").split(",");
+			//var shownOrders = getCookie("ShownOrder").split(",");
 			//if(shownOrders.includes(orderId.toString()))
 			//	return;
 			
-			setCookie("ShownOrder",shownOrders + "," + orderId,2);
+			//setCookie("ShownOrder",shownOrders + "," + orderId,2);
 
-			var productName = product.name;
 			var name = lastorder.name;
 			name =  name[0].toUpperCase() + name.substring(1);
 			var image = product.productImage;
@@ -229,13 +231,12 @@ function ShowReviewPopup(title, message, icon, link)
 			var time = GetTimeString(lastorder.dateCreated);
 			
 			var keyVals = {ProductName: product.name, GivenName: name};
-			
 
-
-			ShowOrderPopup(keyVals,link,image);
+			callback(notifyId,keyVals,link,image,element, position,guid);
 
 		});
 	}
+	
 	
 	function ShowReview()
 	{		

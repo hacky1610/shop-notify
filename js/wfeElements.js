@@ -177,12 +177,12 @@ var SleepEditor = function(element, options) {
 
       this.ShowPopup = function()
       {
-          GetNotifyObject(_notifyId).then((body) => {
-            var object = JSON.parse(body);
-            const divId = `notify_${_id}`;
-            ShowNotify(divId,keyVals,object.title,object.message,productLink,pictureLink,object.style,`#notify_container_${_id}`,"static");
-          });
+
+        ShowOrder(ShowOrderPopupAdmin,_notifyId,`#notify_container_${_id}`,"static",_id);
+         
       };
       this.ShowPopup();
+
+      
       
     };
