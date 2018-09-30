@@ -85,7 +85,7 @@ var SleepEditor = function(element, options) {
           else(type == "notify")
           {
             var id = $(ui.draggable).attr("notify-id");
-            var newElement = new WfeElement(new Notify(guid));
+            var newElement = new WfeElement(new Notify(guid,id));
           }
          
           droppable.after(newElement.content());
@@ -158,11 +158,13 @@ var SleepEditor = function(element, options) {
 
     };
 
-    var Notify = function(id) {
+    var Notify = function(id,notifyId) {
   
-      const elem = $(`<div class="notify" id='notify_container_${id}'></div>`);
-      const notifyId = id;
+      let _notifyId = notifyId;
+      let _id = id;
+      const elem = $(`<div class="notify" id='notify_container_${_id}'></div>`);
     
+      
       this.content = function()
       {
         return elem;
@@ -173,15 +175,14 @@ var SleepEditor = function(element, options) {
         return editor.getElement();
       }
 
-      this.ShowPopup = function(style)
+      this.ShowPopup = function()
       {
-          const id = `notify_${notifyId}`;
-          const keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
-          const title = "Foo";
-          ShowNotify(id,keyVals,title,"","#","",style,`#notify_container_${notifyId}`,"static");
+          GetNotifyObject(_notifyId).then((body) => {
+            var object = JSON.parse(body);
+            const divId = `notify_${_id}`;
+            ShowNotify(divId,keyVals,object.title,object.message,productLink,pictureLink,object.style,`#notify_container_${_id}`,"static");
+          });
       };
-
-
-      this.ShowPopup("modern");
+      this.ShowPopup();
       
     };
