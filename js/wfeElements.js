@@ -82,7 +82,7 @@ var SleepEditor = function(element, options) {
           var type = $(ui.draggable).attr("type");
           if(type === "sleep")
             var newElement = new WfeElement(new Sleep());
-          else(type == "notify")
+          else if(type === "notify")
           {
             var id = $(ui.draggable).attr("notify-id");
             var newElement = new WfeElement(new Notify(guid,id));
