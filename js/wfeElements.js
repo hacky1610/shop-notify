@@ -162,7 +162,8 @@ var SleepEditor = function(element, options) {
   
       let _notifyId = notifyId;
       let _id = id;
-      const elem = $(`<div class="notify" id='notify_container_${_id}'></div>`);
+      const _container_id = `notify_container_${_id}`;
+      const elem = $(`<div class="notify" id='${_container_id}'><div class="loader"></div></div>`);
     
       
       this.content = function()
@@ -175,10 +176,24 @@ var SleepEditor = function(element, options) {
         return editor.getElement();
       }
 
+      function NotifyLoaded()
+      {
+        $(`#${_container_id} .loader`).remove();
+
+      }
+       
+      function ShowNotifyCallback(keyVals,productLink,pictureLink)
+      {	
+        GetNotifyObject(_notifyId).then((body) => {
+          var object = JSON.parse(body);
+          ShowNotify(_id,keyVals,object.title,object.message,productLink,pictureLink,object.style,`#${_container_id}`, "static").then(NotifyLoaded);
+        });
+      }
+
       this.ShowPopup = function()
       {
 
-        ShowOrder(ShowOrderPopupAdmin,_notifyId,`#notify_container_${_id}`,"static",_id);
+        ShowOrder(ShowNotifyCallback);
          
       };
       this.ShowPopup();

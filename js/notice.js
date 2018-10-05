@@ -49,14 +49,14 @@ function SwitchTabToReviews()
 
 
 
-function ShowOrderPopup(notifyId,keyVals,productLink,pictureLink,element, position,guid)
+function ShowOrderPopup(keyVals,productLink,pictureLink)
 {
 	if(jQuery(".cookie-notice-container").length == 1)
 	   additionalClass = "wcn-notify-cookie";
 	
-	GetNotifyObject(notifyId).then((body) => {
+	GetNotifyObject(1441).then((body) => {
 		var object = JSON.parse(body);
-		ShowNotify(guid,keyVals,object.title,object.message,productLink,pictureLink,object.style,element, position);
+		ShowNotify("guid",keyVals,object.title,object.message,productLink,pictureLink,object.style,"body", "fixed");
 	});
 
 	setTimeout(() => 
@@ -65,13 +65,7 @@ function ShowOrderPopup(notifyId,keyVals,productLink,pictureLink,element, positi
 	}, 5000);
 }
 
-function ShowOrderPopupAdmin(notifyId,keyVals,productLink,pictureLink,element, position,guid)
-{	
-	GetNotifyObject(notifyId).then((body) => {
-		var object = JSON.parse(body);
-		ShowNotify(guid,keyVals,object.title,object.message,productLink,pictureLink,object.style,element, position);
-	});
-}
+
 
 
 function GetReviewTemplate(title, linkSnippet)
@@ -210,7 +204,7 @@ function ShowReviewPopup(title, message, icon, link)
 		});
 	}
 
-	function ShowOrder(callback,notifyId,element, position,guid)
+	function ShowOrder(callback)
 	{
 		getLastOrder().then((lastorder) => {
 			var product = lastorder.items[0];
@@ -232,7 +226,7 @@ function ShowReviewPopup(title, message, icon, link)
 			
 			var keyVals = {ProductName: product.name, GivenName: name};
 
-			callback(notifyId,keyVals,link,image,element, position,guid);
+			callback(keyVals,link,image);
 
 		});
 	}

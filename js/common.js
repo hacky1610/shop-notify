@@ -115,7 +115,7 @@ function ShowNotify(id,keyVals,title,message,productLink,pictureLink,style, elem
         'title_content': JSON.stringify(titleArray),
         'message_content': JSON.stringify(messageArray)
 		};
-    SendAjaxSync(data).then((body) => {
+    return SendAjaxSync(data).then((body) => {
         //jQuery("#" + id).remove();
         
         ShowPopup("","", 150000,body,element,position);
