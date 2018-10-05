@@ -24,6 +24,12 @@ class Styles {
     function __construct($datastore,$logger){
         $this->datastore = $datastore;
         $this->logger = $logger;
+        wp_register_script( 'style-editor-script',  plugins_url( '/../js/adminStyleEditor.js?', __FILE__));
+        wp_localize_script('style-editor-script', 'style_editor_vars', array(
+            'editor_url' => admin_url().'edit.php?post_type=shop-notify&page=sn_style_editor&style='
+        ));
+        wp_enqueue_script( 'style-editor-script' );
+
     }
 
     function AddSlider($id,$value,$class,$labeltext)
@@ -83,7 +89,6 @@ class Styles {
                     CommonControls::AddEditControl("wcn_font-size","","wcn_mask","Font Size");
                     CommonControls::AddEditControl("wcn_font-family","","wcn_font_select","Font family", false);
                     $this->AddSlider("wcn_opacity","","","Opacity");
-                    $this->JsCode();
                     ?>
                     </div>
                     <input  class="button" id="style-editor-save-button" value="Save" />
@@ -112,42 +117,5 @@ class Styles {
         </div> 
         <?php
      }
-
-   
-
-     private function JsCode()
-     {?>
-        <script>
-        jQuery(document).ready(function($)
-            {
-
-                
-                $(document).on('change', '.layout-content', function()
-                    {
-        
-                        var style = $(this).children(":selected").attr("id");
-                        
-                        if(style=='create-new'){
-                            
-                            style = prompt('(Must be unique) Layout name ?');
-                            
-                            //layout = $.now();
-                            
-                            if(style!=null){
-                                window.location.href = "<?php echo admin_url().'edit.php?post_type=post_grid&page=post_grid_layout_editor&layout_content=';?>"+style;
-                                }
-                            }
-                        else{
-                            window.location.href = "<?php echo admin_url().'edit.php?post_type=shop-notify&page=sn_style_editor&style=';?>"+style;
-                            }
-                    })
-                
-                })
-        </script>
-        <?php
-     }
-
-    
-
 }
 
