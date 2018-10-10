@@ -5,7 +5,8 @@ module.exports = {
     },
     "rules": {
         "linebreak-style": ["error", "windows"],
-        "max-len": ["error", { "code": 120 }]
+        "max-len": ["error", { "code": 120 }],
+        "require-jsdoc" : 0
     }
 
     

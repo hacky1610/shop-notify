@@ -1,13 +1,19 @@
 // https://gist.github.com/leolux/c794fc63d9c362013448
-const SleepEditor = function(element) {
-  const sleep = element;
-  const valueChanged = function(o) {
-    sleep.setTime(o.target.value);
+/**
+ * A class that can return the number 10
+ */
+class SleepEditor {
+  constructor(element) {
+    this.sleep = element;
   };
-  // Public method - can be called from client code
-  this.getElement = function() {
-    const inputTime = $(`<input type="text" name="FirstName" value="${element.getTime()}">`);
-    inputTime.change(valueChanged);
+
+  valueChanged(o) {
+    this.sleep.setTime(o.target.value);
+  };
+
+  get getElement() {
+    const inputTime = $(`<input type="text" name="FirstName" value="${this.sleep.getTime()}">`);
+    inputTime.change(this.valueChanged.bind(this));
     const frame = $(`<div></div>`);
     frame.append(inputTime);
     return frame;
@@ -136,7 +142,7 @@ const Sleep = function() {
   };
 
   this.getEditor = function() {
-    return editor.getElement();
+    return editor.getElement;
   };
 
   this.getTime = function() {
