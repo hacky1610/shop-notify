@@ -78,6 +78,12 @@
 {
 	width: 30%;
 	float: left;
+	display: grid;
+}
+
+#toolarea .section
+{
+	display: block;
 }
 
 .droparea

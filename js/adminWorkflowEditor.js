@@ -36,6 +36,10 @@ jQuery(document).ready(function($) {
             renderAll();
     }
 
+    var elementSelected = function(o)
+    {
+        $("#editorarea").append(o.editor());
+    };
 
     $( ".sortable" ).sortable(({
         update: function( event, ui ) {renderAll();}
@@ -44,6 +48,7 @@ jQuery(document).ready(function($) {
 
       // pass options to plugin constructor
       var s1 = new WfeElement(new Sleep());
+      s1.selected(elementSelected);
 
       addElement(s1);
       

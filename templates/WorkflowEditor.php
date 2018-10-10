@@ -72,7 +72,7 @@ class WorkflowEditor {
             </div>
 
             <div id="toolarea">
-                <div id="notifyList">
+                <div class="section" id="notifyList">
                 <?php
 
                 
@@ -84,10 +84,10 @@ class WorkflowEditor {
                 }
                 ?>
                 </div>
-                <div id="toollist">
+                <div class="section" id="toollist">
                     <div class="draggable" type="sleep">Sleep</div>
                 </div>
-                <div id="editorarea">
+                <div class="section" id="editorarea">
                 
                 </div>
             </div>
