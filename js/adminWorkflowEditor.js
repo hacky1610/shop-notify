@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
 
     var elementSelected = function(o)
     {
-        $("#editorarea").append(o.editor());
+        $("#editorarea").append(o.editor.getContent);
     };
 
     $( ".sortable" ).sortable(({
@@ -47,12 +47,12 @@ jQuery(document).ready(function($) {
     $( ".sortable" ).disableSelection();
 
       // pass options to plugin constructor
-      var s1 = new WfeElement(new Sleep());
+      var s1 = new Sleep();
       s1.selected(elementSelected);
 
       addElement(s1);
       
-      $('.droparea').append(s1.content()) 
+      $('.droparea').append(s1.getContent) 
 
       renderAll();
 

@@ -11,8 +11,8 @@ class SleepEditor {
     this.sleep.setTime(o.target.value);
   };
 
-  get getElement() {
-    const inputTime = $(`<input type="text" name="FirstName" value="${this.sleep.getTime()}">`);
+  get getContent() {
+    const inputTime = $(`<input type="text" name="FirstName" value="${this.sleep.Time}">`);
     inputTime.change(this.valueChanged.bind(this));
     const frame = $(`<div></div>`);
     frame.append(inputTime);
@@ -20,42 +20,72 @@ class SleepEditor {
   };
 };
 
-const WfeElement = function(c) {
-  this.render = function() {
-    frame.empty();
-    if (frame.before()[0].className.includes('wfe')) {
-      frame.append(beforeLine);
-    }
-    frame.append(content.content());
-    frame.append(afteline);
-    frame.append(dropLine);
-    if (frame.next().length == 0 ) {
-      frame.append(afterIcon);
-    }
+class NotifyEditor {
+  constructor(element) {
+    this.notify = element;
   };
 
-  this.content = function() {
+  valueChanged(o) {
+    this.notify.setDuration(o.target.value);
+  };
+
+  get getContent() {
+    const inputTime = $(`<input type="text" name="FirstName" value="${this.notify.Duration}">`);
+    inputTime.change(this.valueChanged.bind(this));
+    const frame = $(`<div></div>`);
+    frame.append(inputTime);
     return frame;
   };
+};
 
-  this.editor = function() {
-    return content.getEditor();
+class WfeElement {
+  constructor() { 
+    this.guid = this.createUUID();
+    this.frame = $(`<li id='${this.guid}' class='wfeElement droppable'></li>` );
+    this.beforeLine = $( '<div class="wfeElement vl center">' );
+    this.afteline = $( '<div class="wfeElement vl center">' );
+    this.dropLine = $( '<div class="wfeElement hl center">' );
+    this.afterIcon = $( '<div class="wfeElement plus center">+</div>' );
+    this.that = this;
+    this.selectedCallback = null;
+    this.elementAddedCallback = null;
+  }
+
+  render() {
+    this.frame.empty();
+    if (this.frame.before()[0].className.includes('wfe')) {
+      this.frame.append(this.beforeLine);
+    }
+    this.frame.append(this.item);
+    this.frame.append(this.afteline);
+    this.frame.append(this.dropLine);
+    if (this.frame.next().length == 0 ) {
+      this.frame.append(this.afterIcon);
+    }
   };
 
-  this.selected = function(callback) {
+  get getContent() {
+    return this.frame;
+  };
+
+  get getEditor() {
+    return this.editor;
+  };
+
+  selected(callback) {
     this.selectedCallback = callback;
   };
 
-  this.elementAdded = function(callback) {
-    elementAddedCallback = callback;
+  elementAdded(callback) {
+    this.elementAddedCallback = callback;
   };
 
-  this.addAfter = function(element) {
-    after = element;
+  addAfter(element) {
+    this.after = element;
     element.content().insertAfter(this.content());
   };
 
-  const createUUID = function() {
+  createUUID() {
     // http://www.ietf.org/rfc/rfc4122.txt
     let s = [];
     const hexDigits = '0123456789abcdef';
@@ -70,124 +100,115 @@ const WfeElement = function(c) {
     return uuid;
   };
 
-  this.elementDropped = function(event, ui) {
-    const droppable = $(this);
+  elementDropped(event, ui) {
+    const droppable = $(event.target);
     const draggable = ui.draggable;
     let newElement = null;
 
     const type = $(ui.draggable).attr('type');
     if (type === 'sleep') {
-      newElement = new WfeElement(new Sleep());
+      newElement = new Sleep();
     } else if (type === 'notify') {
       const id = $(ui.draggable).attr('notify-id');
-      newElement = new WfeElement(new Notify(guid, id));
+      newElement = new Notify(id);
     }
 
-    newElement.selected(that.selectedCallback);
-    droppable.after(newElement.content());
-    elementAddedCallback(newElement, true);
+    newElement.selected(this.selectedCallback);
+    droppable.after(newElement.getContent);
+    this.elementAddedCallback(newElement, true);
     draggable.css({
       float: 'left',
     });
   };
 
-  this.initEvents = function() {
+
+  initEvents() {
     const that = this;
-    content.content().click(() => {
+    this.item.click(() => {
       if (that.selectedCallback !== null) {
         that.selectedCallback(that);
       }
     }).bind(this);
 
-    frame.droppable({
+    this.frame.droppable({
       classes: {
         'ui-droppable-hover': 'ui-state-hover',
       },
       accept: '.draggable',
-      drop: this.elementDropped,
+      drop: this.elementDropped.bind(this),
     });
 
 
-    afterIcon.on('drop', function(event) {
+    this.afterIcon.on('drop', function(event) {
       alert();
     });
 
-    afterIcon.on('dragover', function(event) {
+    this.afterIcon.on('dragover', function(event) {
       event.preventDefault();
       event.stopPropagation();
       $(this).addClass('dragging');
     });
   };
 
-  const guid = createUUID();
-  const frame = $(`<li id='${guid}' class='wfeElement droppable'></li>` );
-  const beforeLine = $( '<div class="wfeElement vl center">' );
-  const afteline = $( '<div class="wfeElement vl center">' );
-  const dropLine = $( '<div class="wfeElement hl center">' );
-  const afterIcon = $( '<div class="wfeElement plus center">+</div>' );
-  const content = c;
-  const that = this;
-  this.selectedCallback = null;
-  let elementAddedCallback = null;
-  this.initEvents();
 };
 
-const Sleep = function() {
-  const elem = $('<div class="action"></div>');
-  const editor = new SleepEditor(this);
-  let time = '10';
-
-  this.content = function() {
-    return elem;
+class Sleep extends WfeElement {
+  constructor() {
+    super(); // call the super class constructor and pass in the name parameter
+    this.item = $('<div class="action"></div>');
+    this.editor = new SleepEditor(this);
+    this.time = '10';
+    this.initEvents();
+    this.update();
   };
 
-  this.getEditor = function() {
-    return editor.getElement;
+  get Time() {
+    return this.time;
   };
 
-  this.getTime = function() {
-    return time;
+  setTime(t) {
+    this.time = t;
+    this.update();
   };
 
-  this.setTime = function(t) {
-    time = t;
-    update();
+  update() {
+    this.item.html(`Wait ${this.Time} seconds`);
   };
-
-  const update = function() {
-    elem.html(`Wait ${time} seconds`);
-  };
-  update();
 };
 
-const Notify = function(id, notifyId) {
-  let _notifyId = notifyId;
-  let _id = id;
-  const _containerId = `notify_container_${_id}`;
-  const elem = $(`<div class="notify" id='${_containerId}'><div class="loader"></div></div>`);
-
-  this.content = function() {
-    return elem;
+class Notify extends WfeElement {
+  constructor(notifyId) {
+    super(); // call the super class constructor and pass in the name parameter
+    this.editor = new NotifyEditor(this);
+    this._containerId = `notify_container_${this.guid}`;
+    this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
+    this._notifyId = notifyId;
+    this.duration = 60;
+    this.initEvents();
+    this.showPopup();
   };
 
-  this.getEditor = function() {
-    return editor.getElement();
+  NotifyLoaded() {
+    $(`#${this._containerId} .loader`).remove();
   };
 
-  const NotifyLoaded = function() {
-    $(`#${_containerId} .loader`).remove();
-  };
-
-  const ShowNotifyCallback = function(keyVals, productLink, pictureLink) {
-    GetNotifyObject(_notifyId).then((body) => {
+  ShowNotifyCallback(keyVals, productLink, pictureLink) {
+    let show = (body) => {
       const object = JSON.parse(body);
-      ShowNotify(_id, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${_containerId}`, 'static').then(NotifyLoaded);
-    });
+      ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${this._containerId}`, 'static').then(this.NotifyLoaded.bind(this));
+    };
+    GetNotifyObject(this._notifyId).then(show.bind(this));
   };
 
-  this.showPopup = function() {
-    ShowOrder(ShowNotifyCallback);
+  showPopup() {
+    ShowOrder(this.ShowNotifyCallback.bind(this));
   };
 
-  this.showPopup();
+  get Duration() {
+    return this.duration;
+  };
+
+  setDuration(t) {
+    this.duration = t;
+  };
 };
