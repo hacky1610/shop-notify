@@ -14,7 +14,7 @@ class SleepEditor {
   get getContent() {
     const inputTime = $(`<input type="text" name="FirstName" value="${this.sleep.Time}">`);
     inputTime.change(this.valueChanged.bind(this));
-    const frame = $(`<div></div>`);
+    const frame = $(`<div><p>Wait: </p></div>`);
     frame.append(inputTime);
     return frame;
   };
@@ -32,7 +32,7 @@ class NotifyEditor {
   get getContent() {
     const inputTime = $(`<input type="text" name="FirstName" value="${this.notify.Duration}">`);
     inputTime.change(this.valueChanged.bind(this));
-    const frame = $(`<div></div>`);
+    const frame = $(`<div><p>Duration: </p></div>`);
     frame.append(inputTime);
     return frame;
   };
