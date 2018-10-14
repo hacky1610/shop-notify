@@ -47,26 +47,11 @@ class AdmninWorkflowEditor {
   }
 
   elementSelected(o) {
+    $('#editorarea').empty();
     $('#editorarea').append(o.editor.getContent);
   };
-
-  selectionCanged(element) {
-    $('#editorarea').append(element.getEditor());
-  }
-}
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev, o) {
-  ev.dataTransfer.setData(o);
-}
-
-function drop(ev) {
-  setTimeout(ShowPreviewPopup, 100)
 }
 
 jQuery(document).ready(function($) {
-  const awe = new AdmninWorkflowEditor();
+  new AdmninWorkflowEditor();
 });
