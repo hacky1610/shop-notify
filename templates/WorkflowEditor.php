@@ -85,12 +85,16 @@ class WorkflowEditor {
                 ?>
                 </div>
                 <div class="section" id="toollist">
-                    <div class="draggable" type="sleep"></div>
+                    <div class="draggable" type="sleep">Sleep</div>
                 </div>
                 <div class="section" id="editorarea">
                 
                 </div>
+                <div>
+                  <input id="saveButton" class="btn btn-primary" type="button" value="Save"> 
+                </div>
             </div>
+
         </div>
 
         <?php

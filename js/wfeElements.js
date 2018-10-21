@@ -39,7 +39,7 @@ class NotifyEditor {
 };
 
 class WfeElement {
-  constructor() { 
+  constructor() {
     this.guid = this.createUUID();
     this.frame = $(`<li id='${this.guid}' class='wfeElement droppable'></li>` );
     this.beforeLine = $( '<div class="wfeElement vl center">' );
@@ -49,6 +49,7 @@ class WfeElement {
     this.that = this;
     this.selectedCallback = null;
     this.elementAddedCallback = null;
+    this.data = {};
   }
 
   render() {
@@ -63,6 +64,13 @@ class WfeElement {
       this.frame.append(this.afterIcon);
     }
   };
+
+  get getData() {
+    return {
+      type: this.constructor.name,
+      data: JSON.stringify(this.data),
+    };
+  }
 
   get getContent() {
     return this.frame;
@@ -101,24 +109,7 @@ class WfeElement {
   };
 
   elementDropped(event, ui) {
-    const droppable = $(event.target);
-    const draggable = ui.draggable;
-    let newElement = null;
-
-    const type = $(ui.draggable).attr('type');
-    if (type === 'sleep') {
-      newElement = new Sleep();
-    } else if (type === 'notify') {
-      const id = $(ui.draggable).attr('notify-id');
-      newElement = new Notify(id);
-    }
-
-    newElement.selected(this.selectedCallback);
-    droppable.after(newElement.getContent);
-    this.elementAddedCallback(newElement, true);
-    draggable.css({
-      float: 'left',
-    });
+    this.elementAddedCallback(event, ui);
   };
 
 
@@ -157,17 +148,17 @@ class Sleep extends WfeElement {
     super(); // call the super class constructor and pass in the name parameter
     this.item = $('<div class="action"></div>');
     this.editor = new SleepEditor(this);
-    this.time = '10';
+    this.data.time = '10';
     this.initEvents();
     this.update();
   };
 
   get Time() {
-    return this.time;
+    return this.data.time;
   };
 
   setTime(t) {
-    this.time = t;
+    this.data.time = t;
     this.update();
   };
 
@@ -183,7 +174,7 @@ class Notify extends WfeElement {
     this._containerId = `notify_container_${this.guid}`;
     this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
     this._notifyId = notifyId;
-    this.duration = 60;
+    this.data.duration = 60;
     this.initEvents();
     this.showPopup();
   };
@@ -205,10 +196,10 @@ class Notify extends WfeElement {
   };
 
   get Duration() {
-    return this.duration;
+    return this.data.duration;
   };
 
   setDuration(t) {
-    this.duration = t;
+    this.data.duration = t;
   };
 };
