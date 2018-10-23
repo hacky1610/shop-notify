@@ -18,6 +18,7 @@ include_once dirname( __FILE__ ) . '/model/Style.php';
 include_once dirname( __FILE__ ) . '/model/Layout.php';
 include_once dirname( __FILE__ ) . '/model/Notify.php';
 include_once dirname( __FILE__ ) . '/adapter/StyleAdapter.php';
+include_once dirname( __FILE__ ) . '/adapter/WorkflowAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/PostMetaAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/NotifyAdapter.php';
 include_once dirname( __FILE__ ) . '/adapter/NotifyLayoutAdapter.php';
@@ -37,6 +38,7 @@ class WoocommerceNotice{
     public $notifySettingsEditor;
     private $postMetaAdapter;
     private $styleAdapter;
+    private $workflowAdaper;
     private $notifyLayoutAdapter;
     private $notifyAdapter;
 
@@ -47,6 +49,7 @@ class WoocommerceNotice{
         $this->datastore  = $datastore;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore,$wpAdapter,$this->logger );
+        $this->workflowAdaper = new WorkflowAdapter($this->datastore,$wpAdapter,$this->logger );
         $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
         $this->notifyLayoutAdapter = new NotifyLayoutAdapter($wpAdapter,$this->logger);
         $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
@@ -75,7 +78,7 @@ class WoocommerceNotice{
     }
     
     public function ShowWorkflowEditor(){
-        $wfe = new WorkflowEditor($this->datastore,$this->logger,$this->postMetaAdapter,$this->notifyLayoutAdapter);
+        $wfe = new WorkflowEditor($this->datastore,$this->logger,$this->postMetaAdapter,$this->notifyLayoutAdapter,$this->workflowAdaper);
         $wfe->Show();
     }
     

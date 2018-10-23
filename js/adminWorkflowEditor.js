@@ -30,6 +30,8 @@ class AdmninWorkflowEditor {
       },
     });
 
+    this.load();
+
     $('#saveButton').click(this.save.bind(this));
   };
 
@@ -78,8 +80,27 @@ class AdmninWorkflowEditor {
     this.items.forEach(function(e) {
       data.push(e.getData);
     });
-    console.log(JSON.stringify(data));
+    const d = {
+      'action': 'wcn_save_workflow',
+      'workflow_content': JSON.stringify(data),
+    };
+    SendAjaxSync(d).then((res) => {
+      CheckResponse(res, jumpToSource);
+    });
+  };
+
+  load() {
+    const d = {
+      'action': 'wcn_get_workflow',
+    };
+    SendAjaxSync(d).then((res) => {
+      const c = JSON.parse(res.replace(/\\/g, ''));
+      console.log(c);
+      
+    });
   }
+
+
 }
 
 jQuery(document).ready(function($) {

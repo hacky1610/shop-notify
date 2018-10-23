@@ -22,11 +22,13 @@ class WorkflowEditor {
     private $logger;
     private $shopNotifyList = array();
     private $notifyLayoutAdapter;
+    private $workflowAdapter;
     
-    function __construct($datastore,$logger,$postmetaAdapter,$notifyLayoutAdapter){
+    function __construct($datastore,$logger,$postmetaAdapter,$notifyLayoutAdapter,$workflowAdapter){
         $this->datastore = $datastore;
         $this->logger = $logger;
         $this->notifyLayoutAdapter = $notifyLayoutAdapter;
+        $this->workflowAdapter = $workflowAdapter;
 
         $allNotifyIds = get_posts(array(
             'fields'          => 'ids',

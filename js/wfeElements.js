@@ -68,7 +68,7 @@ class WfeElement {
   get getData() {
     return {
       type: this.constructor.name,
-      data: JSON.stringify(this.data),
+      data: this.data,
     };
   }
 
@@ -173,7 +173,7 @@ class Notify extends WfeElement {
     this.editor = new NotifyEditor(this);
     this._containerId = `notify_container_${this.guid}`;
     this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
-    this._notifyId = notifyId;
+    this.data.notifyId = notifyId;
     this.data.duration = 60;
     this.initEvents();
     this.showPopup();
@@ -188,7 +188,7 @@ class Notify extends WfeElement {
       const object = JSON.parse(body);
       ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${this._containerId}`, 'static').then(this.NotifyLoaded.bind(this));
     };
-    GetNotifyObject(this._notifyId).then(show.bind(this));
+    GetNotifyObject(this.data.notifyId).then(show.bind(this));
   };
 
   showPopup() {
