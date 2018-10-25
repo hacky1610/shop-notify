@@ -42,9 +42,11 @@ class WfeElement {
   constructor() {
     this.guid = this.createUUID();
     this.frame = $(`<li id='${this.guid}' class='wfeElement droppable'></li>` );
+    this.innerframe = $(`<div class="wfeElement inner-frame"></div>` );
     this.beforeLine = $( '<div class="wfeElement vl center">' );
     this.afteline = $( '<div class="wfeElement vl center">' );
     this.dropLine = $( '<div class="wfeElement hl center">' );
+    this.deleteIcon = $( '<div class="wfeElement delete-icon"><img src="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Actions-window-close-icon.png"></div>' );
     this.afterIcon = $( '<div class="wfeElement plus center">+</div>' );
     this.that = this;
     this.selectedCallback = null;
@@ -57,7 +59,9 @@ class WfeElement {
     if (this.frame.before()[0].className.includes('wfe')) {
       this.frame.append(this.beforeLine);
     }
-    this.frame.append(this.item);
+    this.frame.append(this.innerframe);
+    this.innerframe.append(this.item);
+    this.innerframe.append(this.deleteIcon);
     this.frame.append(this.afteline);
     this.frame.append(this.dropLine);
     if (this.frame.next().length == 0 ) {
@@ -70,6 +74,10 @@ class WfeElement {
       type: this.constructor.name,
       data: this.data,
     };
+  }
+
+  setData(data) {
+    this.data = data;
   }
 
   get getContent() {

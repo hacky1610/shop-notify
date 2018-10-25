@@ -7,16 +7,6 @@ class AdmninWorkflowEditor {
       },
     }));
     $( '.sortable' ).disableSelection();
-
-    // pass options to plugin constructor
-    const s1 = new Sleep();
-
-
-    this.addElement(s1);
-    $('.droparea').append(s1.getContent);
-
-    this.renderAll();
-
     $('.draggable').draggable({
       revert: 'invalid',
       stack: '.draggable',
@@ -30,11 +20,33 @@ class AdmninWorkflowEditor {
       },
     });
 
-    this.load();
+    this.load(this.loadElements.bind(this));
 
     $('#saveButton').click(this.save.bind(this));
   };
 
+  loadElements(res) {
+    const elements = JSON.parse(res.replace(/\\/g, ''));
+    let before = null;
+    elements.forEach(function(o) {
+      let e = undefined;
+      if (o.type === 'Sleep') {
+        e = new Sleep();
+      } else if (o.type === 'Notify') {
+        e = new Notify();
+      }
+      e.setData(o.data);
+      this.addElement(e);
+      if (before === null) {
+        $('.droparea').append(e.getContent);
+      } else {
+        before = e.getContent;
+        $(before).after(e.getContent);
+      }
+    }.bind(this));
+
+    this.renderAll();
+  };
 
   renderAll() {
     this.items.forEach(function(element) {
@@ -89,15 +101,11 @@ class AdmninWorkflowEditor {
     });
   };
 
-  load() {
+  load(callback) {
     const d = {
       'action': 'wcn_get_workflow',
     };
-    SendAjaxSync(d).then((res) => {
-      const c = JSON.parse(res.replace(/\\/g, ''));
-      console.log(c);
-      
-    });
+    SendAjaxSync(d).then(callback);
   }
 
 

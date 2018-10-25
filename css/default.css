@@ -113,6 +113,29 @@
 	display: none;
 }
 
+.inner-frame {
+  position: relative;
+}
+
+.inner-frame:hover .delete-icon
+{
+  opacity: 1;
+}
+
+.delete-icon {
+  top: -10px;
+  right: -10px;
+  position: absolute;
+  opacity: 0;
+  transition: .5s ease;
+}
+
+.delete-icon img {
+  height: 22px;
+  width: 22px;
+}
+
+
 
 .action
 {
