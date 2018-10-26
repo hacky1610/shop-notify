@@ -2,9 +2,7 @@ class AdmninWorkflowEditor {
   constructor() {
     this.items = [];
     $( '.sortable' ).sortable(({
-      update: function( event, ui ) {
-        renderAll();
-      },
+      update: this.update.bind(this),
     }));
     $( '.sortable' ).disableSelection();
     $('.draggable').draggable({
@@ -24,6 +22,10 @@ class AdmninWorkflowEditor {
 
     $('#saveButton').click(this.save.bind(this));
   };
+
+  update(event, ui) {
+    this.renderAll();
+  }
 
   loadElements(res) {
     const elements = JSON.parse(res.replace(/\\/g, ''));
@@ -58,6 +60,7 @@ class AdmninWorkflowEditor {
     this.items.push(el);
     el.selected(this.elementSelected);
     el.elementAdded(this.elementAdded.bind(this));
+    el.deleteEvent(this.elementDeleted.bind(this));
     if (render == true) {
       this.renderAll();
     }
@@ -67,6 +70,12 @@ class AdmninWorkflowEditor {
     $('#editorarea').empty();
     $('#editorarea').append(o.editor.getContent);
   };
+
+  elementDeleted(element) {
+    const index = this.items.indexOf(element);
+    this.items.splice(index, 1);
+    this.renderAll();
+  }
 
   elementAdded(event, ui) {
     const draggable = ui.draggable;

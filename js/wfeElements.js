@@ -96,6 +96,10 @@ class WfeElement {
     this.elementAddedCallback = callback;
   };
 
+  deleteEvent(callback) {
+    this.deleteCallback = callback;
+  }
+
   addAfter(element) {
     this.after = element;
     element.content().insertAfter(this.content());
@@ -118,6 +122,12 @@ class WfeElement {
 
   elementDropped(event, ui) {
     this.elementAddedCallback(event, ui);
+  };
+
+  delete() {
+    this.frame.remove();
+    this.deleteCallback(this);
+    
   };
 
 
@@ -147,6 +157,8 @@ class WfeElement {
       event.stopPropagation();
       $(this).addClass('dragging');
     });
+
+    this.deleteIcon.click(this.delete.bind(this));
   };
 
 };
