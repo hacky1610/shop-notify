@@ -46,7 +46,7 @@ class WfeElement {
     this.beforeLine = $( '<div class="wfeElement vl center">' );
     this.afteline = $( '<div class="wfeElement vl center">' );
     this.dropLine = $( '<div class="wfeElement hl center">' );
-    this.deleteIcon = $( '<div class="wfeElement delete-icon"><img src="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Actions-window-close-icon.png"></div>' );
+    this.deleteIcon = $( '<div class="wfeElement delete-icon"><img src="' + workflow_element_vars.delete_icon + '"></div>' );
     this.afterIcon = $( '<div class="wfeElement plus center">+</div>' );
     this.that = this;
     this.selectedCallback = null;

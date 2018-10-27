@@ -10,6 +10,8 @@ include_once dirname( __FILE__ ) . '/private/WpDataStore.php';
 include_once dirname( __FILE__ ) . '/private/adapter/PostMetaAdapter.php';
 include_once dirname( __FILE__ ) . '/private/adapter/WpAdapter.php';
 
+define("WCN_PATH", plugin_dir_url( __FILE__ ));
+
 $logger = new Logger();
 $datastore = new DataStore(new WpDatastore());
 $postMetaAdapter = new PostMetaAdapter();
