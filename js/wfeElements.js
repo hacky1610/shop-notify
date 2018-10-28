@@ -55,7 +55,11 @@ class NotifyEditor {
 class WfeBaseElement {
   constructor() {
     this.guid = this.createUUID();
-    this.frame = $(`<li id='${this.guid}' class='wfeElement droppable'></li>` );
+    this.outerFrame = $(`<li id='${this.guid}' class='wfeElement'></li>` );
+    this.frame = $('<div></div');
+    this.addAfter = $('<div class="droppable add-after"></div');
+    this.outerFrame.append(this.frame);
+    this.outerFrame.append(this.addAfter);
   };
 
   createUUID() {
@@ -74,12 +78,12 @@ class WfeBaseElement {
   };
 
   get getContent() {
-    return this.frame;
+    return this.outerFrame;
   };
 
 
   initEvents() {
-    this.frame.droppable({
+    this.addAfter.droppable({
       classes: {
         'ui-droppable-hover': 'ui-state-hover',
       },
@@ -177,15 +181,6 @@ class WfeElement extends WfeBaseElement {
         that.selectedCallback(that);
       }
     }).bind(this);
-
-    this.frame.droppable({
-      classes: {
-        'ui-droppable-hover': 'ui-state-hover',
-      },
-      accept: '.draggable',
-      drop: this.elementDropped.bind(this),
-    });
-
 
     this.afterIcon.on('drop', function(event) {
       alert();

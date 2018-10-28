@@ -32,7 +32,7 @@ class AdmninWorkflowEditor {
     let before = null;
 
     const first = new WfeEntryElement();
-    
+
     first.elementAdded(this.elementAdded.bind(this));
     first.initEvents();
     $('.droparea').append(first.getContent);
@@ -99,7 +99,7 @@ class AdmninWorkflowEditor {
       newElement = new Condition();
     }
 
-    $(event.target).after(newElement.getContent);
+    $(event.target).parent().after(newElement.getContent);
     this.addElement(newElement, true);
     draggable.css({
       float: 'left',
