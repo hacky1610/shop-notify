@@ -92,6 +92,7 @@ class WorkflowEditor {
                 </div>
                 <div class="section" id="toollist">
                     <div class="draggable" type="sleep">Sleep</div>
+                    <div class="draggable" type="condition">Condition</div>
                 </div>
                 <div class="section" id="editorarea">
                 

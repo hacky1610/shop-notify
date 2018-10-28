@@ -144,3 +144,17 @@
 {
     font-weight: 600;
 }
+
+/*WorkflowEditor*/
+.condition-body
+{
+  display: flex;
+  border: gray;
+  border-style: double;
+  height: 70px;
+}
+
+.entry-element {
+  width: 150px;
+  height: 25px;
+}

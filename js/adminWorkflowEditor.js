@@ -30,6 +30,14 @@ class AdmninWorkflowEditor {
   loadElements(res) {
     const elements = JSON.parse(res.replace(/\\/g, ''));
     let before = null;
+
+    const first = new WfeEntryElement();
+    
+    first.elementAdded(this.elementAdded.bind(this));
+    first.initEvents();
+    $('.droparea').append(first.getContent);
+
+
     elements.forEach(function(o) {
       let e = undefined;
       if (o.type === 'Sleep') {
@@ -40,7 +48,7 @@ class AdmninWorkflowEditor {
       e.setData(o.data);
       this.addElement(e);
       if (before === null) {
-        $('.droparea').append(e.getContent);
+        $(first.getContent).after(e.getContent);
       } else {
         before = e.getContent;
         $(before).after(e.getContent);
@@ -87,6 +95,8 @@ class AdmninWorkflowEditor {
     } else if (type === 'notify') {
       const id = $(ui.draggable).attr('notify-id');
       newElement = new Notify(id);
+    } else if (type === 'condition') {
+      newElement = new Condition();
     }
 
     $(event.target).after(newElement.getContent);

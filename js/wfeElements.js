@@ -20,6 +20,20 @@ class SleepEditor {
   };
 };
 
+class ConditionEditor {
+  constructor(element) {
+    this.sleep = element;
+  };
+
+  valueChanged(o) {
+  };
+
+  get getContent() {
+    const frame = $(`<div><p></p></div>`);
+    return frame;
+  };
+};
+
 class NotifyEditor {
   constructor(element) {
     this.notify = element;
@@ -38,10 +52,61 @@ class NotifyEditor {
   };
 };
 
-class WfeElement {
+class WfeBaseElement {
   constructor() {
     this.guid = this.createUUID();
     this.frame = $(`<li id='${this.guid}' class='wfeElement droppable'></li>` );
+  };
+
+  createUUID() {
+    // http://www.ietf.org/rfc/rfc4122.txt
+    let s = [];
+    const hexDigits = '0123456789abcdef';
+    for (let i = 0; i < 36; i++) {
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = '-';
+
+    const uuid = s.join('');
+    return uuid;
+  };
+
+  get getContent() {
+    return this.frame;
+  };
+
+
+  initEvents() {
+    this.frame.droppable({
+      classes: {
+        'ui-droppable-hover': 'ui-state-hover',
+      },
+      accept: '.draggable',
+      drop: this.elementDropped.bind(this),
+    });
+  }
+
+  elementDropped(event, ui) {
+    this.elementAddedCallback(event, ui);
+  };
+
+  elementAdded(callback) {
+    this.elementAddedCallback = callback;
+  };
+};
+
+class WfeEntryElement extends WfeBaseElement {
+  constructor() {
+    super();
+    this.frame.append('<div class="wfeElement entry-element"></div>');
+  }
+}
+
+class WfeElement extends WfeBaseElement {
+  constructor() {
+    super();
     this.innerframe = $(`<div class="wfeElement inner-frame"></div>` );
     this.beforeLine = $( '<div class="wfeElement vl center">' );
     this.afteline = $( '<div class="wfeElement vl center">' );
@@ -80,20 +145,12 @@ class WfeElement {
     this.data = data;
   }
 
-  get getContent() {
-    return this.frame;
-  };
-
   get getEditor() {
     return this.editor;
   };
 
   selected(callback) {
     this.selectedCallback = callback;
-  };
-
-  elementAdded(callback) {
-    this.elementAddedCallback = callback;
   };
 
   deleteEvent(callback) {
@@ -105,25 +162,6 @@ class WfeElement {
     element.content().insertAfter(this.content());
   };
 
-  createUUID() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    let s = [];
-    const hexDigits = '0123456789abcdef';
-    for (let i = 0; i < 36; i++) {
-      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = '-';
-
-    const uuid = s.join('');
-    return uuid;
-  };
-
-  elementDropped(event, ui) {
-    this.elementAddedCallback(event, ui);
-  };
-
   delete() {
     this.frame.remove();
     this.deleteCallback(this);
@@ -132,6 +170,7 @@ class WfeElement {
 
 
   initEvents() {
+    super.initEvents();
     const that = this;
     this.item.click(() => {
       if (that.selectedCallback !== null) {
@@ -186,6 +225,37 @@ class Sleep extends WfeElement {
     this.item.html(`Wait ${this.Time} seconds`);
   };
 };
+
+class Condition extends WfeElement {
+  constructor() {
+    super(); // call the super class constructor and pass in the name parameter
+    this.item = $('<div class="condition"><div class="condition-header">Header</div><div class="condition-body"></div></div>');
+    this.trueColumn = $('<div class="condition-true">true</div>');
+    this.falseColumn = $('<div class="condition-false">false</div>');
+    this.item.find('.condition-body').append(this.trueColumn);
+    this.item.find('.condition-body').append(this.falseColumn);
+
+
+    this.editor = new ConditionEditor(this);
+    
+    this.initEvents();
+
+    this.first = new WfeEntryElement();
+    this.first.initEvents();
+    $(this.trueColumn).append(this.first.getContent);
+
+    this.update();
+  };
+
+  elementAdded(callback) {
+    super.elementAdded(callback);
+    this.first.elementAdded(callback);
+  }
+
+  update() {
+  };
+};
+
 
 class Notify extends WfeElement {
   constructor(notifyId) {
