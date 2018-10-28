@@ -55,11 +55,10 @@ class NotifyEditor {
 class WfeBaseElement {
   constructor() {
     this.guid = this.createUUID();
-    this.outerFrame = $(`<li id='${this.guid}' class='wfeElement'></li>` );
-    this.frame = $('<div></div');
-    this.addAfter = $('<div class="droppable add-after"></div');
-    this.outerFrame.append(this.frame);
-    this.outerFrame.append(this.addAfter);
+    this.frame = $(`<li id='${this.guid}' class='wfeElement'></li>` );
+    this.beforeLine = $( '<div class="droppable add-element  center"><div class="vl center"></div>' );
+    this.afteline = $( '<div class="droppable add-element  center"><div class="vl center"></div>' );
+
   };
 
   createUUID() {
@@ -78,12 +77,12 @@ class WfeBaseElement {
   };
 
   get getContent() {
-    return this.outerFrame;
+    return this.frame;
   };
 
 
   initEvents() {
-    this.addAfter.droppable({
+    this.afteline.droppable({
       classes: {
         'ui-droppable-hover': 'ui-state-hover',
       },
@@ -112,30 +111,30 @@ class WfeElement extends WfeBaseElement {
   constructor() {
     super();
     this.innerframe = $(`<div class="wfeElement inner-frame"></div>` );
-    this.beforeLine = $( '<div class="wfeElement vl center">' );
-    this.afteline = $( '<div class="wfeElement vl center">' );
-    this.dropLine = $( '<div class="wfeElement hl center">' );
+
     this.deleteIcon = $( '<div class="wfeElement delete-icon"><img src="' + workflow_element_vars.delete_icon + '"></div>' );
     this.afterIcon = $( '<div class="wfeElement plus center">+</div>' );
     this.that = this;
     this.selectedCallback = null;
     this.elementAddedCallback = null;
     this.data = {};
+    this.initFrame();
+  }
+
+  initFrame() {
+    this.frame.append(this.beforeLine);
+    this.frame.append(this.innerframe);
+    this.frame.append(this.afteline);
+    this.frame.append(this.dropLine);
   }
 
   render() {
-    this.frame.empty();
     if (this.frame.before()[0].className.includes('wfe')) {
-      this.frame.append(this.beforeLine);
+      
     }
-    this.frame.append(this.innerframe);
+    this.innerframe.empty();
     this.innerframe.append(this.item);
     this.innerframe.append(this.deleteIcon);
-    this.frame.append(this.afteline);
-    this.frame.append(this.dropLine);
-    if (this.frame.next().length == 0 ) {
-      this.frame.append(this.afterIcon);
-    }
   };
 
   get getData() {

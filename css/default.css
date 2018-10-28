@@ -104,6 +104,7 @@
 .vl {
     border-left: 2px solid green;
     height: 20px;
+    width: 1px;
 }
 
 .hl {
