@@ -104,6 +104,8 @@ class WfeEntryElement extends WfeBaseElement {
   constructor() {
     super();
     this.frame.append('<div class="wfeElement entry-element"></div>');
+    this.frame.append(this.afteline);
+
   }
 }
 
@@ -132,9 +134,10 @@ class WfeElement extends WfeBaseElement {
     if (this.frame.before()[0].className.includes('wfe')) {
       
     }
-    this.innerframe.empty();
-    this.innerframe.append(this.item);
-    this.innerframe.append(this.deleteIcon);
+    if (this.innerframe.children().length === 0) {
+      this.innerframe.append(this.item);
+      this.innerframe.append(this.deleteIcon);
+    }
   };
 
   get getData() {
@@ -234,16 +237,21 @@ class Condition extends WfeElement {
     
     this.initEvents();
 
-    this.first = new WfeEntryElement();
-    this.first.initEvents();
-    $(this.trueColumn).append(this.first.getContent);
+    this.firstTrue = new WfeEntryElement();
+    this.firstTrue.initEvents();
+    $(this.trueColumn).append(this.firstTrue.getContent);
+
+    this.firstFalse = new WfeEntryElement();
+    this.firstFalse.initEvents();
+    $(this.falseColumn).append(this.firstFalse.getContent);
 
     this.update();
   };
 
   elementAdded(callback) {
     super.elementAdded(callback);
-    this.first.elementAdded(callback);
+    this.firstTrue.elementAdded(callback);
+    this.firstFalse.elementAdded(callback);
   }
 
   update() {
