@@ -56,9 +56,9 @@ class WfeBaseElement {
   constructor() {
     this.guid = this.createUUID();
     this.frame = $(`<li id='${this.guid}' class='wfeElement'></li>` );
-    this.beforeLine = $( '<div class="droppable add-element  center"><div class="vl center"></div>' );
-    this.afteline = $( '<div class="droppable add-element  center"><div class="vl center"></div>' );
-
+    this.beforeLine = $( '<div class="droppable add-element  center"><div class="hl center"></div><div class="vl center"></div></div>' );
+    this.afteline = $( '<div class="droppable add-element  center"><div class="vl center"></div><div class="hl center"></div>' );
+  
   };
 
   createUUID() {
@@ -87,15 +87,27 @@ class WfeBaseElement {
         'ui-droppable-hover': 'ui-state-hover',
       },
       accept: '.draggable',
-      drop: this.elementDropped.bind(this),
+      drop: this.elementDroppedAfter.bind(this),
+    });
+
+    this.beforeLine.droppable({
+      classes: {
+        'ui-droppable-hover': 'ui-state-hover',
+      },
+      accept: '.draggable',
+      drop: this.elementDroppedBefore.bind(this),
     });
   }
 
-  elementDropped(event, ui) {
-    this.elementAddedCallback(event, ui);
+  elementDroppedAfter(event, ui) {
+    this.elementAddedCallback(event, ui, false);
   };
 
-  elementAdded(callback) {
+  elementDroppedBefore(event, ui) {
+    this.elementAddedCallback(event, ui, true);
+  };
+
+  registerElementAddedEvent(callback) {
     this.elementAddedCallback = callback;
   };
 };
@@ -131,7 +143,6 @@ class WfeElement extends WfeBaseElement {
 
   render() {
     if (this.frame.before()[0].className.includes('wfe')) {
-      
     }
     if (this.innerframe.children().length === 0) {
       this.innerframe.append(this.item);
@@ -154,11 +165,11 @@ class WfeElement extends WfeBaseElement {
     return this.editor;
   };
 
-  selected(callback) {
+  registerSelectedEvent(callback) {
     this.selectedCallback = callback;
   };
 
-  deleteEvent(callback) {
+  registerDeleteEvent(callback) {
     this.deleteCallback = callback;
   }
 
@@ -247,13 +258,14 @@ class Condition extends WfeElement {
     this.update();
   };
 
-  elementAdded(callback) {
-    super.elementAdded(callback);
-    this.firstTrue.elementAdded(callback);
-    this.firstFalse.elementAdded(callback);
+  registerElementAddedEvent(callback) {
+    super.registerElementAddedEvent(callback);
+    this.firstTrue.registerElementAddedEvent(callback);
+    this.firstFalse.registerElementAddedEvent(callback);
   }
 
   update() {
+
   };
 };
 

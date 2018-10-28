@@ -33,7 +33,7 @@ class AdmninWorkflowEditor {
 
     const first = new WfeEntryElement();
 
-    first.elementAdded(this.elementAdded.bind(this));
+    first.registerElementAddedEvent(this.elementAdded.bind(this));
     first.initEvents();
     $('.droparea').append(first.getContent);
 
@@ -66,9 +66,9 @@ class AdmninWorkflowEditor {
 
   addElement(el, render = false) {
     this.items.push(el);
-    el.selected(this.elementSelected);
-    el.elementAdded(this.elementAdded.bind(this));
-    el.deleteEvent(this.elementDeleted.bind(this));
+    el.registerSelectedEvent(this.elementSelected);
+    el.registerElementAddedEvent(this.elementAdded.bind(this));
+    el.registerDeleteEvent(this.elementDeleted.bind(this));
     if (render == true) {
       this.renderAll();
     }
@@ -85,7 +85,7 @@ class AdmninWorkflowEditor {
     this.renderAll();
   }
 
-  elementAdded(event, ui) {
+  elementAdded(event, ui, before) {
     const draggable = ui.draggable;
     let newElement = null;
 
@@ -99,11 +99,16 @@ class AdmninWorkflowEditor {
       newElement = new Condition();
     }
 
-    $(event.target).parent().after(newElement.getContent);
+    if (before) {
+      $(event.target).parent().before(newElement.getContent);
+    } else {
+      $(event.target).parent().after(newElement.getContent);
+    }
     this.addElement(newElement, true);
     draggable.css({
       float: 'left',
     });
+
   }
 
   save() {
