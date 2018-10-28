@@ -103,9 +103,8 @@ class WfeBaseElement {
 class WfeEntryElement extends WfeBaseElement {
   constructor() {
     super();
-    this.frame.append('<div class="wfeElement entry-element"></div>');
     this.frame.append(this.afteline);
-
+    this.frame.find('.vl').css('opacity', '0'); //TODO: nicht schön
   }
 }
 
@@ -226,9 +225,9 @@ class Sleep extends WfeElement {
 class Condition extends WfeElement {
   constructor() {
     super(); // call the super class constructor and pass in the name parameter
-    this.item = $('<div class="condition"><div class="condition-header">Header</div><div class="condition-body"></div></div>');
-    this.trueColumn = $('<div class="condition-true">true</div>');
-    this.falseColumn = $('<div class="condition-false">false</div>');
+    this.item = $('<div class="condition"><div class="condition-header"></div><div class="condition-body"></div></div>');
+    this.trueColumn = $('<div class="column condition-true">true</div>');
+    this.falseColumn = $('<div class="column condition-false">false</div>');
     this.item.find('.condition-body').append(this.trueColumn);
     this.item.find('.condition-body').append(this.falseColumn);
 

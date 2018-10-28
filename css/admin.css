@@ -153,6 +153,11 @@
   border-style: double;
 }
 
+.condition-body .column {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .entry-element {
   width: 150px;
 }
@@ -160,3 +165,141 @@
 .add-element {
   width: 150px;
 }
+
+.center
+{
+	margin-left: auto;
+    margin-right: auto;
+}
+
+#workingarea
+{
+	width: 70%;
+	float: left;
+}
+
+#toolarea
+{
+	width: 30%;
+	float: left;
+	display: grid;
+}
+
+#toolarea .section
+{
+	display: block;
+}
+
+.droparea
+{
+	width: fit-content;
+}
+
+.wfeElement
+{
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0px;
+	cursor: pointer;
+}
+
+
+.vl {
+    border-left: 2px solid green;
+    height: 20px;
+    width: 1px;
+}
+
+.hl {
+    height: 5px;
+	width: 100px;
+	background: green;
+	display: none;
+}
+
+.inner-frame {
+  position: relative;
+}
+
+.inner-frame:hover > .delete-icon
+{
+  opacity: 1;
+}
+
+.delete-icon {
+  top: -10px;
+  right: -10px;
+  position: absolute;
+  opacity: 0;
+  transition: .5s ease;
+}
+
+.delete-icon img {
+  height: 22px;
+  width: 22px;
+}
+
+
+
+.action
+{
+    border: black;
+    border-width: 3px;
+    border-style: double;
+ 
+    padding: 3px;
+}
+
+.wfeElement .notify
+{
+	display: inline-block;
+}
+
+.plus
+{
+    border: black;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50px
+}
+
+.ui-state-hover .hl
+{
+	display: block;
+}
+
+.notify-drag
+{
+	display: inline-grid;
+	cursor: pointer;
+}
+
+.notify-drag
+{
+	transform:scale(0.7);
+	transform-origin: top left;
+	margin-bottom: -10px;
+}
+
+.loader {
+	border: 10px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 10px solid #3498db;
+	width: 60px;
+	height: 60px;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
+	
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
