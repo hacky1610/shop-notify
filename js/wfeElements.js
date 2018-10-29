@@ -185,7 +185,8 @@ class WfeElement extends WfeBaseElement {
     this.deleteCallback(this);
   };
 
-  itemClicked() {
+  itemClicked(event) {
+    event.stopPropagation();
     if (this.selectedCallback !== null) {
       this.selectedCallback(this);
     }
