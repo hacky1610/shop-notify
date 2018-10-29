@@ -124,9 +124,7 @@ class WfeElement extends WfeBaseElement {
   constructor() {
     super();
     this.innerframe = $(`<div class="wfeElement inner-frame"></div>` );
-
     this.deleteIcon = $( '<div class="wfeElement delete-icon"><img src="' + workflow_element_vars.delete_icon + '"></div>' );
-    this.afterIcon = $( '<div class="wfeElement plus center">+</div>' );
     this.that = this;
     this.selectedCallback = null;
     this.elementAddedCallback = null;
@@ -149,6 +147,10 @@ class WfeElement extends WfeBaseElement {
       this.innerframe.append(this.deleteIcon);
     }
   };
+
+  get getGuid() {
+    return this.guid;
+  }
 
   get getData() {
     return {
@@ -181,29 +183,17 @@ class WfeElement extends WfeBaseElement {
   delete() {
     this.frame.remove();
     this.deleteCallback(this);
-    
   };
 
+  itemClicked() {
+    if (this.selectedCallback !== null) {
+      this.selectedCallback(this);
+    }
+  }
 
   initEvents() {
     super.initEvents();
-    const that = this;
-    this.item.click(() => {
-      if (that.selectedCallback !== null) {
-        that.selectedCallback(that);
-      }
-    }).bind(this);
-
-    this.afterIcon.on('drop', function(event) {
-      alert();
-    });
-
-    this.afterIcon.on('dragover', function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      $(this).addClass('dragging');
-    });
-
+    this.item.click(this.itemClicked.bind(this));
     this.deleteIcon.click(this.delete.bind(this));
   };
 
@@ -267,6 +257,41 @@ class Condition extends WfeElement {
   update() {
 
   };
+
+  get getData() {
+    this.data.trueItems = this.getTrueItems;
+    this.data.falseItems = this.getFalseItems;
+    return super.getData;
+  }
+
+  addToColumn(jsonElements, firstElement) {
+    if (jsonElements !== undefined) {
+      jsonElements.forEach(function(e) {
+        let element = adminWorkflowEditor.addElementToList(e);
+        let before = null;
+        if (before === null) {
+          $(firstElement.getContent).after(element.getContent);
+        } else {
+          before = element.getContent;
+          $(before).after(e.getContent);
+        }
+      });
+    }
+  }
+
+  setData(data) {
+    super.setData(data);
+    this.addToColumn(data.trueItems, this.firstTrue);
+    this.addToColumn(data.falseItems, this.firstFalse);
+  }
+
+  get getTrueItems() {
+    return adminWorkflowEditor.getItems(this.trueColumn.children('.wfeElement'));
+  }
+
+  get getFalseItems() {
+    return adminWorkflowEditor.getItems(this.falseColumn.children('.wfeElement'));
+  }
 };
 
 

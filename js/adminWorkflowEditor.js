@@ -27,6 +27,25 @@ class AdmninWorkflowEditor {
     this.renderAll();
   }
 
+  addElementToList(json) {
+    let e = undefined;
+    if (json.type === 'Sleep') {
+      e = new Sleep();
+    } else if (json.type === 'Notify') {
+      e = new Notify();
+    } else if (json.type === 'Condition') {
+      e = new Condition();
+    }
+
+    if (e === undefined) {
+      throw new Error(`Cant create object from type ${json.type}`);
+    }
+
+    e.setData(json.data);
+    this.addElement(e);
+    return e;
+  }
+
   loadElements(res) {
     const elements = JSON.parse(res.replace(/\\/g, ''));
     let before = null;
@@ -39,14 +58,7 @@ class AdmninWorkflowEditor {
 
 
     elements.forEach(function(o) {
-      let e = undefined;
-      if (o.type === 'Sleep') {
-        e = new Sleep();
-      } else if (o.type === 'Notify') {
-        e = new Notify();
-      }
-      e.setData(o.data);
-      this.addElement(e);
+      let e = this.addElementToList(o);
       if (before === null) {
         $(first.getContent).after(e.getContent);
       } else {
@@ -108,14 +120,29 @@ class AdmninWorkflowEditor {
     draggable.css({
       float: 'left',
     });
+  }
 
+  getItem(id) {
+    const found = this.items.find(function(element) {
+      return element.getGuid === id;
+    });
+    return found;
+  };
+
+  getItems(domItems) {
+    const data = [];
+    for (let i = domItems.length-1; i >= 0; i--) {
+      let item = adminWorkflowEditor.getItem(domItems[i].getAttribute('id'));
+      if (item !== undefined) {
+        data.push(item.getData);
+      }
+    }
+    return data;
   }
 
   save() {
-    const data = [];
-    this.items.forEach(function(e) {
-      data.push(e.getData);
-    });
+    const data = this.getItems($('.droparea').children('.wfeElement'));
+
     const d = {
       'action': 'wcn_save_workflow',
       'workflow_content': JSON.stringify(data),
@@ -135,6 +162,7 @@ class AdmninWorkflowEditor {
 
 }
 
+let adminWorkflowEditor = undefined;
 jQuery(document).ready(function($) {
-  new AdmninWorkflowEditor();
+  adminWorkflowEditor = new AdmninWorkflowEditor();
 });
