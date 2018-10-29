@@ -1,10 +1,6 @@
 class AdmninWorkflowEditor {
   constructor() {
     this.items = [];
-    $( '.sortable' ).sortable(({
-      update: this.update.bind(this),
-    }));
-    $( '.sortable' ).disableSelection();
     $('.draggable').draggable({
       revert: 'invalid',
       stack: '.draggable',
@@ -98,28 +94,36 @@ class AdmninWorkflowEditor {
   }
 
   elementAdded(event, ui, before) {
-    const draggable = ui.draggable;
-    let newElement = null;
-
-    const type = $(ui.draggable).attr('type');
-    if (type === 'sleep') {
-      newElement = new Sleep();
-    } else if (type === 'notify') {
-      const id = $(ui.draggable).attr('notify-id');
-      newElement = new Notify(id);
-    } else if (type === 'condition') {
-      newElement = new Condition();
-    }
-
-    if (before) {
-      $(event.target).parent().before(newElement.getContent);
+    if (ui.helper[0].className.includes('wfeElement')) {
+      if (before) {
+        $(event.target).parent().before(ui.draggable);
+      } else {
+        $(event.target).parent().after(ui.draggable);
+      }
     } else {
-      $(event.target).parent().after(newElement.getContent);
+      const draggable = ui.draggable;
+      let newElement = null;
+
+      const type = $(ui.draggable).attr('type');
+      if (type === 'sleep') {
+        newElement = new Sleep();
+      } else if (type === 'notify') {
+        const id = $(ui.draggable).attr('notify-id');
+        newElement = new Notify(id);
+      } else if (type === 'condition') {
+        newElement = new Condition();
+      }
+
+      if (before) {
+        $(event.target).parent().before(newElement.getContent);
+      } else {
+        $(event.target).parent().after(newElement.getContent);
+      }
+      this.addElement(newElement, true);
+      draggable.css({
+        float: 'left',
+      });
     }
-    this.addElement(newElement, true);
-    draggable.css({
-      float: 'left',
-    });
   }
 
   getItem(id) {

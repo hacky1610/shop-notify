@@ -55,7 +55,7 @@ class NotifyEditor {
 class WfeBaseElement {
   constructor() {
     this.guid = this.createUUID();
-    this.frame = $(`<li id='${this.guid}' class='wfeElement'></li>` );
+    this.frame = $(`<li id='${this.guid}' class='wfeElement draggable'></li>` );
     this.beforeLine = $( '<div class="droppable add-element  center"><div class="hl center"></div><div class="vl center"></div></div>' );
     this.afteline = $( '<div class="droppable add-element  center"><div class="vl center"></div><div class="hl center"></div>' );
   
@@ -96,6 +96,19 @@ class WfeBaseElement {
       },
       accept: '.draggable',
       drop: this.elementDroppedBefore.bind(this),
+    });
+
+    this.frame.draggable({
+      revert: 'invalid',
+      stack: '.draggable',
+      helper: 'clone',
+      cursor: 'move',
+      start: function(event, ui) {
+        $(this).draggable('instance').offset.click = {
+        left: Math.floor(ui.helper.width() / 2),
+        top: Math.floor(ui.helper.height() / 2),
+        };
+      },
     });
   }
 
