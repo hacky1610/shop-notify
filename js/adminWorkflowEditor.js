@@ -23,27 +23,9 @@ class AdmninWorkflowEditor {
     this.renderAll();
   }
 
-  addElementToList(json) {
-    let e = undefined;
-    if (json.type === 'Sleep') {
-      e = new Sleep();
-    } else if (json.type === 'Notify') {
-      e = new Notify();
-    } else if (json.type === 'Condition') {
-      e = new Condition();
-    }
-
-    if (e === undefined) {
-      throw new Error(`Cant create object from type ${json.type}`);
-    }
-
-    e.setData(json.data);
-    this.addElement(e);
-    return e;
-  }
 
   loadElements(res) {
-    const elements = JSON.parse(res.replace(/\\/g, ''));
+    const controllers = ControllerSerializer.deserialize(res);
     let before = null;
 
     const first = new WfeEntryElement();
@@ -53,8 +35,9 @@ class AdmninWorkflowEditor {
     $('.droparea').append(first.getContent);
 
 
-    elements.forEach(function(o) {
-      let e = this.addElementToList(o);
+    controllers.forEach(function(controller) {
+      let e = controller.getEditElement;
+      this.addElement(e);
       if (before === null) {
         $(first.getContent).after(e.getContent);
       } else {
@@ -102,17 +85,19 @@ class AdmninWorkflowEditor {
       }
     } else {
       const draggable = ui.draggable;
-      let newElement = null;
+      let controller = null;
 
       const type = $(ui.draggable).attr('type');
       if (type === 'sleep') {
-        newElement = new Sleep();
+        controller = new WfeSleepController();
       } else if (type === 'notify') {
         const id = $(ui.draggable).attr('notify-id');
-        newElement = new Notify(id);
+        controller = new WfeNotifyController();
+        controller.setId(id);
       } else if (type === 'condition') {
-        newElement = new Condition();
+        controller = new WfeConditionController();
       }
+      const newElement = controller.getEditElement;
 
       if (before) {
         $(event.target).parent().before(newElement.getContent);
@@ -128,7 +113,7 @@ class AdmninWorkflowEditor {
 
   getItem(id) {
     const found = this.items.find(function(element) {
-      return element.getGuid === id;
+      return element.controller.data.guid === id;
     });
     return found;
   };
@@ -138,7 +123,7 @@ class AdmninWorkflowEditor {
     for (let i = domItems.length-1; i >= 0; i--) {
       let item = adminWorkflowEditor.getItem(domItems[i].getAttribute('id'));
       if (item !== undefined) {
-        data.push(item.getData);
+        data.push(item.getData.serialize());
       }
     }
     return data;
@@ -170,3 +155,4 @@ let adminWorkflowEditor = undefined;
 jQuery(document).ready(function($) {
   adminWorkflowEditor = new AdmninWorkflowEditor();
 });
+

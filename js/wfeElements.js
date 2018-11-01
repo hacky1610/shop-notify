@@ -52,29 +52,18 @@ class NotifyEditor {
   };
 };
 
+
 class WfeBaseElement {
   constructor() {
-    this.guid = this.createUUID();
-    this.frame = $(`<li id='${this.guid}' class='wfeElement draggable'></li>` );
+    this.controller = {};
+    this.frame = $(`<li id='notset' class='wfeElement draggable'></li>` );
     this.beforeLine = $( '<div class="droppable add-element  center"><div class="hl center"></div><div class="vl center"></div></div>' );
     this.afteline = $( '<div class="droppable add-element  center"><div class="vl center"></div><div class="hl center"></div>' );
-  
   };
 
-  createUUID() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    let s = [];
-    const hexDigits = '0123456789abcdef';
-    for (let i = 0; i < 36; i++) {
-      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = '-';
-
-    const uuid = s.join('');
-    return uuid;
-  };
+  updateGuid() {
+    this.frame.attr('id', this.controller.data.guid);
+  }
 
   get getContent() {
     return this.frame;
@@ -166,10 +155,7 @@ class WfeElement extends WfeBaseElement {
   }
 
   get getData() {
-    return {
-      type: this.constructor.name,
-      data: this.data,
-    };
+    return this.controller;
   }
 
   setData(data) {
@@ -214,21 +200,24 @@ class WfeElement extends WfeBaseElement {
 };
 
 class Sleep extends WfeElement {
-  constructor() {
+  constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
     this.item = $('<div class="action"></div>');
     this.editor = new SleepEditor(this);
-    this.data.time = '10';
+    this.controller = controller;
+
+    this.controller.data.time = '10';
     this.initEvents();
     this.update();
+    this.updateGuid();
   };
 
   get Time() {
-    return this.data.time;
+    return this.controller.data.time;
   };
 
   setTime(t) {
-    this.data.time = t;
+    this.controller.data.time = t;
     this.update();
   };
 
@@ -238,15 +227,14 @@ class Sleep extends WfeElement {
 };
 
 class Condition extends WfeElement {
-  constructor() {
+  constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
     this.item = $('<div class="condition"><div class="condition-header"></div><div class="condition-body"></div></div>');
     this.trueColumn = $('<div class="column condition-true">true</div>');
     this.falseColumn = $('<div class="column condition-false">false</div>');
     this.item.find('.condition-body').append(this.trueColumn);
     this.item.find('.condition-body').append(this.falseColumn);
-
-
+    this.controller = controller;
     this.editor = new ConditionEditor(this);
     
     this.initEvents();
@@ -260,6 +248,8 @@ class Condition extends WfeElement {
     $(this.falseColumn).append(this.firstFalse.getContent);
 
     this.update();
+    this.updateGuid();
+
   };
 
   registerElementAddedEvent(callback) {
@@ -269,19 +259,21 @@ class Condition extends WfeElement {
   }
 
   update() {
-
+    this.addToColumn(this.controller.trueItems, this.firstTrue);
+    this.addToColumn(this.controller.falseItems, this.firstFalse);
   };
 
   get getData() {
-    this.data.trueItems = this.getTrueItems;
-    this.data.falseItems = this.getFalseItems;
-    return super.getData;
+    this.controller.trueItems = this.getTrueItems;
+    this.controller.falseItems = this.getFalseItems;
+    return this.controller;
   }
 
-  addToColumn(jsonElements, firstElement) {
-    if (jsonElements !== undefined) {
-      jsonElements.forEach(function(e) {
-        let element = adminWorkflowEditor.addElementToList(e);
+  addToColumn(controllers, firstElement) {
+    if (controllers !== undefined) {
+      controllers.forEach(function(controller) {
+        let element = controller.getEditElement;
+        adminWorkflowEditor.addElement(element);
         let before = null;
         if (before === null) {
           $(firstElement.getContent).after(element.getContent);
@@ -293,11 +285,7 @@ class Condition extends WfeElement {
     }
   }
 
-  setData(data) {
-    super.setData(data);
-    this.addToColumn(data.trueItems, this.firstTrue);
-    this.addToColumn(data.falseItems, this.firstFalse);
-  }
+
 
   get getTrueItems() {
     return adminWorkflowEditor.getItems(this.trueColumn.children('.wfeElement'));
@@ -310,15 +298,16 @@ class Condition extends WfeElement {
 
 
 class Notify extends WfeElement {
-  constructor(notifyId) {
+  constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
     this.editor = new NotifyEditor(this);
     this._containerId = `notify_container_${this.guid}`;
     this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
-    this.data.notifyId = notifyId;
-    this.data.duration = 60;
+    this.controller = controller;
     this.initEvents();
     this.showPopup();
+    this.updateGuid();
+
   };
 
   NotifyLoaded() {
@@ -330,7 +319,7 @@ class Notify extends WfeElement {
       const object = JSON.parse(body);
       ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${this._containerId}`, 'static').then(this.NotifyLoaded.bind(this));
     };
-    GetNotifyObject(this.data.notifyId).then(show.bind(this));
+    GetNotifyObject(this.controller.data.notifyId).then(show.bind(this));
   };
 
   showPopup() {
@@ -338,10 +327,10 @@ class Notify extends WfeElement {
   };
 
   get Duration() {
-    return this.data.duration;
+    return this.controller.data.duration;
   };
 
   setDuration(t) {
-    this.data.duration = t;
+    this.controller.data.duration = t;
   };
 };
