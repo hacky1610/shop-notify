@@ -3,16 +3,16 @@
  * A class that can return the number 10
  */
 class SleepEditor {
-  constructor(element) {
-    this.sleep = element;
+  constructor(controller) {
+    this.controller = controller;
   };
 
   valueChanged(o) {
-    this.sleep.setTime(o.target.value);
+    this.controller.setTime(o.target.value);
   };
 
   get getContent() {
-    const inputTime = $(`<input type="text" name="FirstName" value="${this.sleep.Time}">`);
+    const inputTime = $(`<input type="text" name="FirstName" value="${this.controller.Time}">`);
     inputTime.change(this.valueChanged.bind(this));
     const frame = $(`<div><p>Wait: </p></div>`);
     frame.append(inputTime);
@@ -21,8 +21,8 @@ class SleepEditor {
 };
 
 class ConditionEditor {
-  constructor(element) {
-    this.sleep = element;
+  constructor(controller) {
+    this.controller = controller;
   };
 
   valueChanged(o) {
@@ -35,16 +35,16 @@ class ConditionEditor {
 };
 
 class NotifyEditor {
-  constructor(element) {
-    this.notify = element;
+  constructor(controller) {
+    this.controller = controller;
   };
 
   valueChanged(o) {
-    this.notify.setDuration(o.target.value);
+    this.controller.setDuration(o.target.value);
   };
 
   get getContent() {
-    const inputTime = $(`<input type="text" name="FirstName" value="${this.notify.Duration}">`);
+    const inputTime = $(`<input type="text" name="FirstName" value="${this.controller.Duration}">`);
     inputTime.change(this.valueChanged.bind(this));
     const frame = $(`<div><p>Duration: </p></div>`);
     frame.append(inputTime);
@@ -163,7 +163,7 @@ class WfeElement extends WfeBaseElement {
   }
 
   get getEditor() {
-    return this.editor;
+    return this.controller.editor;
   };
 
   registerSelectedEvent(callback) {
@@ -203,26 +203,15 @@ class Sleep extends WfeElement {
   constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
     this.item = $('<div class="action"></div>');
-    this.editor = new SleepEditor(this);
     this.controller = controller;
-
-    this.controller.data.time = '10';
+    this.controller.registerUpdateEvent(this.update.bind(this));
     this.initEvents();
     this.update();
     this.updateGuid();
   };
 
-  get Time() {
-    return this.controller.data.time;
-  };
-
-  setTime(t) {
-    this.controller.data.time = t;
-    this.update();
-  };
-
   update() {
-    this.item.html(`Wait ${this.Time} seconds`);
+    this.item.html(`Wait ${this.controller.Time} seconds`);
   };
 };
 
@@ -235,7 +224,7 @@ class Condition extends WfeElement {
     this.item.find('.condition-body').append(this.trueColumn);
     this.item.find('.condition-body').append(this.falseColumn);
     this.controller = controller;
-    this.editor = new ConditionEditor(this);
+    this.controller.registerUpdateEvent(this.update.bind(this));
     
     this.initEvents();
 
@@ -247,9 +236,8 @@ class Condition extends WfeElement {
     this.firstFalse.initEvents();
     $(this.falseColumn).append(this.firstFalse.getContent);
 
-    this.update();
+    this.fill();
     this.updateGuid();
-
   };
 
   registerElementAddedEvent(callback) {
@@ -258,10 +246,14 @@ class Condition extends WfeElement {
     this.firstFalse.registerElementAddedEvent(callback);
   }
 
-  update() {
+  fill() {
     this.addToColumn(this.controller.trueItems, this.firstTrue);
     this.addToColumn(this.controller.falseItems, this.firstFalse);
   };
+
+  update() {
+    
+  }
 
   get getData() {
     this.controller.trueItems = this.getTrueItems;
@@ -285,8 +277,6 @@ class Condition extends WfeElement {
     }
   }
 
-
-
   get getTrueItems() {
     return adminWorkflowEditor.getItems(this.trueColumn.children('.wfeElement'));
   }
@@ -307,7 +297,6 @@ class Notify extends WfeElement {
     this.initEvents();
     this.showPopup();
     this.updateGuid();
-
   };
 
   NotifyLoaded() {
@@ -319,18 +308,10 @@ class Notify extends WfeElement {
       const object = JSON.parse(body);
       ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${this._containerId}`, 'static').then(this.NotifyLoaded.bind(this));
     };
-    GetNotifyObject(this.controller.data.notifyId).then(show.bind(this));
+    GetNotifyObject(this.controller.Id).then(show.bind(this));
   };
 
   showPopup() {
     ShowOrder(this.ShowNotifyCallback.bind(this));
-  };
-
-  get Duration() {
-    return this.controller.data.duration;
-  };
-
-  setDuration(t) {
-    this.controller.data.duration = t;
   };
 };

@@ -67,7 +67,7 @@ class AdmninWorkflowEditor {
 
   elementSelected(o) {
     $('#editorarea').empty();
-    $('#editorarea').append(o.editor.getContent);
+    $('#editorarea').append(o.controller.Editor.getContent);
   };
 
   elementDeleted(element) {

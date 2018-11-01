@@ -49,6 +49,10 @@ class WfeBaseController {
     }
   }
 
+  registerUpdateEvent(callback) {
+    this.updateEvent = callback;
+  }
+
   createUUID() {
     // http://www.ietf.org/rfc/rfc4122.txt
     let s = [];
@@ -80,6 +84,21 @@ class WfeSleepController extends WfeBaseController {
   get getEditElement() {
     return new Sleep(this);
   }
+
+  get Editor() {
+    return new SleepEditor(this);
+  }
+
+
+  get Time() {
+    return this.data.time;
+  };
+
+  setTime(t) {
+    this.data.time = t;
+    this.updateEvent();
+  };
+  
 }
 
 class WfeNotifyController extends WfeBaseController {
@@ -89,10 +108,27 @@ class WfeNotifyController extends WfeBaseController {
 
   setId(id) {
     this.data.notifyId = id;
-  }
+  };
+
+  get Id() {
+    return this.data.notifyId;
+  };
+
+  get Duration() {
+    return this.data.duration;
+  };
+
+  setDuration(t) {
+    this.data.duration = t;
+    this.updateEvent();
+  };
 
   get getEditElement() {
     return new Notify(this);
+  }
+
+  get Editor() {
+    return new NotifyEditor(this);
   }
 }
 
@@ -103,6 +139,10 @@ class WfeConditionController extends WfeBaseController {
 
   get getEditElement() {
     return new Condition(this);
+  }
+
+  get Editor() {
+    return new ConditionEditor(this);
   }
 
   serialize() {
