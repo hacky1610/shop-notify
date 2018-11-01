@@ -86,13 +86,12 @@ class WoocommerceNotice{
 
     public function loadJs($hook){
         $this->logger->Call("loadJs");
-        wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
-        wp_enqueue_style('wcn_style');
+        wp_enqueue_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
         wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_register_script('wcn_script', plugins_url('/../js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('wcn_script');
-        wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('wcn_bootstrap_notify');
+        wp_enqueue_script('sn_controller', plugins_url('/../js/controller.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_enqueue_script('wcn_script', plugins_url('/../js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_enqueue_script('sn_runner', plugins_url('/../js/runner.js?'.self::$version_file, __FILE__), array(), null, 1);
+        wp_enqueue_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
         $this->logger->Call("loadJs finished");
 
     }

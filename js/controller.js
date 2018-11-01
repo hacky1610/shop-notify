@@ -79,6 +79,7 @@ class WfeBaseController {
 class WfeSleepController extends WfeBaseController {
   constructor() {
     super();
+    this.data.time = 10;
   }
 
   get getEditElement() {
@@ -98,7 +99,11 @@ class WfeSleepController extends WfeBaseController {
     this.data.time = t;
     this.updateEvent();
   };
-  
+
+  run() {
+    const milliseconds = this.Time * 1000;
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
 }
 
 class WfeNotifyController extends WfeBaseController {
@@ -130,6 +135,9 @@ class WfeNotifyController extends WfeBaseController {
   get Editor() {
     return new NotifyEditor(this);
   }
+
+  run() {
+  }
 }
 
 class WfeConditionController extends WfeBaseController {
@@ -150,5 +158,8 @@ class WfeConditionController extends WfeBaseController {
     retval.trueItems = this.trueItems;
     retval.falseItems = this.falseItems;
     return retval;
+  }
+
+  run() {
   }
 }

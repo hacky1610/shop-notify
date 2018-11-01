@@ -53,11 +53,7 @@ class WoocommerceApi
 
     public  function GetLastOrdersAjax()
     {
-        //echo json_encode(self::$woocommerceApiLogic->GetLastOrders(5));
-        //self::$woocommerceApiLogic->GetLastOrders(5);
         echo json_encode($this->woocommerceApiLogic->GetLastOrders(5));
-        
-
         wp_die();
     }
 
