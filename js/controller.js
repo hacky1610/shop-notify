@@ -68,9 +68,13 @@ class WfeBaseController {
     return uuid;
   };
 
+  get Type() {
+    return this.constructor.name;
+  }
+
   serialize() {
     return {
-      type: this.constructor.name,
+      type: this.Type,
       data: this.data,
     };
   }
@@ -137,7 +141,25 @@ class WfeNotifyController extends WfeBaseController {
   }
 
   run() {
+    return new Promise((resolve) => this.showPopup(resolve));
   }
+
+  ShowNotifyCallback(keyVals, productLink, pictureLink) {
+    let show = (body) => {
+      const object = JSON.parse(body);
+      ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, 'body', 'fixed', this.notifyClosed.bind(this));
+    };
+    GetNotifyObject(this.Id).then(show.bind(this));
+  };
+
+  notifyClosed() {
+    this.notifyClosedEvent();
+  }
+  
+  showPopup(notifyClosed) {
+    this.notifyClosedEvent = notifyClosed;
+    ShowOrder(this.ShowNotifyCallback.bind(this));
+  };
 }
 
 class WfeConditionController extends WfeBaseController {

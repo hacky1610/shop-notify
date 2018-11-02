@@ -86,6 +86,7 @@ class WoocommerceNotice{
 
     public function loadJs($hook){
         $this->logger->Call("loadJs");
+        wp_enqueue_script('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_enqueue_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
         wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
         wp_enqueue_script('sn_controller', plugins_url('/../js/controller.js?'.self::$version_file, __FILE__), array(), null, 1);
@@ -100,6 +101,7 @@ class WoocommerceNotice{
         $this->logger->Call("loadJsAdmin");
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
+            wp_enqueue_script('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_style( 'wp-color-picker' ); 
             wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
             wp_enqueue_style('wcn_admin_bootstrap');
@@ -150,14 +152,6 @@ class WoocommerceNotice{
           $cssLoader = new CssLoader();
           $cssLoader->AddStyle($currentStyleObject);
           $cssLoader->Load();
-
-        echo '<script>
-        var $ = jQuery;
-        jQuery( document ).ready(function( $ )
-                {
-                ShowOrder(ShowOrderPopup,1441);
-                });
-        </script>"';
     }
 
     public function Install()

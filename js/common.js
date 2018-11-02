@@ -78,49 +78,45 @@ function getMessageArray(text,keyVals,productLink)
 
 } 
 
-function ShowPopup(message, icon,delay, template,element,position)
-{
-	jQuery.notify(
-		{
-			message: message,
-			icon: icon
-		},
-		{
-			type: "info",
-			icon_type: "img",
-			placement: {
-				from: "bottom",
-				align: "left"
-			},
-			delay: delay,
-			timer: 1000,
-            template: template,
-            element: element,
-            position: position
+function ShowPopup(message, icon, delay, template, element, position, closeEvent = null) {
+  const notify = jQuery.notify( {
+    message: message,
+    icon: icon,
+  },
+  {
+    type: 'info',
+    icon_type: 'img',
+    placement: {
+      from: 'bottom',
+      align: 'left',
+    },
+    onClosed: closeEvent,
+    delay: delay,
+    timer: 1000,
+    template: template,
+    element: element,
+    position: position,
 
-		});
+  });
+  return notify;
 }
 
-function ShowNotify(id,keyVals,title,message,productLink,pictureLink,style, element = "body",position = "fixed")
-{
-    var titleArray = getMessageArray(title,keyVals,productLink)
-    var messageArray = getMessageArray(message,keyVals,productLink)
+function ShowNotify(id, keyVals, title, message, productLink, pictureLink, style, element = 'body',position = 'fixed', closeEvent) {
+  const titleArray = getMessageArray(title, keyVals, productLink);
+  const messageArray = getMessageArray(message,keyVals,productLink);
 
-    var data = {
-        'action': 'wcn_get_notify_layout',
-        'id': id,
-        'productLink' : productLink,
-        'pictureLink' : pictureLink,
-        'style' : style,
-        'title_content': JSON.stringify(titleArray),
-        'message_content': JSON.stringify(messageArray)
-		};
-    return SendAjaxSync(data).then((body) => {
-        //jQuery("#" + id).remove();
-        
-        ShowPopup("","", 150000,body,element,position);
-    });
-    
+  const data = {
+    'action': 'wcn_get_notify_layout',
+    'id': id,
+    'productLink' : productLink,
+    'pictureLink' : pictureLink,
+    'style' : style,
+    'title_content': JSON.stringify(titleArray),
+    'message_content': JSON.stringify(messageArray)
+  };
+  return SendAjaxSync(data).then((body) => {
+    ShowPopup("","", 150000,body,element,position,closeEvent);
+  });  
 }
 
 function SendAjaxSync(data, parser) {

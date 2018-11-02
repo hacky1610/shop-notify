@@ -1,12 +1,6 @@
 class Runner {
   constructor() {
     this.load(this.loadElements.bind(this));
-
-    // const s = new WfeSleepController();
-    // s.run().then(() => {
-    //   alert();
-    // });
-    this.run();
   }
 
   loadElements(res) {
@@ -21,13 +15,14 @@ class Runner {
     };
     SendAjaxSync(d).then(callback);
   }
-  async runElement(element) {
-    await element.run()
-    console.log("Foo");
-  }
 
   async renderAll() {
-    this.controllers.forEach(this.runElement);
+    for (let i = 0; i < this.controllers.length; i++) {
+      let controller = this.controllers[i];
+      snLogger.Info(`Run element ${controller.Type}`);
+      await controller.run();
+      snLogger.Info(`Finished element ${controller.Type}`);
+    }
   }
 }
 
