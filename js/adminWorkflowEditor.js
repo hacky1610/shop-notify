@@ -41,9 +41,9 @@ class AdmninWorkflowEditor {
       if (before === null) {
         $(first.getContent).after(e.getContent);
       } else {
-        before = e.getContent;
         $(before).after(e.getContent);
       }
+      before = e.getContent;
     }.bind(this));
 
     this.renderAll();
@@ -120,7 +120,7 @@ class AdmninWorkflowEditor {
 
   getItems(domItems) {
     const data = [];
-    for (let i = domItems.length-1; i >= 0; i--) {
+    for (let i = 0; i < domItems.length; i++) {
       let item = adminWorkflowEditor.getItem(domItems[i].getAttribute('id'));
       if (item !== undefined) {
         data.push(item.getData.serialize());

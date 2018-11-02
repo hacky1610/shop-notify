@@ -291,7 +291,7 @@ class Notify extends WfeElement {
   constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
     this.editor = new NotifyEditor(this);
-    this._containerId = `notify_container_${this.guid}`;
+    this._containerId = `notify_container_${controller.Id}`;
     this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
     this.controller = controller;
     this.initEvents();
