@@ -23,18 +23,15 @@ class AdmninWorkflowEditor {
     this.renderAll();
   }
 
-
   loadElements(res) {
     const controllers = ControllerSerializer.deserialize(res);
-    let before = null;
 
     const first = new WfeEntryElement();
-
     first.registerElementAddedEvent(this.elementAdded.bind(this));
     first.initEvents();
     $('.droparea').append(first.getContent);
 
-
+    let before = null;
     controllers.forEach(function(controller) {
       let e = controller.getEditElement;
       this.addElement(e);

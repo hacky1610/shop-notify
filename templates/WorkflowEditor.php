@@ -59,7 +59,7 @@ class WorkflowEditor {
             $cssLoader->AddStyle($style);
         }
   
-          $cssLoader->Load();
+       $cssLoader->Load();
     }
 
    
