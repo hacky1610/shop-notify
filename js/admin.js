@@ -10,7 +10,7 @@ class SnFontSelector {
                 // split font into family and weight
                 font = font.split(':');
                 // set family on paragraphs
-               callback(font[0],$(this).attr("wcn_class"));
+               callback(font[0],$(this).attr('wcn_class'));
         });
     }
 
@@ -46,8 +46,8 @@ class SnFontSelector {
   {
     var data = {
         'action': 'wcn_save_style',
-        'style_id': $("#wcn_select-style").val(),
-        'style_content': GetCssText("wcn_style_sheet")
+        'style_id': $('#wcn_select-style').val(),
+        'style_content': GetCssText('wcn_style_sheet')
         };
     SendAjaxSync(data).then((res) => {
         CheckResponse(res,jumpToSource);
@@ -65,44 +65,44 @@ class SnFontSelector {
         
         fontSelector = new SnFontSelector('.wcn_font_select', (font,classToEdit) => {
             var styleHelper = new StyleHelper();
-            styleHelper.ChangeStyle("wcn_style_sheet",classToEdit,"font-family",font);
+            styleHelper.ChangeStyle('wcn_style_sheet',classToEdit,'font-family',font);
         } );
             
 
         $('.wcn-editable').on('click', clicked );
         $('.wcn_edit_section .wcn-edit-control').on('change', changed );
-        $("#style-editor-save-button").click(SaveStyle);
+        $('#style-editor-save-button').click(SaveStyle);
 
-        $('.notify-editor .wcn-edit-control').on('change', ShowPreviewPopup );
+        $('.notify-editor .wcn-edit-control').on('change', () => {ShowPreviewPopup($("#sn_style_content").val());} );
 
-        $(".wcn-notify-orders").click();
+        $('.wcn-notify-orders').click();
      
     });
      
 })( jQuery );
 
-function ShowPreviewPopup(style)
-{
-    var id = "sn_admin_sample";
-    var keyVals = {ProductName: "T-Shirt", GivenName: "Valérie"};
-    ShowNotify(id,keyVals,$("#sn_title_content").val(),$("#sn_message_content").val(),"#","",style,"#wpbody-content","static");
+function ShowPreviewPopup(style) {
+  const id = 'sn_admin_sample';
+  const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
+  $(`#${id}`).remove();
+  ShowNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style, '#wpbody-content', 'static', () => {});
 }
 
 var GetCssText = function(styleSheetId)
 {
-    var cssText = "";
+    var cssText = '';
     var cssRules = document.getElementById(styleSheetId).sheet.cssRules;
     for (var i = 0; i < cssRules.length; i++) {
         cssText += cssRules[i].cssText;
     }
 
-    return cssText.replace(/"/g,"");
+    return cssText.replace(/"/g,'');
 
 }
 
 var hideAllEditControls = function(rulename,style,value)
 {
-    var styleSheet = document.getElementById("wcn_style_sheet").sheet;
+    var styleSheet = document.getElementById('wcn_style_sheet').sheet;
     var rule = GetRule(styleSheet.cssRules,rulename);
 
     rule.style[style] = value
@@ -114,22 +114,22 @@ var clicked = function(event)
 
 
     //Change selections Frame
-    $(".wcn_selected").removeClass("wcn_selected");
-    $(event.currentTarget).addClass("wcn_selected");
+    $('.wcn_selected').removeClass('wcn_selected');
+    $(event.currentTarget).addClass('wcn_selected');
 
     $('.wcn_edit_section > div').hide();
 
-    var classToChange = event.currentTarget.attributes["wcn_class"].value;
-    var propsToChange = event.currentTarget.attributes["wcn_style_props"].value.split(",");
+    var classToChange = event.currentTarget.attributes['wcn_class'].value;
+    var propsToChange = event.currentTarget.attributes['wcn_style_props'].value.split(',');
 
     for (var i = 0; i < propsToChange.length; i++) {
-        $("#wcn_" + propsToChange[i] + "_container input").attr("wcn_class",classToChange)        
+        $('#wcn_' + propsToChange[i] + '_container input').attr('wcn_class',classToChange)        
 
 
         var cssCval = $(event.currentTarget).css(propsToChange[i]);
-        if(propsToChange[i] === "color" || propsToChange[i] === "background-color" )
+        if(propsToChange[i] === 'color' || propsToChange[i] === 'background-color' )
         {   
-            var cp = $("#wcn_" + propsToChange[i] + "_container input").wpColorPicker({
+            var cp = $('#wcn_' + propsToChange[i] + '_container input').wpColorPicker({
                 /**
                  * @param {Event} event - standard jQuery event, produced by whichever
                  * control was changed.
@@ -137,35 +137,35 @@ var clicked = function(event)
                  * containing a Color.js object.
                  */
                 change: function (event, ui) {
-                    if(event.target.value !== "")
+                    if(event.target.value !== '')
                     {
                         var styleHelper = new StyleHelper();
-                        styleHelper.ChangeStyle("wcn_style_sheet",event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), ui.color.toCSS());
+                        styleHelper.ChangeStyle('wcn_style_sheet',event.target.attributes.wcn_class.value, event.target.id.replace('wcn_',''), ui.color.toCSS());
                     }
     
                 }})
             var c = new Color(cssCval);
             cssCval = c.toCSS();
-            $(cp).wpColorPicker("color",cssCval)
+            $(cp).wpColorPicker('color',cssCval)
         }
-        else if(propsToChange[i] === "font-family")
+        else if(propsToChange[i] === 'font-family')
         {
-            fontSelector.selectFontByName(cssCval.replace(/\"/g,""));
+            fontSelector.selectFontByName(cssCval.replace(/\"/g,''));
         }
         else
         {
-            $("#wcn_" + propsToChange[i] + "_container input").val(cssCval)
+            $('#wcn_' + propsToChange[i] + '_container input').val(cssCval)
         }
 
-        $("#wcn_" + propsToChange[i] + "_container").show();
+        $('#wcn_' + propsToChange[i] + '_container').show();
     }
 }
 
 function CheckResponse(res,callback)
 {
-    if(res !== "OK")
+    if(res !== 'OK')
     {
-        alert("ERROR: " +res);
+        alert('ERROR: ' +res);
     }
     else
         callback();
@@ -176,7 +176,7 @@ function CheckResponse(res,callback)
 var changed = function(event)
 {
     var styleHelper = new StyleHelper();
-    styleHelper.ChangeStyle("wcn_style_sheet",event.target.attributes.wcn_class.value, event.target.id.replace("wcn_",""), event.target.value);
+    styleHelper.ChangeStyle('wcn_style_sheet',event.target.attributes.wcn_class.value, event.target.id.replace('wcn_',''), event.target.value);
 } 
 
 
@@ -184,15 +184,15 @@ var changed = function(event)
 
 function jumpToSource()
 {
-    var source = getUrlParam("source");
+    var source = getUrlParam('source');
     if (source != null)
     {
-        var url = "http://sharonne-design.com/wp-admin/post.php?post=" + source + "&action=edit";
+        var url = 'http://sharonne-design.com/wp-admin/post.php?post=' + source + '&action=edit';
         window.open (url,'_self',false)
     }
     else
     {
-        alert("Saved");
+        alert('Saved');
     }
 }
 

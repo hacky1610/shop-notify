@@ -15,7 +15,7 @@ function drag(ev) {
 }
 
 function drop(ev) {
-    setTimeout(ShowPreviewPopup, 100)
+    setTimeout(() => {ShowPreviewPopup($("#sn_style_content").val());}, 100);
 }
 
  
@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
     function loadNewStyle()
     {
         changed = true;
-        var style = $(this).children(":selected").attr("id");
+        var style = $("#sn_style_content").children(":selected").attr("id");
             
         var data = {
          'action': 'wcn_get_style',
@@ -49,8 +49,9 @@ jQuery(document).ready(function($) {
          SendAjaxSync(data).then((s) =>
          {
              $("#wcn_style_sheet").html(s);
+            ShowPreviewPopup(style);
+
          });
-        ShowPreviewPopup(style);
 
 
     }
