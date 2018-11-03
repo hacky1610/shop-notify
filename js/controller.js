@@ -113,6 +113,7 @@ class WfeSleepController extends WfeBaseController {
 class WfeNotifyController extends WfeBaseController {
   constructor() {
     super();
+    this.data.duration = 20;
   }
 
   setId(id) {
@@ -147,7 +148,9 @@ class WfeNotifyController extends WfeBaseController {
   ShowNotifyCallback(keyVals, productLink, pictureLink) {
     let show = (body) => {
       const object = JSON.parse(body);
-      ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, 'body', 'fixed', this.notifyClosed.bind(this));
+      const notify = new SnNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style);
+      notify.registerOnCloseEvent(this.notifyClosed.bind(this));
+      notify.show();
     };
     GetNotifyObject(this.Id).then(show.bind(this));
   };

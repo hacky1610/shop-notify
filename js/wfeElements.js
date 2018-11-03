@@ -306,7 +306,11 @@ class Notify extends WfeElement {
   ShowNotifyCallback(keyVals, productLink, pictureLink) {
     let show = (body) => {
       const object = JSON.parse(body);
-      ShowNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style, `#${this._containerId}`, 'static').then(this.NotifyLoaded.bind(this));
+      const notify = new SnNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style);
+      notify.setElement(`#${this._containerId}`);
+      notify.setPosition('static');
+      notify.registerLoadEvent(this.NotifyLoaded.bind(this));
+      notify.show();
     };
     GetNotifyObject(this.controller.Id).then(show.bind(this));
   };
@@ -315,3 +319,4 @@ class Notify extends WfeElement {
     ShowOrder(this.ShowNotifyCallback.bind(this));
   };
 };
+

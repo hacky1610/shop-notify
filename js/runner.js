@@ -13,7 +13,7 @@ class Runner {
     const d = {
       'action': 'wcn_get_workflow',
     };
-    SendAjaxSync(d).then(callback);
+    sendAjaxSync(d).then(callback);
   }
 
   async renderAll() {
@@ -25,5 +25,4 @@ class Runner {
     }
   }
 }
-
 new Runner();

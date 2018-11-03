@@ -47,27 +47,6 @@ function SwitchTabToReviews()
     }, 'slow');
 }
 
-
-
-function ShowOrderPopup(keyVals,productLink,pictureLink)
-{
-	if(jQuery(".cookie-notice-container").length == 1)
-	   additionalClass = "wcn-notify-cookie";
-	
-	GetNotifyObject(1441).then((body) => {
-		var object = JSON.parse(body);
-		ShowNotify("guid",keyVals,object.title,object.message,productLink,pictureLink,object.style,"body", "fixed");
-	});
-
-	setTimeout(() => 
-	{
-		jQuery(".wcn-notify-orders").addClass("wcn-notify-visible");
-	}, 5000);
-}
-
-
-
-
 function GetReviewTemplate(title, linkSnippet)
 {
 		return	'<div data-notify="container" class="col-xs-11 col-sm-3 alert wcn-notify wcn-notify-review" role="alert">' +
@@ -115,7 +94,7 @@ function ShowReviewPopup(title, message, icon, link)
 		'action': 'wcn_get_notify',
 		'id': id     
 		};
-		return SendAjaxSync(data);
+		return sendAjaxSync(data);
 	}
 	
 	
@@ -125,7 +104,7 @@ function ShowReviewPopup(title, message, icon, link)
 		'action': 'get_product',
 		'id': id     
 		};
-		return SendAjaxSync(data, JSON.parse);
+		return sendAjaxSync(data, JSON.parse);
 	}
 	
 	function getLastOrders()
@@ -133,7 +112,7 @@ function ShowReviewPopup(title, message, icon, link)
 		var data = {
 		'action': 'get_last_orders'
 		};
-		return SendAjaxSync(data, JSON.parse);
+		return sendAjaxSync(data, JSON.parse);
 	}
 	
 	function getLastReviews()
@@ -141,7 +120,7 @@ function ShowReviewPopup(title, message, icon, link)
 		var data = {
 		'action': 'get_last_reviews'
 		};
-		return SendAjaxSync(data, JSON.parse);
+		return sendAjaxSync(data, JSON.parse);
 	}
 		
 	function GetMillisecondsDiff(date1, date2)
@@ -269,12 +248,7 @@ function ShowReviewPopup(title, message, icon, link)
 		
 	}
 	
-	function Test() {
-		var data = {
-		'action': 'test'    
-		};
-		return SendAjaxSync(data, JSON.parse);
-	}
+
 	
 
 

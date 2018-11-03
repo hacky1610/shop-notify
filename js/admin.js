@@ -42,17 +42,16 @@ class SnFontSelector {
 
   }
 
-  function SaveStyle()
-  {
-    var data = {
-        'action': 'wcn_save_style',
-        'style_id': $('#wcn_select-style').val(),
-        'style_content': GetCssText('wcn_style_sheet')
-        };
-    SendAjaxSync(data).then((res) => {
-        CheckResponse(res,jumpToSource);
-    });
-  }
+function SaveStyle() {
+  const data = {
+    'action': 'wcn_save_style',
+    'style_id': $('#wcn_select-style').val(),
+    'style_content': GetCssText('wcn_style_sheet')
+  };
+  sendAjaxSync(data).then((res) => {
+      CheckResponse(res, jumpToSource);
+  });
+}
 
 
  
@@ -85,7 +84,10 @@ function ShowPreviewPopup(style) {
   const id = 'sn_admin_sample';
   const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
   $(`#${id}`).remove();
-  ShowNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style, '#wpbody-content', 'static', () => {});
+  const notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
+  notify.setElement('#wpbody-content');
+  notify.setPosition('static');
+  notify.show();
 }
 
 var GetCssText = function(styleSheetId)

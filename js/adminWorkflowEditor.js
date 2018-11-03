@@ -133,7 +133,7 @@ class AdmninWorkflowEditor {
       'action': 'wcn_save_workflow',
       'workflow_content': JSON.stringify(data),
     };
-    SendAjaxSync(d).then((res) => {
+    sendAjaxSync(d).then((res) => {
       CheckResponse(res, jumpToSource);
     });
   };
@@ -142,10 +142,8 @@ class AdmninWorkflowEditor {
     const d = {
       'action': 'wcn_get_workflow',
     };
-    SendAjaxSync(d).then(callback);
+    sendAjaxSync(d).then(callback);
   }
-
-
 }
 
 let adminWorkflowEditor = undefined;

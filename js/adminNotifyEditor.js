@@ -46,14 +46,12 @@ jQuery(document).ready(function($) {
          'action': 'wcn_get_style',
          'style_id': style
          };
-         SendAjaxSync(data).then((s) =>
+         sendAjaxSync(data).then((s) =>
          {
              $("#wcn_style_sheet").html(s);
             ShowPreviewPopup(style);
 
          });
-
-
     }
 
     $(".sn-edit-button").on("click",editButtonClicked);
