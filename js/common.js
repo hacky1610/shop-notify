@@ -11,10 +11,15 @@ class SnNotify {
     this.position = 'fixed';
     this.closeEvent = () => {};
     this.loadEvent = () => {};
+    this.duration = 20000;
   }
 
   setElement(el) {
     this.element = el;
+  }
+
+  setDuration(duration) {
+    this.duration = duration;
   }
 
   setPosition(pos) {
@@ -44,7 +49,7 @@ class SnNotify {
     };
     return sendAjaxSync(data).then((body) => {
       this.loadEvent();
-      SnNotify.showPopup(150000, body, this.element, this.position, this.closeEvent);
+      SnNotify.showPopup(this.duration, body, this.element, this.position, this.closeEvent);
     });
   }
 

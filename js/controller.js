@@ -150,6 +150,7 @@ class WfeNotifyController extends WfeBaseController {
       const object = JSON.parse(body);
       const notify = new SnNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style);
       notify.registerOnCloseEvent(this.notifyClosed.bind(this));
+      notify.setDuration(this.Duration * 1000);
       notify.show();
     };
     GetNotifyObject(this.Id).then(show.bind(this));
