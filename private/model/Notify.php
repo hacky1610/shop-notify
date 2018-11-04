@@ -18,6 +18,7 @@ class Notify {
     private static $SELECTED_STYLE = "selected_style";
     private static $ENTERED_TITLE = "entered_title";
     private static $ENTERED_MESSAGE = "entered_message";
+    private static $POSTION = "position";
 
     function __construct(   $id, $postmetaAdapter){
         $this->postmetaAdapter = $postmetaAdapter;
@@ -73,6 +74,11 @@ class Notify {
     public function SaveMessage($value)
     {
         $this->postmetaAdapter->SavePostMeta( $this->id, self::$ENTERED_MESSAGE, $value);
+    }
+
+    public function SavePosition($value)
+    {
+        $this->postmetaAdapter->SavePostMeta( $this->id, self::$POSITION°, $value);
     }
 
 

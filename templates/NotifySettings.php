@@ -14,6 +14,7 @@ class NotifySettings {
     private static $DEFAULT_STYLE = "modern";
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
+    private static $POSITION = "sn_position";
 
     private static $POSTTYPE = "shop-notify";
     static $namespace = "shop-notify";
@@ -57,11 +58,6 @@ class NotifySettings {
         $cssLoader = new CssLoader();
         $cssLoader->AddStyle($currentStyleObject);
         $cssLoader->Load();
-        // print_r("Show live preview");
-        // print_r("Text editor");
-        // print_r("Type");
-        // print_r("Display Time");
-        // print_r("Effects");
         
         $editorUrl = get_admin_url() . "edit.php?post_type=shop-notify&page=sn_style_editor&source=" . $post->ID;
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
@@ -69,6 +65,7 @@ class NotifySettings {
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
+        $this->AddPositionSelectBox(self::$POSITION);
         ?>
         </div>
        
@@ -79,7 +76,6 @@ class NotifySettings {
             )
         );
         $this->AddDialog();
-
     }
 
     private function DisplayDragItems($labelUrl)
@@ -128,6 +124,22 @@ class NotifySettings {
         <?php
     }
 
+    private function AddPositionSelectBox($id)
+    {
+      ?>
+    
+      <div class="select-box-container">
+          <label><?php "Position:"; ?></label>
+          <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
+            <option value="top-left">Top left</option>
+            <option value="top-right">Top right</option>
+            <option value="bottom-left">Bottom left</option>
+            <option value="bottom-right">Botom right</option>      
+          </select>
+         </div>
+         <?php
+    }
+
     public function Save( $post_id, $post, $update)
     {
         $this->logger->Call("Save");
@@ -146,6 +158,7 @@ class NotifySettings {
         $style = $_POST[self::$CONTROL_STYLE];
         $title = $_POST[self::$CONTROL_TITLE];
         $message = $_POST[self::$CONTROL_MESSAGE];
+        $position =$_POST[self::$POSITION];
 
         $notify = new Notify($post_id,$this->postMetaAdapter);
         $notify->SaveStyle($style);
