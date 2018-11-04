@@ -67,8 +67,8 @@ class NotifySettings {
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
         CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),"","sn-edit-button");
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
-        CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true,"ondrop='drop(event)'" );
-        CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true,"ondrop='drop(event)'");
+        CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
+        CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
         ?>
         </div>
        
@@ -121,14 +121,13 @@ class NotifySettings {
     private function DisplayDragItem($name,$id, $labelUrl)
     {
         ?>
-        <span class="Foo" id="<?php echo $id;?>" draggable="true" ondragstart="drag(event)">
+        <span class="sn-drag-item" id="<?php echo $id;?>" draggable="true">
             <img src="<?php echo $labelUrl;?>"></img>
             <p><?php echo $name;?></p>
         </span>
         <?php
     }
 
-    
     public function Save( $post_id, $post, $update)
     {
         $this->logger->Call("Save");

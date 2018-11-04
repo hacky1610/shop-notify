@@ -11,7 +11,7 @@ class SnNotify {
     this.position = 'fixed';
     this.closeEvent = () => {};
     this.loadEvent = () => {};
-    this.duration = 20000;
+    this.duration = 0;
   }
 
   setElement(el) {
@@ -63,7 +63,7 @@ class SnNotify {
       icon_type: 'img',
       placement: {
         from: 'bottom',
-        align: 'left',
+        align: 'right',
       },
       onClosed: closeEvent,
       delay: delay,
