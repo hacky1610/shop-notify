@@ -18,7 +18,7 @@ class Notify {
     private static $SELECTED_STYLE = "selected_style";
     private static $ENTERED_TITLE = "entered_title";
     private static $ENTERED_MESSAGE = "entered_message";
-    private static $POSTION = "position";
+    private static $PLACEMENT = "placement";
 
     function __construct(   $id, $postmetaAdapter){
         $this->postmetaAdapter = $postmetaAdapter;
@@ -51,12 +51,18 @@ class Notify {
         return $this->postmetaAdapter->GetPostMeta($this->id,self::$ENTERED_MESSAGE);
     }
 
+    public function GetPlacement()
+    {
+        return $this->postmetaAdapter->GetPostMeta($this->id,self::$PLACEMENT);
+    }
+
     public function GetObject()
     {
         $object->style = $this->GetStyle();
         $object->title = $this->GetTitle();
         $object->message = $this->GetMessage();
         $object->style = $this->GetStyle();
+        $object->placement = $this->GetPlacement();
 
         return json_encode($object);
     }
@@ -76,9 +82,9 @@ class Notify {
         $this->postmetaAdapter->SavePostMeta( $this->id, self::$ENTERED_MESSAGE, $value);
     }
 
-    public function SavePosition($value)
+    public function SavePlacement($value)
     {
-        $this->postmetaAdapter->SavePostMeta( $this->id, self::$POSITION°, $value);
+        $this->postmetaAdapter->SavePostMeta( $this->id, self::$PLACEMENT, $value);
     }
 
 

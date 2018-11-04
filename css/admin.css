@@ -291,6 +291,10 @@
 	animation: spin 2s linear infinite;
 	
   }
+
+  #editorarea p {
+    display: inline;
+  }
   
   /* Safari */
   @-webkit-keyframes spin {

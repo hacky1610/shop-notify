@@ -12,6 +12,10 @@ class SnNotify {
     this.closeEvent = () => {};
     this.loadEvent = () => {};
     this.duration = 0;
+    this.placement = {
+      from: 'bottom',
+      align: 'left',
+    };
   }
 
   setElement(el) {
@@ -24,6 +28,10 @@ class SnNotify {
 
   setPosition(pos) {
     this.position = pos;
+  }
+
+  setPlacement(placement) {
+    this.placement = placement;
   }
 
   registerLoadEvent(callback) {
@@ -49,11 +57,11 @@ class SnNotify {
     };
     return sendAjaxSync(data).then((body) => {
       this.loadEvent();
-      SnNotify.showPopup(this.duration, body, this.element, this.position, this.closeEvent);
+      SnNotify.showPopup(this.duration, body, this.element, this.position, this.placement, this.closeEvent);
     });
   }
 
-  static showPopup(delay, template, element, position, closeEvent) {
+  static showPopup(delay, template, element, position, placement, closeEvent) {
     const notify = jQuery.notify( {
       message: '',
       icon: '',
@@ -61,10 +69,7 @@ class SnNotify {
     {
       type: 'info',
       icon_type: 'img',
-      placement: {
-        from: 'bottom',
-        align: 'right',
-      },
+      placement: placement,
       onClosed: closeEvent,
       delay: delay,
       template: template,

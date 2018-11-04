@@ -80,24 +80,31 @@ class WorkflowEditor {
             </div>
 
             <div id="toolarea">
-                <div class="section" id="notifyList">
-                <?php
+                <div class="panel panel-default section" id="notifyList">
+                    <div class="panel-heading">Notification</div>
+                    <div class="panel-body">
+                    <?php
 
-                
-                foreach ($this->shopNotifyList as $notify) {
-                    ?> <div class="notify-drag draggable" type="notify" notify-id="<?php echo $notify->GetId();  ?>"> <?php
-                   $title = '[{"type":"text","val":"' . $notify->GetPostName() .'"}]';
-                   echo $this->notifyLayoutAdapter->GetNotifyLayout($notify->GetId(),$title ,"","",$notify->GetStyle());
-                   ?> </div> <?php
-                }
-                ?>
+                    
+                    foreach ($this->shopNotifyList as $notify) {
+                        ?> <div class="notify-drag draggable" type="notify" notify-id="<?php echo $notify->GetId();  ?>"> <?php
+                      $title = '[{"type":"text","val":"' . $notify->GetPostName() .'"}]';
+                      echo $this->notifyLayoutAdapter->GetNotifyLayout($notify->GetId(),$title ,"","",$notify->GetStyle());
+                      ?> </div> <?php
+                    }
+                    ?>
                 </div>
-                <div class="section" id="toollist">
-                    <div class="draggable" type="sleep">Sleep</div>
-                    <div class="draggable" type="condition">Condition</div>
                 </div>
-                <div class="section" id="editorarea">
-                
+                <div class="panel panel-default section" id="toollist">
+                    <div class="panel-heading">Tools</div>
+                    <div class="panel-body">
+                      <div class="draggable" type="sleep">Sleep</div>
+                      <div class="draggable" type="condition">Condition</div>
+                    </div>
+                </div>
+                <div class="panel panel-default section">
+                  <div class="panel-heading">Editor</div>
+                  <div class="panel-body" id="editorarea">Please select any element</div>
                 </div>
                 <div>
                   <input id="saveButton" class="btn btn-primary" type="button" value="Save"> 

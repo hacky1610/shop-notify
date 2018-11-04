@@ -14,7 +14,7 @@ class NotifySettings {
     private static $DEFAULT_STYLE = "modern";
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
-    private static $POSITION = "sn_position";
+    private static $PLACEMENT = "sn_placement";
 
     private static $POSTTYPE = "shop-notify";
     static $namespace = "shop-notify";
@@ -65,7 +65,7 @@ class NotifySettings {
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
-        $this->AddPositionSelectBox(self::$POSITION);
+        $this->AddPositionSelectBox(self::$PLACEMENT);
         ?>
         </div>
        
@@ -158,11 +158,12 @@ class NotifySettings {
         $style = $_POST[self::$CONTROL_STYLE];
         $title = $_POST[self::$CONTROL_TITLE];
         $message = $_POST[self::$CONTROL_MESSAGE];
-        $position =$_POST[self::$POSITION];
+        $placement =$_POST[self::$PLACEMENT];
 
         $notify = new Notify($post_id,$this->postMetaAdapter);
         $notify->SaveStyle($style);
         $notify->SaveTitle($title);
+        $notify->SavePlacement($placement);
         $notify->SaveMessage( $message);
     }
 

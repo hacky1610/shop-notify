@@ -114,6 +114,7 @@ class WfeNotifyController extends WfeBaseController {
   constructor() {
     super();
     this.data.duration = 20;
+    this.data.lastOrderRange = 4;
   }
 
   setId(id) {
@@ -151,10 +152,18 @@ class WfeNotifyController extends WfeBaseController {
       const notify = new SnNotify(this.guid, keyVals, object.title, object.message, productLink, pictureLink, object.style);
       notify.registerOnCloseEvent(this.notifyClosed.bind(this));
       notify.setDuration(this.Duration * 1000);
+      notify.setPlacement(this.getPlacement(object.placement));
       notify.show();
     };
     GetNotifyObject(this.Id).then(show.bind(this));
   };
+
+  getPlacement(placementText) {
+    return {
+      from: placementText.split('-')[0],
+      align: placementText.split('-')[1],
+    };
+  }
 
   notifyClosed() {
     this.notifyClosedEvent();
@@ -162,7 +171,7 @@ class WfeNotifyController extends WfeBaseController {
   
   showPopup(notifyClosed) {
     this.notifyClosedEvent = notifyClosed;
-    ShowOrder(this.ShowNotifyCallback.bind(this));
+    ShowOrder(this.ShowNotifyCallback.bind(this), this.data.lastOrderRange);
   };
 }
 

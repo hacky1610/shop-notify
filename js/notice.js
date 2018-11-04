@@ -164,14 +164,17 @@ function ShowReviewPopup(title, message, icon, link)
 		
 	}
 	
-	function getLastOrder()
-	{
-		 return new Promise(function(resolve, reject) {
-			getLastOrders().then((body) => {
-				resolve(body[Math.floor((Math.random() * 3) + 0)]); //TODO: Random Order
-			})
-		 });
-	}
+function getLastOrder(lastRange) {
+  return new Promise(function(resolve, reject) {
+    getLastOrders().then((body) => {
+      if (lastRange === undefined) {
+        lastRange = 1;
+      }
+      const max = Math.min(body.length, lastRange);
+      resolve(body[Math.floor((Math.random() * max) + 0)]); // TODO: Random Order
+    });
+  });
+}
 	
 	function getLastReview()
 	{
@@ -183,9 +186,9 @@ function ShowReviewPopup(title, message, icon, link)
 		});
 	}
 
-	function ShowOrder(callback)
+	function ShowOrder(callback, lastRange)
 	{
-		getLastOrder().then((lastorder) => {
+		getLastOrder(lastRange).then((lastorder) => {
 			var product = lastorder.items[0];
 
 			//var productId = product.id;
