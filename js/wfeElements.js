@@ -58,35 +58,56 @@ class NotifyOrderEditor extends NotifyEditor {
     this.optionContainer = $('<div><div>');
   };
 
-  orderSelectionValueChanged(o) {
-    //  this.controller.setDuration(o.target.value);
-    const selectedItem = $(o.target.selectedOptions[0]).attr('id');
+  update(selectedItem) {
     this.optionContainer.empty();
     if (selectedItem === 'random') {
       this.optionContainer.append(`<br><p>Any of the last </p>`);
-      this.optionContainer.append(this.getRandomSelectBox());
+      this.optionContainer.append(this.getRandomSelectBox(this.controller.getRandomVal));
       this.optionContainer.append(`<p>Orders</p>`);
     }
+    this.controller.setOrderAction(selectedItem);
     $('.selectpicker').selectpicker();
+  }
+
+  orderSelectionValueChanged(o) {
+    //  this.controller.setDuration(o.target.value);
+    const selectedItem = $(o.target.selectedOptions[0]).attr('id');
+    this.update(selectedItem);
   };
-  getRandomSelectBox() {
+
+  randomValueChanged(o) {
+    //  this.controller.setDuration(o.target.value);
+    const randomValue = $(o.target.selectedOptions[0]).val();
+    this.controller.setRandomVal(randomValue);
+  };
+
+  getRandomSelectBox(val) {
     const selectPickerContainer = $('<div class="selectpicker-container"></div>');
     const select = $('<select class="selectpicker"></select>');
     for (let i = 0; i < 10; i++) {
-      select.append(`<option>${i}</option>`);
+      let selected = '';
+      if (i == val) {
+        selected = 'selected';
+      }
+      select.append(`<option ${selected}>${i}</option>`);
     }
+    select.change(this.randomValueChanged.bind(this));
     selectPickerContainer.append(select);
     return selectPickerContainer;
   }
 
-  getOrderSelectBox() {
+  getOrderSelectBox(val) {
     const select = $('<div class="selectpicker-container"><select class="selectpicker"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
+    if (val !== undefined) {
+      select.children('select').children(`#${val}`).attr('selected', '' );
+      this.update(val);
+    }
     return select;
   }
 
   getContent() {
     const frame = super.getContent();
-    const inputProductSelection = this.getOrderSelectBox();
+    const inputProductSelection = this.getOrderSelectBox(this.controller.getOrderAction);
     inputProductSelection.change(this.orderSelectionValueChanged.bind(this));
     frame.append(`<br><p>Order: </p>`);
     frame.append(inputProductSelection);

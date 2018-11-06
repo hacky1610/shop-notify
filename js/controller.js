@@ -175,9 +175,30 @@ class WfeNotifyOrderController extends WfeNotifyController {
     return new NotifyOrderEditor(this);
   }
 
+  setOrderAction(action) {
+    this.data.orderAction = action;
+  }
+
+  get getOrderAction() {
+    return this.data.orderAction;
+  }
+
+  setRandomVal(val) {
+    this.data.randomVal = val;
+  }
+
+  get getRandomVal() {
+    return this.data.randomVal;
+  }
+
   showPopup(notifyClosed) {
     this.notifyClosedEvent = notifyClosed;
-    ShowOrder(this.ShowNotifyCallback.bind(this), this.data.lastOrderRange);
+    let orderRange = 1;
+    if (this.getOrderAction === 'random') {
+      orderRange = this.data.lastOrderRange;
+    }
+
+    ShowOrder(this.ShowNotifyCallback.bind(this), orderRange);
   };
 }
 
