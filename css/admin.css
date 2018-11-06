@@ -295,6 +295,10 @@
   #editorarea p {
     display: inline;
   }
+
+  .selectpicker-container {
+    display: inline-block;
+  }
   
   /* Safari */
   @-webkit-keyframes spin {

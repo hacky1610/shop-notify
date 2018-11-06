@@ -64,8 +64,10 @@ class AdmninWorkflowEditor {
 
   elementSelected(o) {
     $('#editorarea').empty();
-    $('#editorarea').append(o.controller.Editor.getContent);
+    $('#editorarea').append(o.controller.Editor.getContent());
+    $('.selectpicker').selectpicker();
   };
+
 
   elementDeleted(element) {
     const index = this.items.indexOf(element);
@@ -89,11 +91,12 @@ class AdmninWorkflowEditor {
         controller = new WfeSleepController();
       } else if (type === 'notify') {
         const id = $(ui.draggable).attr('notify-id');
-        controller = new WfeNotifyController();
+        controller = new WfeNotifyOrderController();
         controller.setId(id);
       } else if (type === 'condition') {
         controller = new WfeConditionController();
       }
+      
       const newElement = controller.getEditElement;
 
       if (before) {

@@ -101,41 +101,23 @@ class WoocommerceNotice{
         $this->logger->Call("loadJsAdmin");
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
-            wp_enqueue_script('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_style( 'wp-color-picker' ); 
-            wp_register_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_admin_bootstrap');
-            wp_register_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_admin_fontselect');
-            wp_register_style('wcn_jqui', plugins_url('/../css/jquery-ui.min.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_jqui');
-
-            wp_register_style('prefix_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css');
-            wp_enqueue_style('prefix_bootstrap');
-
-            wp_register_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_admin_style');
-
-            wp_register_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_style');
+            wp_enqueue_style('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
+            wp_enqueue_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_jqui', plugins_url('/../css/jquery-ui.min.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('sn_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css');
+            wp_enqueue_style('sn_bootstrap_select', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css');
+            wp_enqueue_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
+            wp_enqueue_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
              
             // Include our custom jQuery file with WordPress Color Picker dependency
             wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_jqui', plugins_url( '/../js/jquery-ui.min.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
-
-
-            
-            wp_register_script('prefix_popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js');
-            wp_enqueue_script('prefix_popper');
-
-            wp_register_script('prefix_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js');
-            wp_enqueue_script('prefix_bootstrap');
-
-
-            wp_register_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script('wcn_bootstrap_notify');
-
+            wp_enqueue_script('sn_popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js');
+            wp_enqueue_script('sn_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js');
+            wp_enqueue_script('sn_bootstrap_select', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js');
+            wp_enqueue_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_input_mask_script', plugins_url( '/../js/jquery.inputmask.bundle.js?'.self::$version_file, __FILE__), array(), null, 1);
             wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.js?'.self::$version_file, __FILE__), array(), null, 1);
         //}

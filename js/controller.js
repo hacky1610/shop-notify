@@ -5,8 +5,8 @@ class ControllerSerializer {
     if (object.type === 'WfeSleepController') {
       e = new WfeSleepController();
       e.setData(object.data);
-    } else if (object.type === 'WfeNotifyController') {
-      e = new WfeNotifyController();
+    } else if (object.type === 'WfeNotifyOrderController') {
+      e = new WfeNotifyOrderController();
       e.setData(object.data);
     } else if (object.type === 'WfeConditionController') {
       e = new WfeConditionController();
@@ -16,7 +16,7 @@ class ControllerSerializer {
     }
 
     if (e === undefined) {
-      throw new Error(`Cant create object from type ${object.type}`);
+      // throw new Error(`Cant create object from type ${object.type}`);
     }
     return e;
   }
@@ -25,7 +25,10 @@ class ControllerSerializer {
     const resList = [];
     if (list !== undefined) {
       list.forEach(function(element) {
-        resList.push(this.deserializeObject(element));
+        let e = this.deserializeObject(element);
+        if (e !== undefined) {
+          resList.push(e);
+        }
       }.bind(this));
     }
     return resList;
@@ -138,14 +141,6 @@ class WfeNotifyController extends WfeBaseController {
     return new Notify(this);
   }
 
-  get Editor() {
-    return new NotifyEditor(this);
-  }
-
-  run() {
-    return new Promise((resolve) => this.showPopup(resolve));
-  }
-
   ShowNotifyCallback(keyVals, productLink, pictureLink) {
     let show = (body) => {
       const object = JSON.parse(body);
@@ -168,7 +163,18 @@ class WfeNotifyController extends WfeBaseController {
   notifyClosed() {
     this.notifyClosedEvent();
   }
-  
+}
+
+class WfeNotifyOrderController extends WfeNotifyController {
+
+  run() {
+    return new Promise((resolve) => this.showPopup(resolve));
+  }
+
+  get Editor() {
+    return new NotifyOrderEditor(this);
+  }
+
   showPopup(notifyClosed) {
     this.notifyClosedEvent = notifyClosed;
     ShowOrder(this.ShowNotifyCallback.bind(this), this.data.lastOrderRange);

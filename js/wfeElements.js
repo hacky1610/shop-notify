@@ -11,7 +11,7 @@ class SleepEditor {
     this.controller.setTime(o.target.value);
   };
 
-  get getContent() {
+  getContent() {
     const inputTime = $(`<input type="text" value="${this.controller.Time}">`);
     inputTime.change(this.valueChanged.bind(this));
     const frame = $(`<div><p>Wait: </p></div>`);
@@ -28,7 +28,7 @@ class ConditionEditor {
   valueChanged(o) {
   };
 
-  get getContent() {
+  getContent() {
     const frame = $(`<div><p></p></div>`);
     return frame;
   };
@@ -39,18 +39,62 @@ class NotifyEditor {
     this.controller = controller;
   };
 
-  valueChanged(o) {
+  timeValueChanged(o) {
     this.controller.setDuration(o.target.value);
   };
 
-  get getContent() {
+  getContent() {
     const inputTime = $(`<input type="text" value="${this.controller.Duration}">`);
-    inputTime.change(this.valueChanged.bind(this));
+    inputTime.change(this.timeValueChanged.bind(this));
     const frame = $(`<div><p>Duration: </p></div>`);
     frame.append(inputTime);
     return frame;
   };
 };
+
+class NotifyOrderEditor extends NotifyEditor {
+  constructor(controller) {
+    super(controller);
+    this.optionContainer = $('<div><div>');
+  };
+
+  orderSelectionValueChanged(o) {
+    //  this.controller.setDuration(o.target.value);
+    const selectedItem = $(o.target.selectedOptions[0]).attr('id');
+    this.optionContainer.empty();
+    if (selectedItem === 'random') {
+      this.optionContainer.append(`<br><p>Any of the last </p>`);
+      this.optionContainer.append(this.getRandomSelectBox());
+      this.optionContainer.append(`<p>Orders</p>`);
+    }
+    $('.selectpicker').selectpicker();
+  };
+  getRandomSelectBox() {
+    const selectPickerContainer = $('<div class="selectpicker-container"></div>');
+    const select = $('<select class="selectpicker"></select>');
+    for (let i = 0; i < 10; i++) {
+      select.append(`<option>${i}</option>`);
+    }
+    selectPickerContainer.append(select);
+    return selectPickerContainer;
+  }
+
+  getOrderSelectBox() {
+    const select = $('<div class="selectpicker-container"><select class="selectpicker"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
+    return select;
+  }
+
+  getContent() {
+    const frame = super.getContent();
+    const inputProductSelection = this.getOrderSelectBox();
+    inputProductSelection.change(this.orderSelectionValueChanged.bind(this));
+    frame.append(`<br><p>Order: </p>`);
+    frame.append(inputProductSelection);
+    frame.append(this.optionContainer);
+    return frame;
+    
+  }
+}
 
 
 class WfeBaseElement {
@@ -161,10 +205,6 @@ class WfeElement extends WfeBaseElement {
   setData(data) {
     this.data = data;
   }
-
-  get getEditor() {
-    return this.controller.editor;
-  };
 
   registerSelectedEvent(callback) {
     this.selectedCallback = callback;
@@ -290,7 +330,6 @@ class Condition extends WfeElement {
 class Notify extends WfeElement {
   constructor(controller) {
     super(); // call the super class constructor and pass in the name parameter
-    this.editor = new NotifyEditor(this);
     this._containerId = `notify_container_${controller.Id}`;
     this.item = $(`<div class="notify" id='${this._containerId}'><div class="loader"></div></div>`);
     this.controller = controller;
