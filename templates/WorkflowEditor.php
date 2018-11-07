@@ -24,7 +24,7 @@ class WorkflowEditor {
     private $notifyLayoutAdapter;
     private $workflowAdapter;
     
-    function __construct($datastore,$logger,$postmetaAdapter,$notifyLayoutAdapter,$workflowAdapter){
+    function __construct($datastore,$logger,$postmetaAdapter,$notifyLayoutAdapter,$workflowAdapter,$wpAdapter){
         $this->datastore = $datastore;
         $this->logger = $logger;
         $this->notifyLayoutAdapter = $notifyLayoutAdapter;
@@ -40,15 +40,17 @@ class WorkflowEditor {
             $notify = new  Notify($id,$postmetaAdapter);
             array_push($this->shopNotifyList,$notify);
         }
-        wp_enqueue_script( 'sn-notice',  plugins_url( '/../js/notice.js?', __FILE__));
-        wp_enqueue_script( 'sn_controller',  plugins_url( '/../js/controller.js?', __FILE__));
-        wp_register_script( 'workflow-editor-element',  plugins_url( '/../js/wfeElements.js?', __FILE__));
-        wp_localize_script('workflow-editor-element', 'workflow_element_vars', array(
+        $wpAdapter->EnqueueScript('notice','js/notice.js');
+        $wpAdapter->EnqueueScript('controller','js/controller.js');
+
+        $wpAdapter->RegisterScript('workflow-editor-element', 'js/wfeElements.js?');
+        $wpAdapter->LocalizeScript('workflow-editor-element', 'workflow_element_vars', array(
           'delete_icon' => WCN_PATH . "assets/delete.png"
         ));
 
-        wp_enqueue_script("workflow-editor-element");
-        wp_enqueue_script( 'workflow-editor-script',  plugins_url( '/../js/adminWorkflowEditor.js?', __FILE__));
+        $wpAdapter->EnqueueRegisteredScript("workflow-editor-element");
+        $wpAdapter->EnqueueStyle( 'workflow-editor',  'css/adminWorkflowEditor.css?');
+        $wpAdapter->EnqueueScript( 'workflow-editor-script',  'js/adminWorkflowEditor.js?');
     }
 
     function LoadStyles()

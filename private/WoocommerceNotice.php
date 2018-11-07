@@ -41,12 +41,14 @@ class WoocommerceNotice{
     private $workflowAdaper;
     private $notifyLayoutAdapter;
     private $notifyAdapter;
+    private $wpAdapter;
 
     function __construct($datastore, $logger,$postMetaAdapter,$wpAdapter){
         $this->logger = $logger;
         $this->logger->Call("Woocommerce_Notice Constructor");
 
         $this->datastore  = $datastore;
+        $this->wpAdapter = $wpAdapter;
         $this->postMetaAdapter = $postMetaAdapter;
         $this->styleAdapter = new StyleAdapter($this->datastore,$wpAdapter,$this->logger );
         $this->workflowAdaper = new WorkflowAdapter($this->datastore,$wpAdapter,$this->logger );
@@ -78,7 +80,7 @@ class WoocommerceNotice{
     }
     
     public function ShowWorkflowEditor(){
-        $wfe = new WorkflowEditor($this->datastore,$this->logger,$this->postMetaAdapter,$this->notifyLayoutAdapter,$this->workflowAdaper);
+        $wfe = new WorkflowEditor($this->datastore,$this->logger,$this->postMetaAdapter,$this->notifyLayoutAdapter,$this->workflowAdaper,$this->wpAdapter);
         $wfe->Show();
     }
     
@@ -86,13 +88,14 @@ class WoocommerceNotice{
 
     public function loadJs($hook){
         $this->logger->Call("loadJs");
-        wp_enqueue_script('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
-        wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('sn_controller', plugins_url('/../js/controller.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('wcn_script', plugins_url('/../js/notice.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('sn_runner', plugins_url('/../js/runner.js?'.self::$version_file, __FILE__), array(), null, 1);
-        wp_enqueue_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
+        $this->wpAdapter->EnqueueStyle("default","css/default.css"); 
+
+        $this->wpAdapter->EnqueueScript('logger','js/logger.js');
+        $this->wpAdapter->EnqueueScript('common','js/common.js');
+        $this->wpAdapter->EnqueueScript('controller','js/controller.js');
+        $this->wpAdapter->EnqueueScript('notice','js/notice.js');
+        $this->wpAdapter->EnqueueScript('runner','js/runner.js');
+        $this->wpAdapter->EnqueueScript('bootstrap_notify','js/bootstrap-notify.js');
         $this->logger->Call("loadJs finished");
 
     }
@@ -101,25 +104,28 @@ class WoocommerceNotice{
         $this->logger->Call("loadJsAdmin");
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
-            wp_enqueue_style('sn_logger', plugins_url('/../js/logger.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_style('wcn_admin_bootstrap', plugins_url('/../css/bootstrap.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_admin_fontselect', plugins_url('/../css/fontselect.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_jqui', plugins_url('/../css/jquery-ui.min.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('sn_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css');
-            wp_enqueue_style('sn_bootstrap_select', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css');
-            wp_enqueue_style('wcn_admin_style', plugins_url('/../css/admin.css?'.self::$version_file, __FILE__));
-            wp_enqueue_style('wcn_style', plugins_url('/../css/default.css?'.self::$version_file, __FILE__));
+            $this->wpAdapter->EnqueueStyle("admin","css/admin.css"); 
+            $this->wpAdapter->EnqueueStyle("admin_bootstrap","css/bootstrap.css?"); 
+            $this->wpAdapter->EnqueueStyle("admin_fontselect","css/fontselect.css?"); 
+            $this->wpAdapter->EnqueueStyle("jqui","css/jquery-ui.min.css?"); 
+            $this->wpAdapter->EnqueueExternalStyle('bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css');
+            $this->wpAdapter->EnqueueExternalStyle('bootstrap_select', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css');
+            $this->wpAdapter->EnqueueStyle("default","css/default.css?"); 
              
             // Include our custom jQuery file with WordPress Color Picker dependency
-            wp_enqueue_script( 'wcn_admin_script', plugins_url( '/../js/admin.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_jqui', plugins_url( '/../js/jquery-ui.min.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_common_script', plugins_url( '/../js/common.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script('sn_popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js');
-            wp_enqueue_script('sn_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js');
-            wp_enqueue_script('sn_bootstrap_select', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js');
-            wp_enqueue_script('wcn_bootstrap_notify', plugins_url('/../js/bootstrap-notify.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_input_mask_script', plugins_url( '/../js/jquery.inputmask.bundle.js?'.self::$version_file, __FILE__), array(), null, 1);
-            wp_enqueue_script( 'wcn_fontselect_script', plugins_url( '/../js/jquery.fontselect.js?'.self::$version_file, __FILE__), array(), null, 1);
+            $this->wpAdapter->EnqueueScript('logger','js/logger.js');
+            $this->wpAdapter->EnqueueScript('admin_script','js/admin.js');
+            $this->wpAdapter->EnqueueScript('jqui','js/jquery-ui.min.js');
+            $this->wpAdapter->EnqueueScript('common','js/common.js');
+
+            $this->wpAdapter->EnqueueExternalScript('popper','https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js');
+            $this->wpAdapter->EnqueueExternalScript('bootstrap','https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js');
+            $this->wpAdapter->EnqueueExternalScript('bootstrap_select','https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js');
+          
+            $this->wpAdapter->EnqueueScript('bootstrap_notify','js/bootstrap-notify.js');
+            $this->wpAdapter->EnqueueScript('input_mask','js/jquery.inputmask.bundle.js');
+            $this->wpAdapter->EnqueueScript('fontselect','js/jquery.fontselect.js');
+          
         //}
     }
     

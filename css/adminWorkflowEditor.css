@@ -1,0 +1,154 @@
+/*WorkflowEditor*/
+.wfeContent .condition-body
+{
+  display: flex;
+  border: gray;
+  border-style: double;
+}
+
+.wfeContent .condition-body .column {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.wfeContent .entry-element {
+  width: 150px;
+}
+
+.wfeContent .add-element {
+  width: 150px;
+}
+
+.wfeContent .center
+{
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.wfeContent #workingarea
+{
+	width: 70%;
+	float: left;
+}
+
+.wfeContent #toolarea
+{
+	width: 30%;
+	float: left;
+	display: grid;
+}
+
+.wfeContent #toolarea .section
+{
+	display: block;
+}
+
+.wfeContent .droparea
+{
+	width: fit-content;
+}
+
+.wfeContent .wfeElement
+{
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0px;
+	cursor: pointer;
+}
+
+
+.wfeContent .vl {
+    border-left: 2px solid green;
+    height: 20px;
+    width: 1px;
+}
+
+.wfeContent .hl {
+    height: 5px;
+	background: green;
+	display: none;
+}
+
+.wfeContent .inner-frame {
+  position: relative;
+}
+
+.wfeContent .inner-frame:hover > .delete-icon
+{
+  opacity: 1;
+}
+
+.wfeContent .delete-icon {
+  top: -10px;
+  right: -10px;
+  position: absolute;
+  opacity: 0;
+  transition: .5s ease;
+}
+
+.wfeContent .delete-icon img {
+  height: 22px;
+  width: 22px;
+}
+
+
+
+.wfeContent .action
+{
+    border: black;
+    border-width: 3px;
+    border-style: double;
+ 
+    padding: 3px;
+}
+
+.wfeContent .wfeElement .notify
+{
+	display: inline-block;
+}
+
+.wfeContent .plus
+{
+    border: black;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50px
+}
+
+.wfeContent .ui-state-hover .hl
+{
+	display: block;
+}
+
+.wfeContent .notify-drag
+{
+	display: inline-grid;
+	cursor: pointer;
+}
+
+.wfeContent .notify-drag
+{
+	transform:scale(0.7);
+	transform-origin: top left;
+	margin-bottom: -10px;
+}
+
+.wfeContent .loader {
+	border: 10px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 10px solid #3498db;
+	width: 60px;
+	height: 60px;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
+	
+  }
+
+  .wfeContent #editorarea p {
+    display: inline;
+  }
+
+  .wfeContent .selectpicker-container {
+    display: inline-block;
+  }

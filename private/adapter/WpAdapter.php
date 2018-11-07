@@ -41,6 +41,34 @@ class WpAdapter {
         return $val;
     }
 
+    public function EnqueueStyle($name,$path) {
+      wp_enqueue_style("sn_".$name, WCN_PATH.$path.'?'.WCN_VERSION);
+    }
+
+    public function EnqueueExternalStyle($name,$path) {
+      wp_enqueue_style("sn_".$name, $path);
+    }
+
+    public function EnqueueRegisteredScript($name) {
+      wp_enqueue_script("sn_".$name);
+    }
+
+    public function EnqueueScript($name,$path) {
+      wp_enqueue_script("sn_".$name, WCN_PATH.$path.'?'.WCN_VERSION, array(), null, 1);
+    }
+
+    public function RegisterScript($name,$path) {
+      wp_register_script("sn_".$name, WCN_PATH.$path.'?'.WCN_VERSION, array(), null, 1);
+    }
+
+    public function EnqueueExternalScript($name,$path) {
+      wp_enqueue_script("sn_".$name, $path);
+    }
+
+    public function LocalizeScript($name,$varname,$array) {
+      wp_localize_script("sn_".$name, $varname, $array);
+    }
+
     public function WpDie()
     {
         wp_die();
