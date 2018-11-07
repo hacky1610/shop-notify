@@ -152,3 +152,11 @@
   .wfeContent .selectpicker-container {
     display: inline-block;
   }
+
+  .wfeContent .order-select-picker {
+    width: 100px;
+  }
+
+  .wfeContent .random-select-picker {
+    width: 40px;
+  }

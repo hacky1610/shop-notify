@@ -83,7 +83,7 @@ class NotifyOrderEditor extends NotifyEditor {
 
   getRandomSelectBox(val) {
     const selectPickerContainer = $('<div class="selectpicker-container"></div>');
-    const select = $('<select class="selectpicker"></select>');
+    const select = $('<select class="selectpicker random-select-picker"></select>');
     for (let i = 0; i < 10; i++) {
       let selected = '';
       if (i == val) {
@@ -97,7 +97,7 @@ class NotifyOrderEditor extends NotifyEditor {
   }
 
   getOrderSelectBox(val) {
-    const select = $('<div class="selectpicker-container"><select class="selectpicker"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
+    const select = $('<div class="selectpicker-container"><select class="selectpicker order-select-picker"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
     if (val !== undefined) {
       select.children('select').children(`#${val}`).attr('selected', '' );
       this.update(val);

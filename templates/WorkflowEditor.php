@@ -64,8 +64,6 @@ class WorkflowEditor {
        $cssLoader->Load();
     }
 
-   
-
     function Show()
     {
         $this->logger->Call("Show WorkflowEditor");
@@ -73,7 +71,7 @@ class WorkflowEditor {
         ?>
 
         <h2>WorkflowEditor</h2>
-        <div id="wfeContent">
+        <div class="wfeContent">
             <div id="workingarea" >
                 <ul class="droparea center sortable">
 
