@@ -83,7 +83,7 @@ class NotifyOrderEditor extends NotifyEditor {
 
   getRandomSelectBox(val) {
     const selectPickerContainer = $('<div class="selectpicker-container"></div>');
-    const select = $('<select class="selectpicker random-select-picker"></select>');
+    const select = $('<select class="selectpicker" data-width="fit"></select>');
     for (let i = 0; i < 10; i++) {
       let selected = '';
       if (i == val) {
@@ -97,7 +97,7 @@ class NotifyOrderEditor extends NotifyEditor {
   }
 
   getOrderSelectBox(val) {
-    const select = $('<div class="selectpicker-container"><select class="selectpicker order-select-picker"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
+    const select = $('<div class="selectpicker-container"><select class="selectpicker" data-width="fit"><option id="last-order">Last order</option><option id="random">Ramdom</option><option id="specific">Specific</option></select></div>');
     if (val !== undefined) {
       select.children('select').children(`#${val}`).attr('selected', '' );
       this.update(val);
@@ -109,9 +109,15 @@ class NotifyOrderEditor extends NotifyEditor {
     const frame = super.getContent();
     const inputProductSelection = this.getOrderSelectBox(this.controller.getOrderAction);
     inputProductSelection.change(this.orderSelectionValueChanged.bind(this));
-    frame.append(`<br><p>Order: </p>`);
-    frame.append(inputProductSelection);
-    frame.append(this.optionContainer);
+    const table = $('<table> </table>');
+    const row= $('<tr></tr>');
+    row.append('<td><p>Order: </p></td>');
+    const column2 = $('<td></td>');
+    row.append(column2);
+    column2.append(inputProductSelection);
+    inputProductSelection.append(this.optionContainer);
+    table.append(row);
+    frame.append(table);
     return frame;
     
   }
