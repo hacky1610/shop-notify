@@ -14,3 +14,18 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- task: Npm@1
+  displayName: 'npm test'
+  inputs:
+    command: custom
+    customCommand: 'test'
