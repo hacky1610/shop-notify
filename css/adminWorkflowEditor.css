@@ -160,3 +160,12 @@
   .wfeContent .random-select-picker {
     width: 40px;
   }
+
+  .wfeContent .label-column {
+    padding-right: 10px;
+    vertical-align: top;
+  }
+
+  .wfeContent .property-table td {
+    padding-bottom:15px
+  }

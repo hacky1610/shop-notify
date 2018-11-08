@@ -43,14 +43,37 @@ class NotifyEditor {
     this.controller.setDuration(o.target.value);
   };
 
-  getContent() {
+  getRow() {
+    return $('<tr></tr>');
+  }
+
+  getColumn(content) {
+    const column = $('<td></td>');
+    if (content !== undefined) {
+      column.append(content);
+    }
+    return column;
+  }
+
+  getLabelColumn(text) {
+    const column = $(`<td class="label-column">${text}</td>`);
+    return column;
+  }
+
+  getTable() {
+    const table = $('<table class="property-table"> </table>');
+    const row = this.getRow();
+    table.append(row);
+
     const inputTime = $(`<input type="text" value="${this.controller.Duration}">`);
     inputTime.change(this.timeValueChanged.bind(this));
-    const frame = $(`<div><p>Duration: </p></div>`);
-    frame.append(inputTime);
-    return frame;
+
+    row.append(this.getLabelColumn('Duration:'));
+    row.append(inputTime);
+    return table;
   };
 };
+
 
 class NotifyOrderEditor extends NotifyEditor {
   constructor(controller) {
@@ -79,6 +102,7 @@ class NotifyOrderEditor extends NotifyEditor {
     //  this.controller.setDuration(o.target.value);
     const randomValue = $(o.target.selectedOptions[0]).val();
     this.controller.setRandomVal(randomValue);
+    o.originalEvent.stopPropagation();
   };
 
   getRandomSelectBox(val) {
@@ -106,19 +130,18 @@ class NotifyOrderEditor extends NotifyEditor {
   }
 
   getContent() {
-    const frame = super.getContent();
+    const table = super.getTable();
+
     const inputProductSelection = this.getOrderSelectBox(this.controller.getOrderAction);
     inputProductSelection.change(this.orderSelectionValueChanged.bind(this));
-    const table = $('<table> </table>');
-    const row= $('<tr></tr>');
-    row.append('<td><p>Order: </p></td>');
-    const column2 = $('<td></td>');
-    row.append(column2);
-    column2.append(inputProductSelection);
     inputProductSelection.append(this.optionContainer);
+
+
+    const row = this.getRow();
+    row.append(this.getLabelColumn('Order:'));
+    row.append(this.getColumn(inputProductSelection));
     table.append(row);
-    frame.append(table);
-    return frame;
+    return table;
     
   }
 }
