@@ -13,6 +13,9 @@ steps:
     docker-compose up -d
     docker ps
 
+    docker exec s_wordpress_1 wp theme install quark
+    
+
   displayName: 'Install Wordpress Cli'
 
 
