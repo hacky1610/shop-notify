@@ -11,6 +11,7 @@ steps:
     echo Hello, world!
    
     docker run --name hackyswordpress -d conetix/wordpress-with-wp-cli 
+    docker exec hackyswordpress wp config create
     docker exec hackyswordpress wp theme install quark
 
   displayName: 'Install Wordpress Cli'
