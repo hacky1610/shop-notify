@@ -14,5 +14,5 @@ steps:
     sudo mv wp-cli.phar /usr/local/bin/wp
   displayName: 'Run a one-line script'
 
-01517 1834641
+
 
