@@ -10,9 +10,7 @@ steps:
 - script: | 
     echo Hello, world!
    
-    docker run --name hackyswordpress -d conetix/wordpress-with-wp-cli 
-    docker exec hackyswordpress wp config create --dbname=azuredb --dbuser=hacky
-    docker exec hackyswordpress wp theme install quark
+    docker-compose up -d
 
   displayName: 'Install Wordpress Cli'
 
