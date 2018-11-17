@@ -13,7 +13,10 @@ steps:
     chmod +x wp-cli.phar 
     sudo mv wp-cli.phar /usr/local/bin/wp
     wp --info
-  displayName: 'Run a one-line script'
+
+    wp scaffold plugin-tests wp-meta-verify
+    dir
+  displayName: 'Install Wordpress Cli'
 
 
 
