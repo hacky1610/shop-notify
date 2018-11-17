@@ -19,6 +19,7 @@ steps:
     wp --info
     wp scaffold plugin-tests wp-meta-verify
     dir
+    exit
   displayName: 'Install Wordpress Cli'
 
 
