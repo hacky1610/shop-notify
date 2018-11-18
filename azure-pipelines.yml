@@ -7,13 +7,15 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 steps:
-- script: | 
+- powershell: | 
     echo Hello, world!
    
     docker-compose up -d
     docker ps
 
-    docker exec s_wordpress_1 wp theme install quark
+    #docker exec s_wordpress_1 wp theme install quark
+    $wr = Invoke-WebRequest -Uri http://localhost:8000
+    $wr.Content
     
 
   displayName: 'Install Wordpress Cli'
