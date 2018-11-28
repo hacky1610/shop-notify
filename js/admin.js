@@ -85,7 +85,7 @@ function ShowPreviewPopup(style) {
   const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
   $(`#${id}`).remove();
   const notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
-  notify.setElement('#wpbody-content');
+  notify.setElement('.notify-preview .panel-body');
   notify.setPosition('static');
   notify.show();
 }

@@ -32,11 +32,35 @@ class NotifySettings {
     public function Show($post)
     {
         ?>
-        <div class="notify-editor"> 
-        <div class="head"><span>Settings</span> </div>
-        
+         <div class="panel panel-default section notify-editor">
+                <div class="panel-heading">Settings</div>
+                <div class="panel-body">
+                <?php
+                    $this->ShowEditorBody($post);
+                ?>
+                </div>
+        </div>
 
+          <div class="panel panel-default section notify-preview">
+                <div class="panel-heading">Preview</div>
+                <div class="panel-body">
+      
+                </div>
+        </div>
+
+       
         <?php
+        wp_enqueue_script( 'notify-editor-script',  plugins_url( '/../js/adminNotifyEditor.js?', __FILE__));
+        wp_localize_script('notify-editor-script', 'notify_editor_vars', array(
+                'editor_url' => $editorUrl
+            )
+        );
+        $this->AddDialog();
+    }
+
+
+    private function ShowEditorBody($post)
+    {
         $this->logger->Call("Show");
 
         $notify = new Notify($post->ID,$this->postMetaAdapter);
@@ -66,16 +90,6 @@ class NotifySettings {
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
         $this->AddPositionSelectBox(self::$PLACEMENT);
-        ?>
-        </div>
-       
-        <?php
-        wp_enqueue_script( 'notify-editor-script',  plugins_url( '/../js/adminNotifyEditor.js?', __FILE__));
-        wp_localize_script('notify-editor-script', 'notify_editor_vars', array(
-                'editor_url' => $editorUrl
-            )
-        );
-        $this->AddDialog();
     }
 
     private function DisplayDragItems($labelUrl)
@@ -124,17 +138,29 @@ class NotifySettings {
         <?php
     }
 
-    private function AddPositionSelectBox($id)
-    {
+    private function AddPositionSelectBox($id,$keyToSet)
+    {       
+
+        $array = array(
+            "top-left"  => "Top left",
+            "top-right" => "Top right",
+            "bottom-left" => "Bottom left",
+            "bottom-right" => "Bottom right",
+        );
       ?>
     
       <div class="select-box-container">
           <label><?php "Position:"; ?></label>
           <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
-            <option value="top-left">Top left</option>
-            <option value="top-right">Top right</option>
-            <option value="bottom-left">Bottom left</option>
-            <option value="bottom-right">Botom right</option>      
+          <?php
+                foreach ($array as $key => $value) {
+                    $selected = "";
+                    if ($key == $keyToSet) {
+                        $selected = "selected";
+                    }
+                    echo "<option $selected value='" .  $key ."'>". $value ."</option>";
+                }
+            ?>   
           </select>
          </div>
          <?php
