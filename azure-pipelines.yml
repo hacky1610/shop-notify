@@ -8,14 +8,16 @@ pool:
 
 steps:
 - powershell: | 
-    echo Hello, world!
    
     docker-compose up -d
+    sleep 30
+   
+    docker exec s_wordpress_1 wp core install --url=www.azurepipeline.hacky --title=hacky --admin_user=admin --admin_email=admin@hacky.de
+    docker exec s_wordpress_1 bash -c "cp -R /var/woocomerce-notice /var/www/html/wp-content/plugins"
+    docker exec s_wordpress_1 bash -c "sudo chmod -R 757 /var/www/html/wp-content/plugins/woocomerce-notice"
+    docker exec s_wordpress_1 wp scaffold plugin-tests woocomerce-notice  
+    docker exec s_wordpress_1 composer global require phpunit/phpunit:5.*
 
-    #docker exec s_wordpress_1 wp theme install quark
-    $wr = Invoke-WebRequest -Uri http://localhost:8000
-    $wr.Content
-    
 
   displayName: 'Install Wordpress Cli'
 
