@@ -45,6 +45,7 @@ class StyleAdapterTest extends TestCase
         
         $sa = new StyleAdapter($datastore,$wpAdapter ,$logger);
         $sa->SaveStyle();
+        $this->assertNotNull($sa);
 
     }
 

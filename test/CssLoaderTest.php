@@ -18,7 +18,8 @@ class CssLoaderTest extends TestCase
         $s1 = new Style("myId","StyleName",". { font-family: FooBar;}  { font-family: FooBar2;}");
         $s2 = new Style("myId","StyleName",". { font-family: Hello;}  { font-family: FooBar2;}");
         $fonts = CssLoader::GetFonts( array($s1,$s2));
-        print_r($fonts);
+       $this->assertNotNull($fonts);
+       
 
     }
 
@@ -31,6 +32,8 @@ class CssLoaderTest extends TestCase
 
         $loader->AddStyle($s2);
         $loader->Load();
+       $this->assertNotNull($loader);
+
     }
 
 

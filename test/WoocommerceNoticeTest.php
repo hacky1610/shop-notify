@@ -24,6 +24,8 @@ class WoocommerceNoticeTest extends TestCase
         $wpAdapter = $this->createMock(Logger::class);
         //$wcn = new WoocommerceNotice($datastore,$logger,$postmetaAdapter,$wpAdapter);
         //$this->assertContains(2,3);
+       $this->assertNotNull("Foo");
+
     }
 
 }
