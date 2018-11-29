@@ -89,6 +89,7 @@ class WoocommerceNotice{
     public function loadJs($hook){
         $this->logger->Call("loadJs");
         $this->wpAdapter->EnqueueStyle("default","css/default.css"); 
+        $this->wpAdapter->EnqueueStyle("animate","css/animate.css"); 
 
         $this->wpAdapter->EnqueueScript('logger','js/logger.js');
         $this->wpAdapter->EnqueueScript('common','js/common.js');
@@ -105,6 +106,8 @@ class WoocommerceNotice{
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
             $this->wpAdapter->EnqueueStyle("admin","css/admin.css"); 
+            $this->wpAdapter->EnqueueStyle("animate","css/animate.css"); 
+
             $this->wpAdapter->EnqueueStyle("admin_bootstrap","css/bootstrap.css?"); 
             $this->wpAdapter->EnqueueStyle("admin_fontselect","css/fontselect.css?"); 
             $this->wpAdapter->EnqueueStyle("jqui","css/jquery-ui.min.css?"); 

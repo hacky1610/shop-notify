@@ -75,6 +75,10 @@ class SnNotify {
       template: template,
       element: element,
       position: position,
+      animate: {
+        enter: 'animated lightSpeedIn',
+        exit: 'animated lightSpeedOut'
+      }
     });
     return notify;
   }
