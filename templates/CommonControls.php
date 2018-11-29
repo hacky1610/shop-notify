@@ -12,7 +12,7 @@ class CommonControls {
     
     <div class="select-box-container">
         <label><?php echo $labeltext . ":"; ?></label>
-        <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
+        <select class="form-control layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
         <?php if($showCreateNew) { ?>                  
         <option value="create-new">Create New</option>
             <?php

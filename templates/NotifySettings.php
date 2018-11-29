@@ -156,7 +156,7 @@ class NotifySettings {
     
       <div class="select-box-container">
           <label><?php "Position:"; ?></label>
-          <select class="layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
+          <select class="form-control layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
           <?php
                 foreach ($array as $key => $value) {
                     $selected = "";

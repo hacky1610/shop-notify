@@ -15,5 +15,11 @@
 
 .notify-preview {
   min-width: 400px;
+  margin-left: 35px;
     
+}
+
+.select-box-container .form-control {
+    width: unset;
+    display: inline;
 }
