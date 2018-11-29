@@ -1,7 +1,6 @@
 var fontSelector;
 
 class SnFontSelector {
-
     constructor(selector,callback) {
         this.internalSelector = $(selector).fontselect();
         this.internalSelector.Original().change(function(){

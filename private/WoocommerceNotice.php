@@ -54,7 +54,7 @@ class WoocommerceNotice{
         $this->workflowAdaper = new WorkflowAdapter($this->datastore,$wpAdapter,$this->logger );
         $this->notifyAdapter = new NotifyAdapter($postMetaAdapter);
         $this->notifyLayoutAdapter = new NotifyLayoutAdapter($wpAdapter,$this->logger);
-        $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter);
+        $this->notifySettingsEditor = new NotifySettings($datastore,$logger,$postMetaAdapter,$wpAdapter);
 
         
          new WoocommerceApi(new WoocommerceApiLogic($logger));

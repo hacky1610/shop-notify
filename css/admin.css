@@ -68,24 +68,7 @@
         display: flex; 
 }
 
-.notify-editor .panel-body > div > label
-{
-    width: 120px;
-}
 
-.notify-editor .panel-body > div > input
-{
-    width: 370px;
-}
-
-.notify-editor .panel-body > div 
-{
-    margin-top: 7px;
-}
-
-.notify-preview {
-    
-}
 
 .tool-box
 {

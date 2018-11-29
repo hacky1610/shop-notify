@@ -22,11 +22,13 @@ class NotifySettings {
     private $datastore;
     private $postMetaAdapter;
     private $logger;
+    private $wpAdapter;
     
-    function __construct($datastore,$logger,$postMetaAdapter){
+    function __construct($datastore,$logger,$postMetaAdapter,$wpAdapter){
         $this->datastore = $datastore;
         $this->logger = $logger;
         $this->postMetaAdapter = $postMetaAdapter;
+        $this->wpAdapter = $wpAdapter;
     }
 
     public function Show($post)
@@ -50,11 +52,14 @@ class NotifySettings {
 
        
         <?php
-        wp_enqueue_script( 'notify-editor-script',  plugins_url( '/../js/adminNotifyEditor.js?', __FILE__));
-        wp_localize_script('notify-editor-script', 'notify_editor_vars', array(
+        $this->wpAdapter->EnqueueStyle( 'workflow-editor',  'css/adminNotifySettings.css?');
+        $this->wpAdapter->RegisterScript('notify-editor-script','/../js/adminNotifyEditor.js');
+        $this->wpAdapter->LocalizeScript('notify-editor-script', 'notify_editor_vars', array(
                 'editor_url' => $editorUrl
             )
         );
+        $this->wpAdapter->EnqueueRegisteredScript("notify-editor-script");
+
         $this->AddDialog();
     }
 
@@ -89,7 +94,7 @@ class NotifySettings {
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
-        $this->AddPositionSelectBox(self::$PLACEMENT);
+        $this->AddPositionSelectBox(self::$PLACEMENT, $notify->GetPlacement());
     }
 
     private function DisplayDragItems($labelUrl)

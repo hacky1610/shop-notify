@@ -1,0 +1,29 @@
+{
+  "deploy.reloaded": {
+      "targets": [
+          {
+              "type": "ftp",
+              "name": "My FTP folder",
+              "description": "A FTP folder",
+
+              "dir": "/WordPress_02/wp-content/plugins/woocommerce-notice/",
+              "host": "ftp.strato.de", "port": 21,
+              "user": "vals-natural-journey.de", "password": "Daytona1610!"
+          }
+      ],
+      "packages": [
+        {
+            "name": "Version 2.3.4",
+            "description": "Package version 2.3.4",
+            "files": [
+                "**/*.*"
+            ],
+            "exclude": [
+                "tests/**",
+                "node_modules/**",
+                "vendor/**"
+            ]
+        }
+    ]
+  }
+}
