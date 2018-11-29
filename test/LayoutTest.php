@@ -13,7 +13,7 @@ class LayoutTest extends TestCase
 {
     public function testInitLayout()
     {
-        $l = new Layout();
+        $l = new Layout("id","modern");
         $l->Render();
 
         $this->assertNotNull($l);
@@ -22,7 +22,7 @@ class LayoutTest extends TestCase
 
     public function testAddTextToTitle()
     {
-        $l = new Layout();
+        $l = new Layout("id","modern");
         $l->AddToTitle(Layout::CreateText("Foo"));
         $l->Render();
 
@@ -32,7 +32,7 @@ class LayoutTest extends TestCase
 
     public function testAddLinkToTitle()
     {
-        $l = new Layout();
+        $l = new Layout("id","modern");
         $l->AddToTitle(Layout::CreateLink("Foo",""));
         $l->Render();
 
@@ -43,7 +43,7 @@ class LayoutTest extends TestCase
     public function testAddTextAndTitleToTitle()
     {
     
-        $layout = new Layout();
+        $layout = new Layout("id","modern");
 
         $title = array(
             Layout::CreateParagraph("Hello"),

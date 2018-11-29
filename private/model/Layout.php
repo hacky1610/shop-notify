@@ -19,7 +19,7 @@ class Layout {
         $this->message = array();
         $this->id = $id;
         $this->style = $style;
-        $this->pictureLink = plugins_url( '/../../assets/preview_image.png', __FILE__ );
+        $this->pictureLink = WCN_PATH . '/assets/preview_image.png';
     }
 
     public function AddPicture($path)

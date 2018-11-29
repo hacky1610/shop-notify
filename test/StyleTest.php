@@ -21,10 +21,12 @@ class StyleTest extends TestCase
 
     public function testGetFontList_hasTwoFonts()
     {
-        $s = new Style("myId","StyleName",". { font-family: \"FooBar\"};  { font-family: \"FooBar2\"}");
+        $s = new Style("myId","StyleName",". { font-family: \"FooBar\";};  { font-family: \"FooBar2\";}");
 
         $fontList = $s->GetFontList();
+        print_r($fontList);
         $this->assertCount(2, $fontList);
+
         $this->assertContains("FooBar",$fontList);
         $this->assertContains("FooBar2",$fontList);
 
