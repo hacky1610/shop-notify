@@ -7,10 +7,10 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../templates/NotifySettings.php' );
-include(__DIR__. '/../private/logger.php' );
-include(__DIR__. '/../private/DataStore.php' );
+include_once dirname( __FILE__ ) . '/../private/logger.php' ;
+include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php' ;
 include_once dirname( __FILE__ ) . '/../private/adapter/NotifyLayoutAdapter.php' ;
+include_once dirname( __FILE__ ) . '/../private/DataStore.php' ;
 include_once dirname( __FILE__ ) . '/../private/mocks/LoggerMock.php' ;
 
 

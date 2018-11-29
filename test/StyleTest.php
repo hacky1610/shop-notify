@@ -7,7 +7,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/model/Style.php' );
+include_once dirname( __FILE__ ) . '/../private/model/Style.php' ;
 
 class StyleTest extends TestCase
 {

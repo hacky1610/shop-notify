@@ -7,7 +7,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/model/Layout.php' );
+include_once dirname( __FILE__ ) . '/../private/model/Layout.php' ;
 
 class LayoutTest extends TestCase
 {

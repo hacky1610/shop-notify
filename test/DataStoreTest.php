@@ -7,8 +7,9 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/DataStore.php' );
-include(__DIR__. '/../private/WpDataStore.php' );
+include_once dirname( __FILE__ ) . '/../private/DataStore.php' ;
+include_once dirname( __FILE__ ) . '/../private/WpDataStore.php' ;
+
 
 class DataStoreTest extends TestCase
 {

@@ -7,7 +7,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/DataStore.php' );
+include_once dirname( __FILE__ ) . '/../private/DataStore.php' ;
 
 class TemplateSettingsTest extends TestCase
 {

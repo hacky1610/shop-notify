@@ -9,9 +9,9 @@
 
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/WoocommerceApi.php' );
-include(__DIR__. '/../private/WoocommerceApiLogic.php' );
-include(__DIR__. '/../private/logger.php' );
+include_once dirname( __FILE__ ) . '/../private/WoocommerceApi.php' ;
+include_once dirname( __FILE__ ) . '/../private/WoocommerceApiLogic.php' ;
+include_once dirname( __FILE__ ) . '/../private/logger.php' ;
 
 $autoloader = dirname( __FILE__ ) . '/../vendor/autoload.php';
 

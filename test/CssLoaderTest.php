@@ -7,8 +7,8 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/model/Style.php' );
-include(__DIR__. '/../private/CssLoader.php' );
+include_once dirname( __FILE__ ) . '/../private/model/Style.php' ;
+include_once dirname( __FILE__ ) . '/../private/CssLoader.php' ;
 
 class CssLoaderTest extends TestCase
 {

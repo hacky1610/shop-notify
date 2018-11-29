@@ -22,7 +22,7 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: phpunit
+- script: phpunit test
   displayName: 'Run tests with phpunit'
 
 

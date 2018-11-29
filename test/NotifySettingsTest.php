@@ -7,14 +7,13 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../templates/NotifySettings.php' );
-include(__DIR__. '/../private/logger.php' );
-include(__DIR__. '/../private/DataStore.php' );
+include_once dirname( __FILE__ ) . '/../private/logger.php' ;
+include_once dirname( __FILE__ ) . '/../templates/NotifySettings.php' ;
+include_once dirname( __FILE__ ) . '/../private/DataStore.php' ;
 include_once dirname( __FILE__ ) . '/../private/adapter/PostMetaAdapter.php' ;
 include_once dirname( __FILE__ ) . '/../private/adapter/WpAdapter.php' ;
 include_once dirname( __FILE__ ) . '/../private/mocks/LoggerMock.php' ;
-include(__DIR__. '/../private/mocks/PostMock.php' );
-
+include_once dirname( __FILE__ ) . '/../private/mocks/PostMock.php' ;
 
 class NotifySettingsTest extends TestCase
 {

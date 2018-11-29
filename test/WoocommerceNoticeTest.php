@@ -7,8 +7,9 @@
  */
 use PHPUnit\Framework\TestCase;
 
-include(__DIR__. '/../private/WoocommerceNotice.php' );
-include(__DIR__. '/../private/logger.php' );
+include_once dirname( __FILE__ ) . '/../private/WoocommerceNotice.php' ;
+include_once dirname( __FILE__ ) . '/../private/logger.php' ;
+
 
 class WoocommerceNoticeTest extends TestCase
 {
