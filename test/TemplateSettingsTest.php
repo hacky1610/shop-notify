@@ -11,15 +11,5 @@ include_once dirname( __FILE__ ) . '/../private/DataStore.php' ;
 
 class TemplateSettingsTest extends TestCase
 {
-    public function testInit()
-    {
-        $stub = $this->createMock(DataStore::class);
-
-        // Configure the stub.
-        $stub->method('GetConsumerKey')
-             ->willReturn('foo');
-
-
-        echo $stub->GetConsumerKey();
-    }
+    
 }

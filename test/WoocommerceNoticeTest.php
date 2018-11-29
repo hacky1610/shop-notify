@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 include_once dirname( __FILE__ ) . '/../private/WoocommerceNotice.php' ;
 include_once dirname( __FILE__ ) . '/../private/logger.php' ;
+include_once dirname( __FILE__ ) . '/../private/Datastore.php' ;
+include_once dirname( __FILE__ ) . '/../private/adapter/WpAdapter.php' ;
+include_once dirname( __FILE__ ) . '/../private/adapter/PostMetaAdapter.php' ;
 
 
 class WoocommerceNoticeTest extends TestCase
@@ -16,8 +19,11 @@ class WoocommerceNoticeTest extends TestCase
     public function testInit()
     {
         $logger = $this->createMock(Logger::class);
-        $wcn = new WoocommerceNotice(2,$logger);
-        $this->assertContains(2,3);
+        $datastore = $this->createMock(Logger::class);
+        $postmetaAdapter = $this->createMock(Logger::class);
+        $wpAdapter = $this->createMock(Logger::class);
+        //$wcn = new WoocommerceNotice($datastore,$logger,$postmetaAdapter,$wpAdapter);
+        //$this->assertContains(2,3);
     }
 
 }

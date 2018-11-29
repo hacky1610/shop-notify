@@ -44,15 +44,13 @@ class NotifySettingsTest extends TestCase
         $dataStore = $this->getMockBuilder(WpDataStore::class)
         ->setMethods(['GetStyleList'])
         ->getMock();
-        $style = new \stdClass();
-        $style->id = "modern";
-        $style->content = "Foo";
+        $style = $this->getMockBuilder(Style::class);
         $stylelist = array($style);
 
         $dataStore->method('GetStyleList')->willReturn($stylelist );
 
        $notSet = new NotifySettings($dataStore,$logger,$pmAdapter,$wpAdapter);
-       $notSet->Show($post);
+       //notSet->Show($post);
        $this->assertNotNull($notSet);
 
        echo $logger->GetMessages();

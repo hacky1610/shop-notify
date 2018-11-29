@@ -38,7 +38,7 @@ class NotifyLayoutAdapterTest extends TestCase
         $logger = $this->createMock(Logger::class);
         $wpAdapter = $this->createMock(WpAdapter::class);
        $notLayAdap = new NotifyLayoutAdapter($wpAdapter,$logger);
-        $notLayAdap->GetNotifyAjax();
+        //$notLayAdap->GetNotifyAjax();
     }
 
   

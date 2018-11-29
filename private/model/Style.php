@@ -90,6 +90,10 @@ class Style {
         return $default;
     }
 
+    public function GetId()
+    {
+        return $this->id;
+    }
     
     public static function GetStyle($styleList,$id)
     {
@@ -97,7 +101,7 @@ class Style {
         {
             foreach($styleList as &$style)
             {
-                if($style->id == $id)
+                if($style->GetId() == $id)
                 return $style;
             }
         }

@@ -8,6 +8,8 @@
 use PHPUnit\Framework\TestCase;
 
 include_once dirname( __FILE__ ) . '/../private/model/Layout.php' ;
+define("WCN_PATH", "foo");
+
 
 class LayoutTest extends TestCase
 {
@@ -23,7 +25,12 @@ class LayoutTest extends TestCase
     public function testAddTextToTitle()
     {
         $l = new Layout("id","modern");
-        $l->AddToTitle(Layout::CreateText("Foo"));
+        $title = array(
+            Layout::CreateParagraph("A title"),
+        );
+
+        
+        $l->AddToTitle(Layout::CreateText($title));
         $l->Render();
 
         $this->assertNotNull($l);
@@ -33,7 +40,13 @@ class LayoutTest extends TestCase
     public function testAddLinkToTitle()
     {
         $l = new Layout("id","modern");
-        $l->AddToTitle(Layout::CreateLink("Foo",""));
+        $title = array(
+            Layout::CreateLink("with link")
+        );
+
+        
+        $l->AddToTitle(Layout::CreateText($title));
+        
         $l->Render();
 
         $this->assertNotNull($l);
