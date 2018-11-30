@@ -2,7 +2,7 @@ class AdminNotifyEditor {
   constructor() {
     this.changed = false;
     $('.sn-edit-button').on('click', this.editButtonClicked.bind(this));
-    $('.layout-content').on('click', this.loadNewStyle.bind(this));
+    $('.layout-content').on('change', this.loadNewStyle.bind(this));
     $('.edit-control-container input').on('change', this.textBoxCanged).bind(this);
     $('.sn-drag-item').on('dragstart', function(evt) {
       evt.originalEvent.dataTransfer.setData('text', ' ' + evt.target.id + ' ');

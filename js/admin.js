@@ -71,7 +71,7 @@ function SaveStyle() {
         $('.wcn_edit_section .wcn-edit-control').on('change', changed );
         $('#style-editor-save-button').click(SaveStyle);
 
-        $('.notify-editor .wcn-edit-control').on('change', () => {ShowPreviewPopup($("#sn_style_content").val());} );
+        //$('.notify-editor .wcn-edit-control').on('change', () => {ShowPreviewPopup($("#sn_style_content").val());} );
 
         $('.wcn-notify-orders').click();
      

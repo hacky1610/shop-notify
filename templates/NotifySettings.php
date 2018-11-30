@@ -15,6 +15,7 @@ class NotifySettings {
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
     private static $PLACEMENT = "sn_placement";
+    private static $INANIMATION = "sn_inanimation";
 
     private static $POSTTYPE = "shop-notify";
     static $namespace = "shop-notify";
@@ -95,6 +96,7 @@ class NotifySettings {
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
         $this->AddPositionSelectBox(self::$PLACEMENT, $notify->GetPlacement());
+        $this->AddAnimationSelectBox(self::$INANIMATION,"foo");
     }
 
     private function DisplayDragItems($labelUrl)
@@ -152,24 +154,66 @@ class NotifySettings {
             "bottom-left" => "Bottom left",
             "bottom-right" => "Bottom right",
         );
+
+        $object = array(
+            "name" => null,
+            "vals" => $array
+        );
+        self::AddSelectBox($id,"Position:",array($object),$keyToSet);
+    }
+
+    private function AddAnimationSelectBox($id,$keyToSet)
+    {       
+
+        $array = array(
+            array(
+                "name" => "Attention Seekers",
+                "vals" => array(
+                    "bounce"  => "bounce",
+                    "flash" => "flash",
+                    "bottom-left" => "Bottom left",
+                    "bottom-right" => "Bottom right",
+                )
+            )
+        );
+
+        $object = array(
+            "name" => null,
+            "vals" => $array
+        );
+        self::AddSelectBox($id,"Position:",$array,$keyToSet);
+    }
+
+    private static function AddSelectBox($id,$label,$categories,$keyToSet)
+    {       
       ?>
     
       <div class="select-box-container">
-          <label><?php "Position:"; ?></label>
+          <label><?php echo $label; ?></label>
           <select class="form-control layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
           <?php
-                foreach ($array as $key => $value) {
-                    $selected = "";
-                    if ($key == $keyToSet) {
-                        $selected = "selected";
+                foreach ($categories as $category) {
+                    if ($category['name'] != null) {
+                        echo "<optgroup label='" . $category['name'] ."'>"; 
                     }
-                    echo "<option $selected value='" .  $key ."'>". $value ."</option>";
+                    foreach ($category['vals'] as $key => $value) {
+                        $selected = "";
+                        if ($key == $keyToSet) {
+                            $selected = "selected";
+                        }
+                        echo "<option $selected value='" .  $key ."'>". $value ."</option>";
+                    }
+                    if ($category['name'] != null) {
+                        echo "</optgroup>"; 
+                    }
                 }
             ?>   
           </select>
          </div>
          <?php
     }
+
+
 
     public function Save( $post_id, $post, $update)
     {
