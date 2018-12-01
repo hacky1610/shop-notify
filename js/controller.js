@@ -148,6 +148,8 @@ class WfeNotifyController extends WfeBaseController {
       notify.registerOnCloseEvent(this.notifyClosed.bind(this));
       notify.setDuration(this.Duration * 1000);
       notify.setPlacement(this.getPlacement(object.placement));
+      notify.setEnterAnimation(object.enterAnimation);
+      notify.setExitAnimation(object.exitAnimation);
       notify.show();
     };
     GetNotifyObject(this.Id).then(show.bind(this));

@@ -399,6 +399,7 @@ class NotifySettings {
             ?>   
           </select>
          </div>
+         </br>
          <?php
     }
 

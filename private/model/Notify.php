@@ -75,6 +75,8 @@ class Notify {
         $object->message = $this->GetMessage();
         $object->style = $this->GetStyle();
         $object->placement = $this->GetPlacement();
+        $object->enterAnimation = $this->GetEnterAnimation();
+        $object->exitAnimation = $this->GetExitAnimation();
 
         return json_encode($object);
     }

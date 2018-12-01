@@ -2,7 +2,10 @@ class AdminNotifyEditor {
   constructor() {
     this.changed = false;
     $('.sn-edit-button').on('click', this.editButtonClicked.bind(this));
-    $('.layout-content').on('change', this.update.bind(this));
+    $('#sn_placement').on('change', this.update.bind(this));
+    $('#sn_enteranimation').on('change', this.update.bind(this));
+    $('#sn_exitanimation').on('change', this.showExitAnimation.bind(this));
+
     $('.notify-editor .wcn-edit-control').on('change', this.update.bind(this) );
     $('.edit-control-container input').on('change', this.textBoxCanged).bind(this);
     $('.sn-drag-item').on('dragstart', function(evt) {
@@ -42,15 +45,27 @@ class AdminNotifyEditor {
     this.showPreviewPopup(this.CurrentStlye);
   }
 
-  showPreviewPopup(style) {
+  showExitAnimation() {
+    this.showPreviewPopup(this.CurrentStlye, false).then( () => {
+      this.notify.close();
+      setTimeout(() => {this.showPreviewPopup(this.CurrentStlye, false);}, 2000);
+    });
+  }
+
+  showPreviewPopup(style, showEnterAnimation = true) {
     const id = 'sn_admin_sample';
     const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
     $(`#${id}`).remove();
-    const notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
-    notify.setElement('.notify-preview .panel-body');
-    notify.setEnterAnimation($('#sn_enteranimation').val());
-    notify.setPosition('static');
-    notify.show();
+    this.notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
+    this.notify.setElement('.notify-preview .panel-body');
+    if (showEnterAnimation) {
+      this.notify.setEnterAnimation($('#sn_enteranimation').val());
+    } else {
+      this.notify.setEnterAnimation(null);
+    }
+    this.notify.setExitAnimation($('#sn_exitanimation').val());
+    this.notify.setPosition('static');
+    return this.notify.show();
   }
 
   styleLoaded(styleContent) {

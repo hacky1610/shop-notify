@@ -13,6 +13,7 @@ class SnNotify {
     this.loadEvent = () => {};
     this.duration = 0;
     this.enterAnimation = 'lightSpeedIn';
+    this.exitAnimation = 'lightSpeedOut';
     this.placement = {
       from: 'bottom',
       align: 'left',
@@ -32,7 +33,19 @@ class SnNotify {
   }
 
   setEnterAnimation(animation) {
-    this.enterAnimation = animation;
+    if (animation !== null) {
+      this.enterAnimation = `animated ${animation}`;
+    } else {
+      this.enterAnimation = null;
+    }
+  }
+
+  setExitAnimation(animation) {
+    if (animation !== null) {
+      this.exitAnimation = `animated ${animation}`;
+    } else {
+      this.exitAnimation = null;
+    }
   }
 
   setPlacement(placement) {
@@ -62,8 +75,12 @@ class SnNotify {
     };
     return sendAjaxSync(data).then((body) => {
       this.loadEvent();
-      this.showPopup(body);
+      this.bsNotify = this.showPopup(body);
     });
+  }
+
+  close() {
+    this.bsNotify.close();
   }
 
   showPopup(template, element, position, placement, closeEvent) {
@@ -81,8 +98,8 @@ class SnNotify {
       element: this.element,
       position: this.position,
       animate: {
-        enter: `animated ${this.enterAnimation}`,
-        exit: 'animated lightSpeedOut',
+        enter: this.enterAnimation,
+        exit: this.exitAnimation,
       },
     });
     return notify;
