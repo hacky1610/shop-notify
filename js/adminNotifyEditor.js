@@ -2,7 +2,8 @@ class AdminNotifyEditor {
   constructor() {
     this.changed = false;
     $('.sn-edit-button').on('click', this.editButtonClicked.bind(this));
-    $('.layout-content').on('change', this.loadNewStyle.bind(this));
+    $('.layout-content').on('change', this.update.bind(this));
+    $('.notify-editor .wcn-edit-control').on('change', this.update.bind(this) );
     $('.edit-control-container input').on('change', this.textBoxCanged).bind(this);
     $('.sn-drag-item').on('dragstart', function(evt) {
       evt.originalEvent.dataTransfer.setData('text', ' ' + evt.target.id + ' ');
@@ -13,11 +14,10 @@ class AdminNotifyEditor {
   }
 
   elementDropped() {
-    setTimeout(() => {ShowPreviewPopup($('#sn_style_content').val());}, 100);
+    setTimeout(this.update.bind(this), 100);
   }
 
   get CurrentStlye() {
-    // $("#sn_style_content").children(":selected").attr("id")
     return $('#sn_style_content').val();
   }
 
@@ -38,9 +38,24 @@ class AdminNotifyEditor {
     this.openStyleEditor();
   }
 
+  update() {
+    this.showPreviewPopup(this.CurrentStlye);
+  }
+
+  showPreviewPopup(style) {
+    const id = 'sn_admin_sample';
+    const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
+    $(`#${id}`).remove();
+    const notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
+    notify.setElement('.notify-preview .panel-body');
+    notify.setEnterAnimation($('#sn_enteranimation').val());
+    notify.setPosition('static');
+    notify.show();
+  }
+
   styleLoaded(styleContent) {
     $('#wcn_style_sheet').html(styleContent);
-    ShowPreviewPopup(this.CurrentStlye);
+    this.showPreviewPopup(this.CurrentStlye);
   }
 
   loadNewStyle() {

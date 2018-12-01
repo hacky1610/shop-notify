@@ -79,15 +79,7 @@ function SaveStyle() {
      
 })( jQuery );
 
-function ShowPreviewPopup(style) {
-  const id = 'sn_admin_sample';
-  const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
-  $(`#${id}`).remove();
-  const notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
-  notify.setElement('.notify-preview .panel-body');
-  notify.setPosition('static');
-  notify.show();
-}
+
 
 var GetCssText = function(styleSheetId)
 {

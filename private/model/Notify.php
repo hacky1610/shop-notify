@@ -19,6 +19,8 @@ class Notify {
     private static $ENTERED_TITLE = "entered_title";
     private static $ENTERED_MESSAGE = "entered_message";
     private static $PLACEMENT = "placement";
+    private static $ENTERANIMATION = "enter_animation";
+    private static $EXITANIMATION = "exit_animation";
 
     function __construct(   $id, $postmetaAdapter){
         $this->postmetaAdapter = $postmetaAdapter;
@@ -56,6 +58,16 @@ class Notify {
         return $this->postmetaAdapter->GetPostMeta($this->id,self::$PLACEMENT);
     }
 
+    public function GetEnterAnimation()
+    {
+        return $this->postmetaAdapter->GetPostMeta($this->id,self::$ENTERANIMATION);
+    }
+
+    public function GetExitAnimation()
+    {
+        return $this->postmetaAdapter->GetPostMeta($this->id,self::$EXITANIMATION);
+    }
+
     public function GetObject()
     {
         $object->style = $this->GetStyle();
@@ -85,6 +97,16 @@ class Notify {
     public function SavePlacement($value)
     {
         $this->postmetaAdapter->SavePostMeta( $this->id, self::$PLACEMENT, $value);
+    }
+
+    public function SaveEnterAnimation($value)
+    {
+        $this->postmetaAdapter->SavePostMeta( $this->id, self::$ENTERANIMATION, $value);
+    }
+
+    public function SaveExitAnimation($value)
+    {
+        $this->postmetaAdapter->SavePostMeta( $this->id, self::$EXITANIMATION, $value);
     }
 
 

@@ -12,6 +12,7 @@ class SnNotify {
     this.closeEvent = () => {};
     this.loadEvent = () => {};
     this.duration = 0;
+    this.enterAnimation = 'lightSpeedIn';
     this.placement = {
       from: 'bottom',
       align: 'left',
@@ -28,6 +29,10 @@ class SnNotify {
 
   setPosition(pos) {
     this.position = pos;
+  }
+
+  setEnterAnimation(animation) {
+    this.enterAnimation = animation;
   }
 
   setPlacement(placement) {
@@ -57,11 +62,11 @@ class SnNotify {
     };
     return sendAjaxSync(data).then((body) => {
       this.loadEvent();
-      SnNotify.showPopup(this.duration, body, this.element, this.position, this.placement, this.closeEvent);
+      this.showPopup(body);
     });
   }
 
-  static showPopup(delay, template, element, position, placement, closeEvent) {
+  showPopup(template, element, position, placement, closeEvent) {
     const notify = jQuery.notify( {
       message: '',
       icon: '',
@@ -69,16 +74,16 @@ class SnNotify {
     {
       type: 'info',
       icon_type: 'img',
-      placement: placement,
-      onClosed: closeEvent,
-      delay: delay,
+      placement: this.placement,
+      onClosed: this.closeEvent,
+      delay: this.duration,
       template: template,
-      element: element,
-      position: position,
+      element: this.element,
+      position: this.position,
       animate: {
-        enter: 'animated lightSpeedIn',
-        exit: 'animated lightSpeedOut'
-      }
+        enter: `animated ${this.enterAnimation}`,
+        exit: 'animated lightSpeedOut',
+      },
     });
     return notify;
   }

@@ -15,7 +15,8 @@ class NotifySettings {
     private static $CONTROL_TITLE = "sn_title_content";
     private static $CONTROL_MESSAGE = "sn_message_content";
     private static $PLACEMENT = "sn_placement";
-    private static $INANIMATION = "sn_inanimation";
+    private static $ENTERANIMATION = "sn_enteranimation";
+    private static $EXITANIMATION = "sn_exitanimation";
 
     private static $POSTTYPE = "shop-notify";
     static $namespace = "shop-notify";
@@ -96,7 +97,8 @@ class NotifySettings {
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
         $this->AddPositionSelectBox(self::$PLACEMENT, $notify->GetPlacement());
-        $this->AddAnimationSelectBox(self::$INANIMATION,"foo");
+        $this->AddEnterAnimationSelectBox(self::$ENTERANIMATION,$notify->GetEnterAnimation(),"Enter animation:");
+        $this->AddExitAnimationSelectBox(self::$EXITANIMATION,$notify->GetExitAnimation(),"Exit animation:");
     }
 
     private function DisplayDragItems($labelUrl)
@@ -162,7 +164,7 @@ class NotifySettings {
         self::AddSelectBox($id,"Position:",array($object),$keyToSet);
     }
 
-    private function AddAnimationSelectBox($id,$keyToSet)
+    private function AddEnterAnimationSelectBox($id,$keyToSet,$name)
     {       
 
         $array = array(
@@ -171,17 +173,204 @@ class NotifySettings {
                 "vals" => array(
                     "bounce"  => "bounce",
                     "flash" => "flash",
-                    "bottom-left" => "Bottom left",
-                    "bottom-right" => "Bottom right",
+                    "pulse" => "pulse",
+                    "rubberBand" => "rubberBand",
+                    "shake" => "shake",
+                    "swing" => "swing",
+                    "tada" => "tada",
+                    "wobble" => "wobble",
+                    "jello" => "jello",
                 )
-            )
-        );
+            ),
+            array(
+              "name" => "Bouncing",
+              "vals" => array(
+                  "bounceIn"  => "bounceIn",
+                  "bounceInDown" => "bounceInDown",
+                  "bounceInLeft" => "bounceInLeft",
+                  "bounceInRight" => "bounceInRight",
+                  "bounceInUp" => "bounceInUp",
+              )
+              ),
+              array(
+                "name" => "Fading",
+                "vals" => array(
+                    "fadeIn"  => "fadeIn",
+                    "fadeInDown" => "fadeInDown",
+                    "fadeInDownBig" => "fadeInDownBig",
+                    "fadeInLeft" => "fadeInLeft",
+                    "fadeInLeftBig" => "fadeInLeftBig",
+                    "fadeInRight" => "fadeInRight",
+                    "fadeInRightBig" => "fadeInRightBig",
+                    "fadeInUp" => "fadeInUp",
+                    "fadeInUpBig" => "fadeInUpBig",
+                )
+              ),
+                array(
+                  "name" => "Flippers",
+                  "vals" => array(
+                      "flip"  => "flip",
+                      "flipInX" => "flipInX",
+                      "flipInY" => "flipInY",
+                  )
+                ),
+                array(
+                  "name" => "Lightspeed",
+                  "vals" => array(
+                      "lightSpeedIn"  => "lightSpeedIn",
+                  )
+                ),
+                array(
+                  "name" => "Rotating",
+                  "vals" => array(
+                      "rotateIn"  => "rotateIn",
+                      "rotateInDownLeft" => "rotateInDownLeft",
+                      "rotateInDownRight" => "rotateInDownRight",
+                      "rotateInUpLeft" => "rotateInUpLeft",
+                      "rotateInDownLeft" => "rotateInDownLeft",
+                      "rotateInUpRight" => "rotateInUpRight",
+                  )
+                ),
+                array(
+                  "name" => "Sliding",
+                  "vals" => array(
+                      "slideInUp"  => "slideInUp",
+                      "slideInDown" => "slideInDown",
+                      "slideInLeft" => "slideInLeft",
+                      "slideInRight" => "slideInRight",
+                  )
+                ),
+                array(
+                  "name" => "Zoom",
+                  "vals" => array(
+                      "zoomIn"  => "zoomIn",
+                      "zoomInDown" => "zoomInDown",
+                      "zoomInLeft" => "zoomInLeft",
+                      "zoomInRight" => "zoomInRight",
+                      "zoomInUp" => "zoomInUp",
+                  )
+                ),
+                array(
+                  "name" => "Specials",
+                  "vals" => array(
+                      "jackInTheBox" => "jackInTheBox",
+                      "rollIn" => "rollIn",
+                  )
+                )
+          );
+        
 
         $object = array(
             "name" => null,
             "vals" => $array
         );
-        self::AddSelectBox($id,"Position:",$array,$keyToSet);
+        self::AddSelectBox($id,$name,$array,$keyToSet);
+    }
+
+    private function AddExitAnimationSelectBox($id,$keyToSet,$name)
+    {       
+
+        $array = array(
+            array(
+                "name" => "Attention Seekers",
+                "vals" => array(
+                    "bounce"  => "bounce",
+                    "flash" => "flash",
+                    "pulse" => "pulse",
+                    "rubberBand" => "rubberBand",
+                    "shake" => "shake",
+                    "swing" => "swing",
+                    "tada" => "tada",
+                    "wobble" => "wobble",
+                    "jello" => "jello",
+                )
+            ),
+              array(
+                "name" => "Bouncing",
+                "vals" => array(
+                    "bounceOut"  => "bounceOut",
+                    "bounceOutDown" => "bounceOutDown",
+                    "bounceOutLeft" => "bounceOutLeft",
+                    "bounceOutRight" => "bounceOutRight",
+                    "bounceOutUp" => "bounceOutUp",
+                )
+              ),
+              array(
+                "name" => "Fading",
+                "vals" => array(
+                    "fadeOut"  => "fadeOut",
+                    "fadeOutDown" => "fadeOutDown",
+                    "fadeOutDownBig" => "fadeOutDownBig",
+                    "fadeOutLeft" => "fadeOutLeft",
+                    "fadeOutLeftBig" => "fadeOutLeftBig",
+                    "fadeOutRight" => "fadeOutRight",
+                    "fadeOutRightBig" => "fadeOutRightBig",
+                    "fadeOutUp" => "fadeOutUp",
+                    "fadeOutUpBig" => "fadeOutUpBig",
+                )
+                ),
+                array(
+                  "name" => "Flippers",
+                  "vals" => array(
+                      "flip"  => "flip",
+                      "flipOutX" => "flipOutX",
+                      "flipOutY" => "flipOutY",
+                  )
+                ),
+                array(
+                  "name" => "Lightspeed",
+                  "vals" => array(
+                      "lightSpeedOut" => "lightSpeedOut",
+                  )
+                ),
+                array(
+                  "name" => "Rotating",
+                  "vals" => array(
+                      "rotateOut"  => "rotateOut",
+                      "rotateOutDownLeft" => "rotateOutDownLeft",
+                      "rotateOutDownRight" => "rotateOutDownRight",
+                      "rotateOutUpLeft" => "rotateOutUpLeft",
+                      "rotateOutDownLeft" => "rotateOutDownLeft",
+                      "rotateOutUpRight" => "rotateOutUpRight",
+                  )
+                ),
+                array(
+                  "name" => "Sliding",
+                  "vals" => array(
+                      "slideOutUp"  => "slideOutUp",
+                      "slideOutDown" => "slideOutDown",
+                      "slideOutLeft" => "slideOutLeft",
+                      "slideOutRight" => "slideOutRight",
+                  )
+                ),
+                array(
+                  "name" => "Zoom",
+                  "vals" => array(
+                      "zoomOut"  => "zoomOut",
+                      "zoomOutDown" => "zoomOutDown",
+                      "zoomOutLeft" => "zoomOutLeft",
+                      "zoomOutRight" => "zoomOutRight",
+                      "zoomOutUp" => "zoomOutUp",
+                  )
+                ),
+                array(
+                  "name" => "Specials",
+                  "vals" => array(
+                      "hinge"  => "hinge",
+                      "jackInTheBox" => "jackInTheBox",
+                      "rollOut" => "rollOut",
+                      "hinge"  => "hinge",
+
+                  )
+                )
+          );
+        
+
+        $object = array(
+            "name" => null,
+            "vals" => $array
+        );
+        self::AddSelectBox($id,$name,$array,$keyToSet);
     }
 
     private static function AddSelectBox($id,$label,$categories,$keyToSet)
@@ -229,17 +418,13 @@ class NotifySettings {
         // If this isn't a 'book' post, don't update it.
         if ( self::$POSTTYPE != $post_type ) return;
     
-        // - Update the post's metadata.
-        $style = $_POST[self::$CONTROL_STYLE];
-        $title = $_POST[self::$CONTROL_TITLE];
-        $message = $_POST[self::$CONTROL_MESSAGE];
-        $placement =$_POST[self::$PLACEMENT];
-
         $notify = new Notify($post_id,$this->postMetaAdapter);
-        $notify->SaveStyle($style);
-        $notify->SaveTitle($title);
-        $notify->SavePlacement($placement);
-        $notify->SaveMessage( $message);
+        $notify->SaveStyle($_POST[self::$CONTROL_STYLE]);
+        $notify->SaveTitle($_POST[self::$CONTROL_TITLE]);
+        $notify->SavePlacement($_POST[self::$PLACEMENT]);
+        $notify->SaveMessage( $_POST[self::$CONTROL_MESSAGE]);
+        $notify->SaveEnterAnimation( $_POST[self::$ENTERANIMATION]);
+        $notify->SaveExitAnimation( $_POST[self::$EXITANIMATION]);
     }
 
     public function RegisterPostType()
