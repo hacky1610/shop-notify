@@ -63,9 +63,18 @@ class AdminNotifyEditor {
     } else {
       this.notify.setEnterAnimation(null);
     }
+    this.notify.setOffset(5);
+    this.notify.setPlacement(this.getPlacement($('#sn_placement').val()));
     this.notify.setExitAnimation($('#sn_exitanimation').val());
-    this.notify.setPosition('static');
+    this.notify.setPosition('absolute');
     return this.notify.show();
+  }
+
+  getPlacement(placementText) {
+    return {
+      from: placementText.split('-')[0],
+      align: placementText.split('-')[1],
+    };
   }
 
   styleLoaded(styleContent) {

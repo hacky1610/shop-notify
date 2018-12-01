@@ -9,6 +9,7 @@ class SnNotify {
     this.style = style;
     this.element = 'body';
     this.position = 'fixed';
+    this.offset = 20;
     this.closeEvent = () => {};
     this.loadEvent = () => {};
     this.duration = 0;
@@ -30,6 +31,10 @@ class SnNotify {
 
   setPosition(pos) {
     this.position = pos;
+  }
+
+  setOffset(offset) {
+    this.offset = offset;
   }
 
   setEnterAnimation(animation) {
@@ -97,6 +102,7 @@ class SnNotify {
       template: template,
       element: this.element,
       position: this.position,
+      offset: this.offset,
       animate: {
         enter: this.enterAnimation,
         exit: this.exitAnimation,

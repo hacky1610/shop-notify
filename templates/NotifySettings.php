@@ -48,7 +48,6 @@ class NotifySettings {
           <div class="panel panel-default section notify-preview">
                 <div class="panel-heading">Preview</div>
                 <div class="panel-body">
-      
                 </div>
         </div>
 

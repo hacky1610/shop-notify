@@ -19,6 +19,12 @@
     
 }
 
+.notify-preview .panel-body {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
 .select-box-container .form-control {
     width: unset;
     display: inline;
