@@ -123,46 +123,42 @@ function ShowReviewPopup(title, message, icon, link)
 		return sendAjaxSync(data, JSON.parse);
 	}
 		
-	function GetMillisecondsDiff(date1, date2)
-	{
-		if (date1 < date2) {
-			var milisec_diff = date2 - date1;
-		}else{
-			var milisec_diff = date1 - date2;
-		}
-		return milisec_diff;
-	}
-	
-	function GetDays(date1, date2) {
-		return Math.floor(GetMillisecondsDiff(date1,date2) / 1000 / 60 / (60 * 24));
-	}
-	
-	function GetTimeString(date)
-	{
-		var datetime = new Date( date ).getTime();
-		var now = new Date().getTime();
-		
-		var diff = new Date(GetMillisecondsDiff(now,datetime));
-		
-		var days = GetDays(datetime,now);
-		var diffHours = days * 24 + diff.getHours();
-		if(diffHours <= 24) //weniger als 24 stunden
-		{
-			if(diffHours <= 1) //weniger als eine Stunde
-				diff_formated = "il y a " + diff.getMinutes() + " minutes";
-			else //zwischen einer und 24 Stunden
-				diff_formated = "il y a " + diffHours + " heures";
-		}
-		else if(diffHours <= 48)
-			diff_formated = "il y a " + days + " jour";
-		else if(diffHours <= 80)
-			diff_formated = "il y a " + days + " jours";
-		else
-			diff_formated = "récemment";
-		
-		return diff_formated;
-		
-	}
+function getMillisecondsDiff(date1, date2) {
+  if (date1 < date2) {
+    return date2 - date1;
+  } else {
+    return date1 - date2;
+  }
+}
+
+function getDays(date1, date2) {
+  return Math.floor(getMillisecondsDiff(date1, date2) / 1000 / 60 / (60 * 24));
+}
+
+function getTimeString(date) {
+  const datetime = new Date( date ).getTime();
+  const now = new Date().getTime();
+  const diff = new Date(getMillisecondsDiff(now, datetime));
+
+  const days = getDays(datetime, now);
+  const diffHours = days * 24 + diff.getHours();
+  let diffFormated;
+  if (diffHours <= 24) { // weniger als 24 stunden
+    if (diffHours <= 1) {// weniger als eine Stunde
+      diffFormated = 'il y a ' + diff.getMinutes() + ' minutes';
+    } else { // zwischen einer und 24 Stunden
+      diffFormated = 'il y a ' + diffHours + ' heures';
+    }
+  } else if (diffHours <= 48) {
+    diffFormated = 'il y a ' + days + ' jour';
+  } else if (diffHours <= 80) {
+    diffFormated = 'il y a ' + days + ' jours';
+  } else {
+    diffFormated = 'récemment';
+  }
+
+  return diffFormated;
+}
 	
 function getLastOrder(lastRange) {
   return new Promise(function(resolve, reject) {
@@ -186,32 +182,31 @@ function getLastOrder(lastRange) {
 		});
 	}
 
-	function ShowOrder(callback, lastRange)
-	{
-		getLastOrder(lastRange).then((lastorder) => {
-			var product = lastorder.items[0];
+function ShowOrder(callback, lastRange) {
+  getLastOrder(lastRange).then((lastorder) => {
+    const product = lastorder.items[0];
 
-			//var productId = product.id;
-			//var orderId = lastorder.id;
-			
-			//var shownOrders = getCookie("ShownOrder").split(",");
-			//if(shownOrders.includes(orderId.toString()))
-			//	return;
-			
-			//setCookie("ShownOrder",shownOrders + "," + orderId,2);
+    //var productId = product.id;
+    //var orderId = lastorder.id;
+    
+    //var shownOrders = getCookie("ShownOrder").split(",");
+    //if(shownOrders.includes(orderId.toString()))
+    //	return;
+    
+    //setCookie("ShownOrder",shownOrders + "," + orderId,2);
 
-			var name = lastorder.name;
-			name =  name[0].toUpperCase() + name.substring(1);
-			var image = product.productImage;
-			var link = product.productPermalink;
-			var time = GetTimeString(lastorder.dateCreated);
-			
-			var keyVals = {ProductName: product.name, GivenName: name};
+    let name = lastorder.name;
+    name = name[0].toUpperCase() + name.substring(1);
+    const image = product.productImage;
+    const link = product.productPermalink;
+    const time = getTimeString(lastorder.dateCreated);
+    
+    const keyVals = {ProductName: product.name, GivenName: name, Bought: time};
 
-			callback(keyVals,link,image);
+    callback(keyVals, link, image);
 
-		});
-	}
+  });
+}
 	
 	
 	function ShowReview()

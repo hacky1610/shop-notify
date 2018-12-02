@@ -57,7 +57,7 @@ class AdminNotifyEditor {
 
   showPreviewPopup(style, showEnterAnimation = true) {
     const id = 'sn_admin_sample';
-    const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
+    const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie', Bought: 'one hour ago'};
     $(`#${id}`).remove();
     this.notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
     this.notify.setElement('.preview .panel-body');

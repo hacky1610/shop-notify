@@ -108,7 +108,9 @@ class NotifySettings {
         <?php
         $this->DisplayDragItem("ProductName","{ProductName}",$labelUrl);
         $this->DisplayDragItem("GivenName","{GivenName}",$labelUrl);
+        $this->DisplayDragItem("Bought","{Bought}",$labelUrl);
         ?>
+        
         </div>
         <?php
     }
