@@ -2,6 +2,9 @@ class AdminNotifyEditor {
   constructor() {
     this.changed = false;
     $('.sn-edit-button').on('click', this.editButtonClicked.bind(this));
+
+    
+    $('#sn_style_content').on('change', this.loadNewStyle.bind(this));
     $('#sn_placement').on('change', this.update.bind(this));
     $('#sn_enteranimation').on('change', this.update.bind(this));
     $('#sn_exitanimation').on('change', this.showExitAnimation.bind(this));

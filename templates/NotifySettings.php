@@ -53,6 +53,8 @@ class NotifySettings {
 
        
         <?php
+        $editorUrl = get_admin_url() . "edit.php?post_type=shop-notify&page=sn_style_editor&source=" . $post->ID;
+
         $this->wpAdapter->EnqueueStyle( 'workflow-editor',  'css/adminNotifySettings.css?');
         $this->wpAdapter->RegisterScript('notify-editor-script','/../js/adminNotifyEditor.js');
         $this->wpAdapter->LocalizeScript('notify-editor-script', 'notify_editor_vars', array(
@@ -89,7 +91,6 @@ class NotifySettings {
         $cssLoader->AddStyle($currentStyleObject);
         $cssLoader->Load();
         
-        $editorUrl = get_admin_url() . "edit.php?post_type=shop-notify&page=sn_style_editor&source=" . $post->ID;
         CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
         CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),"","sn-edit-button");
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
