@@ -13,17 +13,7 @@
     margin-top: 7px;
 }
 
-.notify-preview {
-  min-width: 400px;
-  margin-left: 35px;
-    
-}
 
-.notify-preview .panel-body {
-  position: relative;
-  width: 100%;
-  height: 300px;
-}
 
 .select-box-container .form-control {
     width: unset;

@@ -1,0 +1,13 @@
+/*Editor*/
+
+.sn_panel.preview .wcn_selected
+{
+    border: red !important;
+    border-width: 2px !important;
+    border-style: dashed !important;
+}
+
+.sn_panel.preview {
+  min-width: 400px;
+  margin-left: 35px;
+}

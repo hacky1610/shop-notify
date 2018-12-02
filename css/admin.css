@@ -53,21 +53,29 @@
     opacity: 1;
 }
 
-/*Editor*/
-
-.sn_style_editor .wcn_selected
-{
-    border: red !important;
-    border-width: 2px !important;
-    border-style: dashed !important;
+.sn_panel {
+  font-size: 13px;
 }
 
-
-
-#sn_settings .inside{
+.inside, .sn_container{
         display: flex; 
 }
 
+.sn_panel.edit {
+  min-width: 250px;
+}
+
+.sn_panel.preview {
+  min-width: 400px;
+  margin-left: 35px;
+    
+}
+
+.sn_panel.preview .panel-body {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
 
 
 .tool-box

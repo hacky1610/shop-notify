@@ -45,7 +45,7 @@ class NotifySettings {
                 </div>
         </div>
 
-          <div class="panel panel-default section notify-preview">
+          <div class="panel panel-default section sn_panel preview">
                 <div class="panel-heading">Preview</div>
                 <div class="panel-body">
                 </div>

@@ -60,7 +60,7 @@ class AdminNotifyEditor {
     const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie'};
     $(`#${id}`).remove();
     this.notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
-    this.notify.setElement('.notify-preview .panel-body');
+    this.notify.setElement('.preview .panel-body');
     if (showEnterAnimation) {
       this.notify.setEnterAnimation($('#sn_enteranimation').val());
     } else {

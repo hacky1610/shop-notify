@@ -75,7 +75,7 @@ class WoocommerceNotice{
     }
 
     public function ShowStylesEditor(){
-        $styles = new Styles($this->datastore,$this->logger);
+        $styles = new Styles($this->datastore,$this->logger,$this->wpAdapter);
         $styles->Show();
     }
     
