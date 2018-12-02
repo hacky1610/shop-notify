@@ -10,7 +10,7 @@ class CommonControls {
     public static function AddSelectBox($id, $styleList,$selectedStyle,$labeltext,$showCreateNew = false)
     {?>
     
-    <div class="select-box-container">
+    <div class="sn_edit_container">
         <label><?php echo $labeltext . ":"; ?></label>
         <select class="form-control layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
         <?php if($showCreateNew) { ?>                  
@@ -34,7 +34,7 @@ class CommonControls {
         if($isWcnControl)
             $editControl = "wcn-edit-control";
         ?>
-        <div class="edit-control-container" id="<?php echo $id."_container"; ?>">
+        <div class="sn_edit_container" id="<?php echo $id."_container"; ?>">
             <label><?php echo $labeltext . ":"; ?></label>
             <input type="text" id="<?php echo $id; ?>" name="<?php echo $id; ?>" value="<?php echo $value;; ?>" class="<?php echo $editControl . " " . $class; ?>" <?php echo $additionalAttribute; ?>>
             </br>

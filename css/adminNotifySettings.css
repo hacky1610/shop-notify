@@ -1,21 +1,8 @@
-.notify-editor .panel-body > div > label
-{
-    width: 120px;
-}
-
-.notify-editor .panel-body > div > input
-{
-    width: 370px;
-}
-
-.notify-editor .panel-body > div 
-{
-    margin-top: 7px;
-}
 
 
 
-.select-box-container .form-control {
+
+.sn_edit_container .form-control {
     width: unset;
     display: inline;
 }

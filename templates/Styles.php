@@ -32,9 +32,9 @@ class Styles {
     function AddSlider($id,$value,$class,$labeltext)
     {
         ?>
-        <div id="<?php echo $id."_container"; ?>">
+        <div class="sn_edit_container" id="<?php echo $id."_container"; ?>">
             <label><?php echo $labeltext; ?></label>
-            <input type="range" id="<?php echo $id;; ?>"  min="0" max="1" step="0.01" value="<?php echo $value; ?>" class="<?php echo "slider wcn-edit-control " . $class; ?>">
+            <input type="range" id="<?php echo $id;; ?>"  min="0" max="1" step="0.01" value="<?php echo $value; ?>" class="<?php echo "custom-range wcn-edit-control " . $class; ?>">
             </br>
        </div>
         <?php

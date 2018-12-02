@@ -1,6 +1,6 @@
 .wcn_edit_section > div
 {
-    width: 250px;
+  width: 100%;
 }
 
 /*Slider*/
@@ -62,8 +62,9 @@
 }
 
 .sn_panel.edit {
-  min-width: 250px;
+  width: 600px;
 }
+
 
 .sn_panel.preview {
   min-width: 400px;
@@ -75,6 +76,37 @@
   position: relative;
   width: 100%;
   height: 300px;
+}
+
+.sn_edit_container > label
+{
+    width: 120px;
+}
+
+.sn_edit_container > input
+{
+    width: 370px;
+    display: inline-block;
+}
+
+.sn_edit_container #wcn_opacity {
+   width: 370px !important;
+    display: inline-block !important;
+}
+
+.sn_edit_container > select {
+  width: auto;
+  display: inline-block;
+}
+
+.sn_edit_container > div
+{
+    display: inline-block;
+}
+
+.sn_edit_container 
+{
+    margin-top: 7px;
 }
 
 
@@ -130,7 +162,7 @@
 
 }
 
-.select-box-container
+.sn_edit_container
 {
     display: inline-block;
 }

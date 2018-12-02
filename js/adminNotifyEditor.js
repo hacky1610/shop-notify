@@ -10,11 +10,11 @@ class AdminNotifyEditor {
     $('#sn_exitanimation').on('change', this.showExitAnimation.bind(this));
 
     $('.notify-editor .wcn-edit-control').on('change', this.update.bind(this) );
-    $('.edit-control-container input').on('change', this.textBoxCanged).bind(this);
+    $('.sn_edit_container input').on('change', this.textBoxCanged).bind(this);
     $('.sn-drag-item').on('dragstart', function(evt) {
       evt.originalEvent.dataTransfer.setData('text', ' ' + evt.target.id + ' ');
     });
-    $('.edit-control-container input').on('drop', this.elementDropped.bind(this));
+    $('.sn_edit_container input').on('drop', this.elementDropped.bind(this));
 
     this.loadNewStyle();
   }

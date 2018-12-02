@@ -377,7 +377,7 @@ class NotifySettings {
     {       
       ?>
     
-      <div class="select-box-container">
+      <div class="sn_edit_container">
           <label><?php echo $label; ?></label>
           <select class="form-control layout-content" id="<?php echo $id; ?>" name="<?php echo $id; ?>">
           <?php
