@@ -200,7 +200,8 @@ class WfeNotifyOrderController extends WfeNotifyController {
       orderRange = this.data.lastOrderRange;
     }
 
-    ShowOrder(this.ShowNotifyCallback.bind(this), orderRange);
+    const notice = new OrderNotice();
+    notice.showOrder(this.ShowNotifyCallback.bind(this), orderRange);
   };
 }
 

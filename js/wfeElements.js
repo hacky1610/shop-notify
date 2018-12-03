@@ -405,7 +405,8 @@ class Notify extends WfeElement {
   };
 
   showPopup() {
-    ShowOrder(this.ShowNotifyCallback.bind(this));
+    const notice = new OrderNotice();
+    notice.showOrder(this.ShowNotifyCallback.bind(this));
   };
 };
 
