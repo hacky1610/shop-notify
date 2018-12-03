@@ -91,6 +91,18 @@ class WoocommerceNotice{
         $this->wpAdapter->EnqueueStyle("default","css/default.css"); 
         $this->wpAdapter->EnqueueStyle("animate","css/animate.css"); 
 
+        $this->wpAdapter->RegisterScript('globals','/../js/globals.js');
+        $this->wpAdapter->LocalizeScript('globals', 'global_vars', array(
+                'minutesText' => 'il y a {value} minutes',
+                'hoursText' => 'il y a {value} heures',
+                'dayText' => 'il y a {value} jour',
+                'daysText' => 'il y a {value} jours',
+                'recently' => 'récemment',
+            )
+        );
+
+        $this->wpAdapter->EnqueueRegisteredScript("globals");
+
         $this->wpAdapter->EnqueueScript('logger','js/logger.js');
         $this->wpAdapter->EnqueueScript('common','js/common.js');
         $this->wpAdapter->EnqueueScript('controller','js/controller.js');

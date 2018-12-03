@@ -122,11 +122,6 @@ function getLastReview() {
 
 class Notice {
   constructor() {
-    this.minutesText = 'il y a {value} minutes';
-    this.hoursText = 'il y a {value} heures';
-    this.dayText = 'il y a {value} jour';
-    this.daysText = 'il y a {value} jours';
-    this.recently = 'récemment';
   };
 
   getMillisecondsDiff(date1, date2) {
@@ -155,16 +150,16 @@ class Notice {
     let diffFormated;
     if (diffHours <= 24) { // weniger als 24 stunden
       if (diffHours <= 1) {// weniger als eine Stunde
-        diffFormated = this.replaceTime(this.minutesText, diff.getMinutes());
+        diffFormated = this.replaceTime(snGlobals.minutesText, diff.getMinutes());
       } else { // zwischen einer und 24 Stunden
-        diffFormated = this.replaceTime(this.hoursText, diffHours);
+        diffFormated = this.replaceTime(snGlobals.hoursText, diffHours);
       }
     } else if (diffHours <= 48) {
-      diffFormated = this.replaceTime(this.dayText, days);
+      diffFormated = this.replaceTime(snGlobals.dayText, days);
     } else if (diffHours <= 80) {
-      diffFormated = this.replaceTime(this.daysText, days);
+      diffFormated = this.replaceTime(snGlobals.daysText, days);
     } else {
-      diffFormated = this.recently;
+      diffFormated = snGlobals.recently;
     }
 
     return diffFormated;
