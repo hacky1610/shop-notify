@@ -1,9 +1,10 @@
 class AdminNotifyEditor {
   constructor() {
     this.changed = false;
+    this.showing = false;
     $('.sn-edit-button').on('click', this.editButtonClicked.bind(this));
 
-    
+
     $('#sn_style_content').on('change', this.loadNewStyle.bind(this));
     $('#sn_placement').on('change', this.update.bind(this));
     $('#sn_enteranimation').on('change', this.update.bind(this));
@@ -20,7 +21,7 @@ class AdminNotifyEditor {
   }
 
   elementDropped() {
-    setTimeout(this.update.bind(this), 100);
+    setTimeout(this.update.bind(this), 10);
   }
 
   get CurrentStlye() {
@@ -51,14 +52,21 @@ class AdminNotifyEditor {
   showExitAnimation() {
     this.showPreviewPopup(this.CurrentStlye, false).then( () => {
       this.notify.close();
-      setTimeout(() => {this.showPreviewPopup(this.CurrentStlye, false);}, 2000);
+      setTimeout(() => {
+        this.showPreviewPopup(this.CurrentStlye, false);
+      }, 2000);
     });
   }
 
   showPreviewPopup(style, showEnterAnimation = true) {
+    if (this.showing) {
+      return;
+    }
+
+    this.showing = true;
     const id = 'sn_admin_sample';
-    const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie', Bought: 'one hour ago', Country: 'Germany'};
     $(`#${id}`).remove();
+    const keyVals = {ProductName: 'T-Shirt', GivenName: 'Valérie', Bought: 'one hour ago', Country: 'Germany'};
     this.notify = new SnNotify(id, keyVals, $('#sn_title_content').val(), $('#sn_message_content').val(), '#', '', style);
     this.notify.setElement('.preview .panel-body');
     if (showEnterAnimation) {
@@ -70,7 +78,14 @@ class AdminNotifyEditor {
     this.notify.setPlacement(this.getPlacement($('#sn_placement').val()));
     this.notify.setExitAnimation($('#sn_exitanimation').val());
     this.notify.setPosition('absolute');
-    return this.notify.show();
+    const showPromise = this.notify.show();
+    showPromise.then( this.displayed.bind(this));
+
+    return showPromise;
+  }
+
+  displayed() {
+    this.showing = false;
   }
 
   getPlacement(placementText) {
