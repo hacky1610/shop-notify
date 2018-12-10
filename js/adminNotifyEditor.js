@@ -20,7 +20,7 @@ class AdminNotifyEditor {
     this.loadNewStyle();
   }
 
-  elementDropped() {
+  elementDropped(e) {
     setTimeout(this.update.bind(this), 10);
   }
 
@@ -46,6 +46,8 @@ class AdminNotifyEditor {
   }
 
   update() {
+    document.getSelection().empty();
+
     this.showPreviewPopup(this.CurrentStlye);
   }
 

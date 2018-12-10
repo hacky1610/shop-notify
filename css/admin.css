@@ -128,39 +128,7 @@
     background-color: #999e9e;
 }
 
-.dragitems
-{
-    margin-left: 120px;
 
-}
-
-.dragitems span
-{
-    border-color: black;
-    border-width: 1px;
-    border-style: groove;
-    border-radius: 4px;
-    padding: 1.5px;
-    display: inline-block;
-    color: white;
-    margin-right: 5px;
-}
-
-.dragitems span img
-{
-    width: 15px;
-    display: inline-block;
-
-}
-
-.dragitems span p
-{
-    color: black;
-    display: inline-block;
-    margin: 0;
-    font-size: 12px;
-
-}
 
 .sn_edit_container
 {
