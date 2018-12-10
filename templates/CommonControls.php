@@ -2,12 +2,12 @@
 
 class CommonControls {
     public static function Addbutton($id,$image,$link,$class)
-    {?>
-       <div class="<?php echo $class;?>"> <img src="<?php echo $image;?>"></img></div>
-       <?php
+    {
+       return  "<div class='" . $class . "'> <img src='" . $image . "'></img></div>";
+  
     }
 
-    public static function AddSelectBox($id, $styleList,$selectedStyle,$labeltext,$showCreateNew = false)
+    public static function AddSelectBox($id, $styleList,$selectedStyle,$labeltext,$showCreateNew = false, $customControl = "")
     {?>
     
     <div class="sn_edit_container">
@@ -25,6 +25,9 @@ class CommonControls {
                 }
             ?>
         </select>
+        <?php
+           echo $customControl;
+            ?>
        </div>
        <?php
     }

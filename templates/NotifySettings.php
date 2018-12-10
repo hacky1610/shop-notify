@@ -91,8 +91,9 @@ class NotifySettings {
         $cssLoader->AddStyle($currentStyleObject);
         $cssLoader->Load();
         
-        CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style");
-        CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),"","sn-edit-button");
+        $addButton = CommonControls::Addbutton(1, plugins_url( '/../assets/edit.png', __FILE__ ),"","sn-edit-button");
+        CommonControls::AddSelectBox(self::$CONTROL_STYLE,$styleList,$selectedStyle,"Style",false,$addButton);
+        ;
         $this->DisplayDragItems(plugins_url( '/../assets/label.png', __FILE__ ));
         CommonControls::AddEditControl(self::$CONTROL_TITLE,$titel,"","Tite content",true );
         CommonControls::AddEditControl(self::$CONTROL_MESSAGE,$message,"","Message content",true);
