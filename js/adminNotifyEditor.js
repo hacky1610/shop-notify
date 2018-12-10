@@ -7,7 +7,7 @@ class AdminNotifyEditor {
 
     $('#sn_style_content').on('change', this.loadNewStyle.bind(this));
     $('#sn_placement').on('change', this.update.bind(this));
-    $('#sn_enteranimation').on('change', this.update.bind(this));
+    $('#sn_enteranimation').on('change', this.showEnterAnimation.bind(this));
     $('#sn_exitanimation').on('change', this.showExitAnimation.bind(this));
 
     $('.notify-editor .wcn-edit-control').on('change', this.update.bind(this) );
@@ -49,16 +49,20 @@ class AdminNotifyEditor {
     this.showPreviewPopup(this.CurrentStlye);
   }
 
+  showEnterAnimation() {
+    this.showPreviewPopup(this.CurrentStlye, true);
+  }
+
   showExitAnimation() {
     this.showPreviewPopup(this.CurrentStlye, false).then( () => {
       this.notify.close();
       setTimeout(() => {
-        this.showPreviewPopup(this.CurrentStlye, false);
+        this.showPreviewPopup(this.CurrentStlye);
       }, 2000);
     });
   }
 
-  showPreviewPopup(style, showEnterAnimation = true) {
+  showPreviewPopup(style, showEnterAnimation = false) {
     if (this.showing) {
       return;
     }
