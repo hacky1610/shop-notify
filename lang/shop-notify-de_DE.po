@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Shop Notify\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-08 12:04+0100\n"
+"PO-Revision-Date: 2018-12-08 12:07+0100\n"
+"Last-Translator: Daniel Hackbarth <hacky1610@gmx.de>\n"
+"Language-Team: Deutsch\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: locate\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: private/WoocommerceNotice.php:103
+msgid "{value} minutes ago"
+msgstr "vor {value} Minuten"
+
+#: private/WoocommerceNotice.php:104
+msgid "{value} hours ago"
+msgstr "vor {value} Stunden"
+
+#: private/WoocommerceNotice.php:105
+msgid "one day ago"
+msgstr "vor einem Tag"
+
+#: private/WoocommerceNotice.php:106
+msgid "{value} days ago"
+msgstr "vor {value} Tagen"
+
+#: private/WoocommerceNotice.php:107
+msgid "recently"
+msgstr "kürzlich"
+
+#: templates/NotifySettings.php:40
+msgid "Settings"
+msgstr "Einstellungen"

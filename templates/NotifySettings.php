@@ -37,7 +37,7 @@ class NotifySettings {
     {
         ?>
          <div class="panel panel-default section notify-editor">
-                <div class="panel-heading">Settings</div>
+                <div class="panel-heading"><?php echo  $this->wpAdapter->locate( 'Settings'); ?></div>
                 <div class="panel-body">
                 <?php
                     $this->ShowEditorBody($post);

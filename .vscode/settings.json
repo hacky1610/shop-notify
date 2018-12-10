@@ -6,7 +6,7 @@
               "name": "My FTP folder",
               "description": "A FTP folder",
 
-              "dir": "/WordPress_02/wp-content/plugins/woocommerce-notice/",
+              "dir": "/WordPress_02/wp-content/plugins/shop-notify/",
               "host": "ftp.strato.de", "port": 21,
               "user": "vals-natural-journey.de", "password": "Daytona1610!"
           }

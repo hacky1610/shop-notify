@@ -15,6 +15,7 @@ class WpAdapter {
      * @var Logger
      */
     protected $logger;
+    private $namespace = "shop-notify";
 
     function __construct($logger)
     {
@@ -67,6 +68,10 @@ class WpAdapter {
 
     public function LocalizeScript($name,$varname,$array) {
       wp_localize_script("sn_".$name, $varname, $array);
+    }
+
+    public function locate($text) {
+      return __($text,$this->namespace);
     }
 
     public function WpDie()

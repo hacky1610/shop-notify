@@ -66,12 +66,19 @@ class WoocommerceNotice{
         add_action('init',array($this, 'init') );
         add_action('add_meta_boxes', array($this->notifySettingsEditor, 'AddContent') );
         add_action('save_post', array($this->notifySettingsEditor,'Save'), 10, 3 );
+        add_action('plugins_loaded', 'PluginLoaded');
 
         $this->logger->Call("Woocommerce_Notice Constructor End");
     }
 
     function init() {
         $this->notifySettingsEditor->RegisterPostType();
+        load_plugin_textdomain( "shop-notify", false, 'shop-notify/lang' );
+    }
+
+    public function PluginLoaded() {
+     
+
     }
 
     public function ShowStylesEditor(){
@@ -93,11 +100,11 @@ class WoocommerceNotice{
 
         $this->wpAdapter->RegisterScript('globals','/../js/globals.js');
         $this->wpAdapter->LocalizeScript('globals', 'global_vars', array(
-                'minutesText' => 'il y a {value} minutes',
-                'hoursText' => 'il y a {value} heures',
-                'dayText' => 'il y a {value} jour',
-                'daysText' => 'il y a {value} jours',
-                'recently' => 'récemment',
+                'minutesText' => $this->wpAdapter->locate('{value} minutes ago'),
+                'hoursText' => $this->wpAdapter->locate('{value} hours ago'),
+                'dayText' => $this->wpAdapter->locate('one day ago'),
+                'daysText' => $this->wpAdapter->locate('{value} days ago'),
+                'recently' => $this->wpAdapter->locate('recently'),
             )
         );
 
@@ -115,6 +122,8 @@ class WoocommerceNotice{
 
     public function loadJsAdmin( $hook ) {
         $this->logger->Call("loadJsAdmin");
+       echo  __( 'recently', $namespace );
+
         //if( is_admin() ) { 
             $this->logger->Call("Add admin scripts");
             $this->wpAdapter->EnqueueStyle("admin","css/admin.css"); 

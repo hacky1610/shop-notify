@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Shop-Notify\n"
+"POT-Creation-Date: 2018-12-07 17:52+0100\n"
+"PO-Revision-Date: 2018-12-07 17:52+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: private/WoocommerceNotice.php:108 private/WoocommerceNotice.php:126
+#: templates/NotifySettings.php:38
+msgid "recently"
+msgstr "Foo"
+
+#: private/WoocommerceNotice.php:182
+msgid "Style Editor"
+msgstr ""
+
+#: private/WoocommerceNotice.php:183
+msgid "Workflow Editor"
+msgstr ""
+
+#: private/WoocommerceNotice.php:184
+msgid "Install"
+msgstr ""
+
+#: templates/NotifySettings.php:439
+msgid "Shop Notify"
+msgstr ""
+
+#: templates/NotifySettings.php:440
+msgid "Parent Movie"
+msgstr ""
+
+#: templates/NotifySettings.php:441
+msgid "Notifications"
+msgstr ""
+
+#: templates/NotifySettings.php:442
+msgid "View Movie"
+msgstr ""
+
+#: templates/NotifySettings.php:443 templates/NotifySettings.php:444
+msgid "Add Notification"
+msgstr ""
+
+#: templates/NotifySettings.php:445
+msgid "Edit Notification"
+msgstr ""
+
+#: templates/NotifySettings.php:446
+msgid "Update Notification"
+msgstr ""
+
+#: templates/NotifySettings.php:447
+msgid "Search Notification"
+msgstr ""
+
+#: templates/NotifySettings.php:448
+msgid "Not Found"
+msgstr ""
+
+#: templates/NotifySettings.php:449
+msgid "Not found in Trash"
+msgstr ""
+
+#: templates/NotifySettings.php:473
+msgid "Notification"
+msgstr ""
+
+#: templates/templates.php:111
+msgid "Grid"
+msgstr ""
+
+#: templates/templates.php:111
+msgid "List"
+msgstr ""
+
+#: templates/templates.php:382
+msgid "doesn't exist"
+msgstr ""
+
+#: templates/templates.php:383
+msgid "Saving"
+msgstr ""
+
+#: templates/templates.php:384
+msgid "Please enter your API key"
+msgstr ""
+
+#: templates/templates.php:385
+msgid "Your inputs are invalid, please have a look at them"
+msgstr ""
+
+#: templates/templates.php:386
+msgid "Save"
+msgstr ""
+
+#: templates/templates.php:387
+msgid "Edit"
+msgstr ""
+
+#: templates/templates.php:388
+msgid "Deleting"
+msgstr ""
+
+#: templates/templates.php:389
+msgid "Clear"
+msgstr ""
+
+#: templates/templates.php:390
+msgid "Clearing"
+msgstr ""
