@@ -205,7 +205,7 @@ class OrderNotice extends Notice {
       const link = product.productPermalink;
       const time = this.getTimeString(lastorder.dateCreated);
 
-      const keyVals = {ProductName: product.name, GivenName: name, Bought: time};
+      const keyVals = {ProductName: product.name, GivenName: name, Bought: time, Country: lastorder.country};
 
       callback(keyVals, link, image);
     });
