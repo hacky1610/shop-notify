@@ -22,8 +22,13 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: phpunit test
+- script: phpunit test --log-junit php-unit-result.xml
   displayName: 'Run tests with phpunit'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: './php-unit-result.xml'
+    testRunTitle: 'Test results for PHP'
 
 - task: NodeTool@0
   inputs:
