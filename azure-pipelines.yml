@@ -27,7 +27,7 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: './php-unit-result.xml'
+    testResultsFiles: './php-unit-result_.xml'
     testRunTitle: 'Test results for PHP'
 
 - task: NodeTool@0

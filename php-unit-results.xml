@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="test" tests="19" assertions="19" errors="0" failures="0" skipped="0" time="0.414648">
+      <testcase name="testGetFontList_hasTwoFonts2" class="CssLoaderTest" classname="CssLoaderTest" file="/home/adhada7/Documents/Project/Privat/woocomerce-notice/test/CssLoaderTest.php" line="16" assertions="1" time="0.019575"/>
+      <testcase name="testLoad" class="CssLoaderTest" classname="CssLoaderTest" file="/home/adhada7/Documents/Project/Privat/woocomerce-notice/test/CssLoaderTest.php" line="26" assertions="1" time="0.000071">
+        <system-out>&lt;style id="wcn_style_sheet" type="text/css"&gt;. { font-family: FooBar; }  { font-family: FooBar2;}&lt;/style&gt;&lt;style id="wcn_style_sheet" type="text/css"&gt;. { font-family: Hello; }  { font-family: FooBar2;}&lt;/style&gt;&lt;link href="https://fonts.googleapis.com/css?family=FooBar" rel="stylesheet" type="text/css"&gt;&lt;link href="https://fonts.googleapis.com/css?family=FooBar2" rel="stylesheet" type="text/css"&gt;&lt;link href="https://fonts.googleapis.com/css?family=Hello" rel="stylesheet" type="text/css"&gt;</system-out>
+      </testcase>
+  </testsuite>
+</testsuites>
