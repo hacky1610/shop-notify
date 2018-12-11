@@ -25,6 +25,42 @@ steps:
 - script: phpunit test
   displayName: 'Run tests with phpunit'
 
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'npm install'
+
+- powershell: |
+      npm run coverage
+      if ($LASTEXITCODE -eq 1) {
+        Write-Output "The npm test has failed"
+        "Failed" | Set-Content  "test.failed"
+      }
+    displayName: 'Run test'
+    continueOnError: true
+    ignoreLASTEXITCODE: true
+
+- task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '$(currentDir)/test-results.xml'
+      testRunTitle: 'Test results for JavaScript'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(currentDir)/coverage/*coverage.xml'
+    reportDirectory: '$(currentDir)/coverage'
+    
+- powershell: |
+    if (Test-Path test.failed) {
+      Write-Error "Test failed"
+    }
+  displayName: 'Test Status'
+
 
 
 # - powershell: | 
