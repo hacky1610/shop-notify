@@ -40,14 +40,14 @@ steps:
         Write-Output "The npm test has failed"
         "Failed" | Set-Content  "test.failed"
       }
-    displayName: 'Run test'
-    continueOnError: true
-    ignoreLASTEXITCODE: true
+  displayName: 'Run test'
+  continueOnError: true
+  ignoreLASTEXITCODE: true
 
 - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '$(currentDir)/test-results.xml'
-      testRunTitle: 'Test results for JavaScript'
+  inputs:
+    testResultsFiles: '$(currentDir)/test-results.xml'
+    testRunTitle: 'Test results for JavaScript'
 
 - task: PublishCodeCoverageResults@1
   inputs: 
