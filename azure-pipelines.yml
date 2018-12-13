@@ -22,7 +22,12 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: phpunit test --log-junit php-unit-result.xml
+- powershell: |
+     phpunit test --log-junit php-unit-result.xml
+      if ($LASTEXITCODE -eq 1) {
+        Write-Output "The npm test has failed"
+        "Failed" | Set-Content  "test.failed"
+      }
   displayName: 'Run tests with phpunit'
 
 - powershell: |
