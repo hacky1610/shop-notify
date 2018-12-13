@@ -29,6 +29,8 @@ steps:
         "Failed" | Set-Content  "test.failed"
       }
   displayName: 'Run tests with phpunit'
+  continueOnError: true
+  ignoreLASTEXITCODE: true
 
 - powershell: |
       . ./_build/ConvertPhpUnitResult.ps1
