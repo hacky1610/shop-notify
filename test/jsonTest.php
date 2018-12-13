@@ -19,7 +19,7 @@ class JsonTest extends TestCase
         $o = json_decode($json);
 
         print_r($o[0]->type);
-        $this->assertNotNull($o);
+        $this->assertNull($o);
 
     }
 
