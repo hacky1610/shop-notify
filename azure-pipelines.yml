@@ -22,13 +22,19 @@ steps:
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
-- script: phpunit test --log-junit php-unit-result_.xml
+- script: phpunit test --log-junit php-unit-result.xml
   displayName: 'Run tests with phpunit'
+
+- powershell: |
+      . ./_build/ConvertPhpUnitResult.ps1
+      Convert -source ./php-unit-result.xml -destination ./php-unit-result_converted.xml
+  displayName: 'Convert PhpUnit Result'
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: './php-unit-result.xml'
+    testResultsFiles: './php-unit-result_converted.xml'
     testRunTitle: 'Test results for PHP'
+  displayName: 'Publish PhpUnit Testresults'
 
 - task: NodeTool@0
   inputs:
@@ -53,6 +59,7 @@ steps:
   inputs:
     testResultsFiles: './test-results.xml'
     testRunTitle: 'Test results for JavaScript'
+  displayName: 'Publish JS Testresults'
 
 - task: PublishCodeCoverageResults@1
   inputs: 
